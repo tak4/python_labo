@@ -1,0 +1,15 @@
+
+
+TCP Send message type=0xEF12, xxxx=0xABCD
+
+
+TCP Recv message type=0xABCD
++++++++++++
+TCP message
+TCP 
+++++++++
+
+TCP Recv message type=0x1234
+
+
+TCP Send message type=0x5678
