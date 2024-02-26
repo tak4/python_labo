@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>CSS 入門</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">  
+  </head>
+
+  <body>
+    <style>
+      .information {
+        background-color: white;
+        color: black;
+        padding: 10px;
+      }
+    </style>
+    <h1>見出し１です</h1>
+
+    <div class="first-level">
+      TEST TEXT1
+      <div class="second-level">
+        TEST TEXT2
+        <div class="third-level">
+          <div class="wrap">
+            TEST TEXT3
+            <a class="a_link" href="{{ url_for('first_link') }}">first-link(href)</a>
+            <a class="a_button special_button" href="{{ url_for('second_link') }}">second-link(aタグにスタイルを適用)</a>
+            <button class="styled" type="button" onclick="location.href='{{ url_for('third_link') }}'">third-link(button版)</button>
+            <input type="button" onclick="location.href='{{ url_for('fourth_link') }}'" value="fourth_link(input button版)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
