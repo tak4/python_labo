@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask import request
 from markupsafe import escape
+import json #必ず必要
 
 app = Flask(__name__)
 
@@ -9,6 +10,11 @@ with app.test_request_context('/hello', method='POST'):
     # end of the with block, such as basic assertions:
     assert request.path == '/hello'
     assert request.method == 'POST'
+
+# アプリ起動
+if __name__ == '__main__':
+    app.debug = True
+    app.run(host='localhost')
 
 
 @app.route('/')
@@ -31,13 +37,13 @@ def third_link():
 def fourth_link():
     return render_template('contents/fourth-link.html')
 
-if __name__ == '__main__':
-    app.debug = True
-    app.run(host='localhost')
-
+# JSONをレスポンスする
 @app.route('/items', methods=['GET'])
 def get_items():
-    return {"item" : "Test Item"}
+    # レスポンス用のJSON読み込み
+    with open("json/response.json" , "r") as jf:
+        f_json = json.load(jf)
+    return f_json
 
 @app.route('/user/<username>')
 def show_user_profile(username):
@@ -53,4 +59,5 @@ def show_post(post_id):
 def show_subpath(subpath):
     # show the subpath after /path/
     return f'Subpath {escape(subpath)}'
+
 
