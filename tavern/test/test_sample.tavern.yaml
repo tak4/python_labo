@@ -1,5 +1,8 @@
 test_name: 簡単なテスト
 
+includes:
+  - !include ../include/includes.yaml
+
 stages:
   - name: 200が返ってくるかどうかのテスト
     request:
@@ -14,7 +17,9 @@ stages:
       method: GET
     response:
       json:
-        item: "Test Item"
+        user_info:
+          user_id: "{user_id:s}"
+          user_name: "{user_name:s}"
 
   - name: jsonのテスト(外部関数)
     request:
@@ -25,4 +30,5 @@ stages:
         function: helper.testing_utils:is_specified_json
         extra_kwargs:
           schema: 
-            item: "Test Item"
+            user_id: "{user_id:s}"
+            user_name: "{user_name:s}"
