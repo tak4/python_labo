@@ -32,3 +32,12 @@ stages:
           schema: 
             user_id: "{user_id:s}"
             user_name: "{user_name:s}"
+
+  - name: responseの保存
+    request:
+      url: http://127.0.0.1:5000/items
+      method: GET
+    response:
+      verify_response_with:
+        function: helper.testing_utils:save_response
+  
