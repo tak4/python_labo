@@ -16,6 +16,7 @@ stages:
       url: http://127.0.0.1:5000/items
       method: GET
     response:
+      status_code: 200
       json:
         user_info:
           user_id: "{user_id:s}"
@@ -26,6 +27,7 @@ stages:
       url: http://127.0.0.1:5000/items
       method: GET
     response:
+      status_code: 200
       verify_response_with:
         function: helper.testing_utils:is_specified_json
         extra_kwargs:
@@ -38,6 +40,19 @@ stages:
       url: http://127.0.0.1:5000/items
       method: GET
     response:
+      status_code: 200
       verify_response_with:
         function: helper.testing_utils:save_response
-  
+        extra_kwargs:
+          fname: response.txt
+
+  - name: request変数
+    request:
+      url: http://127.0.0.1:5000/requestval?name="testuser"&age=20
+      method: GET
+    response:
+      status_code: 200
+      verify_response_with:
+        function: helper.testing_utils:save_response
+        extra_kwargs:
+          fname: requestval.txt
