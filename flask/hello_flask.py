@@ -37,14 +37,6 @@ def third_link():
 def fourth_link():
     return render_template('contents/fourth-link.html')
 
-# JSONをレスポンスする
-@app.route('/items', methods=['GET'])
-def get_items():
-    # レスポンス用のJSON読み込み
-    with open("json/response.json" , "r") as jf:
-        f_json = json.load(jf)
-    return f_json
-
 @app.route('/user/<username>')
 def show_user_profile(username):
     # show the user profile for that user
@@ -60,4 +52,20 @@ def show_subpath(subpath):
     # show the subpath after /path/
     return f'Subpath {escape(subpath)}'
 
+# JSONをレスポンスする
+@app.route('/items', methods=['GET'])
+def get_items():
+    # レスポンス用のJSON読み込み
+    with open("json/response.json" , "r") as jf:
+        f_json = json.load(jf)
+    return f_json
 
+# リクエスト変数を受ける
+@app.route("/requestval", methods=['GET'])
+def get_requestval():
+    # リクエスト変数を受け取る
+    name = request.args.get("name")
+    age = request.args.get("age")
+
+    # リクエスト変数を使って処理を行う
+    return f'{{"name": {name}, "age": {age}}}'
