@@ -1,4 +1,3 @@
-
 # 参考ページ
 # https://learn.microsoft.com/ja-jp/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli&pivots=blob-storage-quickstart-scratch
 
@@ -20,8 +19,8 @@ def get_blob_service_client_account_key():
     return blob_service_client
 
 
-# 予め環境変数 AZURE_STORAGE_CONNECTION_STRING に接続先を設定しておく
-# 
+# 予め環境変数 AZURE_STORAGE_CONNECTION_STRING に接続文字列を設定しておく
+# 接続文字列は、ストレージアカウント＞アクセスキー で取得する
 def get_blob_service_client_connection_string():
     # TODO: Replace <storage-account-name> with your actual storage account name
     account_url = "https://<storage-account-name>.blob.core.windows.net"
@@ -84,7 +83,7 @@ for blob in blob_list:
 # Download the blob to a local file
 # Add 'DOWNLOAD' before the .txt extension so you can see both files in the data directory
 download_file_path = os.path.join(local_path, str.replace(local_file_name ,'.txt', 'DOWNLOAD.txt'))
-container_client = blob_service_client.get_container_client(container= container_name) 
+container_client = blob_service_client.get_container_client(container=container_name) 
 print("\nDownloading blob to \n\t" + download_file_path)
 
 with open(file=download_file_path, mode="wb") as download_file:
