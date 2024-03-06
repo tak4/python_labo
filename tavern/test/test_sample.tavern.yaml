@@ -3,9 +3,22 @@ test_name: 簡単なテスト
 includes:
   - !include ../include/includes.yaml
 
+marks:
+  - parametrize:
+      key: param_val_name
+      vals:
+        - test user1
+        - user user2
+
+  - parametrize:
+      key: param_val_age
+      vals:
+        - 20
+        - 30
+
 stages:
   - name: 200が返ってくるかどうかのテスト
-    skip: True    # ステージ単位でのSkip
+    # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -45,7 +58,7 @@ stages:
           etc: !anything
 
   - name: jsonのテスト(外部関数)
-    skip: True    # ステージ単位でのSkip
+    # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -56,10 +69,10 @@ stages:
         extra_kwargs:
           schema: 
             name: "{var_name:s}"
-            age: "{var_age}"
+            age: "{var_age:d}"
 
   - name: responseの保存
-    skip: True    # ステージ単位でのSkip
+    # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -71,13 +84,13 @@ stages:
           fname: response.txt
 
   - name: request変数
-    skip: True    # ステージ単位でのSkip
+    # skip: True    # ステージ単位でのSkip
     request:
-      url: http://127.0.0.1:5000/requestval?name="testuser"&age=20
+      url: http://127.0.0.1:5000/requestval?name="{param_val_name}"&age={param_val_age}
       method: GET
     response:
       status_code: 200
       verify_response_with:
         function: helper.testing_utils:save_response
         extra_kwargs:
-          fname: requestval.txt
+          fname: requestval_{param_val_name}_{param_val_age}.txt
