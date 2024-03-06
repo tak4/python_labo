@@ -2,7 +2,7 @@ import json
 
 def is_specified_json(response, schema):
     json = response.json()
-    assert json.get("item") == schema.get("item")
+    assert json.get("name") == schema.get("name")
 
 def save_response(response, fname):
     j = response.json()

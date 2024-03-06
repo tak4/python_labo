@@ -5,6 +5,7 @@ includes:
 
 stages:
   - name: 200が返ってくるかどうかのテスト
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -18,11 +19,33 @@ stages:
     response:
       status_code: 200
       json:
-        user_info:
-          user_id: "{user_id:s}"
-          user_name: "{user_name:s}"
+        _id: !re_fullmatch "[-0-9a-z]+"
+        index: !anything
+        guid: !anything
+        isActive: !anything
+        balance: !anything
+        picture: !anything
+        # age: !anything
+        age: !int "{var_age:d}"
+        eyeColor: !anything
+        # name: !anything
+        name: !!str "{var_name:s}"
+        gender: !anything
+        company: !anything
+        email: !anything
+        phone: !anything
+        address: !anything
+        about: !anything
+        registered: !anything
+        latitude: !anything
+        longitude: !anything
+        tags: !anything
+        friends: 
+        - id: !anything
+          etc: !anything
 
   - name: jsonのテスト(外部関数)
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -32,10 +55,11 @@ stages:
         function: helper.testing_utils:is_specified_json
         extra_kwargs:
           schema: 
-            user_id: "{user_id:s}"
-            user_name: "{user_name:s}"
+            name: "{var_name:s}"
+            age: "{var_age}"
 
   - name: responseの保存
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -47,6 +71,7 @@ stages:
           fname: response.txt
 
   - name: request変数
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/requestval?name="testuser"&age=20
       method: GET

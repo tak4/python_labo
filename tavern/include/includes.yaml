@@ -4,5 +4,5 @@ description: Login information for test server
 
 # Variables should just be a mapping of key: value pairs
 variables:
-  user_id: A1234567
-  user_name: Yamada Taro
+  var_name: Cannon Wood
+  var_age: 26
