@@ -20,6 +20,8 @@ def get_blob_service_client_account_key():
 
 
 # 予め環境変数 AZURE_STORAGE_CONNECTION_STRING に接続文字列を設定しておく
+# Linuxの場合
+# export AZURE_STORAGE_CONNECTION_STRING=""
 # 接続文字列は、ストレージアカウント＞アクセスキー で取得する
 def get_blob_service_client_connection_string():
     # TODO: Replace <storage-account-name> with your actual storage account name
@@ -69,16 +71,14 @@ finally:
     # 必ず実行される処理
     print("処理が完了しました")
 
-
 print("\nListing blobs...")
+
 
 # List the blobs in the container
 container_client = blob_service_client.get_container_client(container=container_name) 
 blob_list = container_client.list_blobs()
 for blob in blob_list:
     print("\t" + blob.name)
-
-
 
 # Download the blob to a local file
 # Add 'DOWNLOAD' before the .txt extension so you can see both files in the data directory
