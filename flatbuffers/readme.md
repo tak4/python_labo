@@ -1,31 +1,45 @@
-# flatbuffers
+# flatbuffers 公式サイト
 
 https://flatbuffers.dev/
 
+## flatbuffers チュートリアル
+https://flatbuffers.dev/flatbuffers_guide_tutorial.html
+
+
+## github / clone
+
 https://github.com/google/flatbuffers
-
-
-## clone
 
 git clone https://github.com/google/flatbuffers.git
 
 
-## build
+## ビルド
 
+clone したディレクトリ以下にて以下を実行
 cmake -G "Unix Makefiles"
 make -j
 
 
-## flatc
+## スキーマファイルのコンパイル
 
 ../flatbuffers/flatc --python monster.fbs
 
 
+## ビルドせずにインストール
+
+snap インストール
+sudo snap install flatbuffers
+
+
 ## serialize / deserialize
 
-cd sample
+チュートリアル
+python_labo/flatbuffers/sample/sample_binary.py
 
+シリアライズ　チュートリアルのSourceから分離
+python_labo/flatbuffers/sample/serialize.py
 python3 serialize.py
 
+デシリアライズ　チュートリアルのSourceから分離
+python_labo/flatbuffers/sample/deserialize.py
 python3 deserialize.py
-
