@@ -1,5 +1,6 @@
 test_name: 簡単なテスト
 
+
 includes:
   - !include ../include/includes.yaml
 
@@ -7,8 +8,8 @@ marks:
   - parametrize:
       key: param_val_name
       vals:
-        - test user1
-        - user user2
+        - user1
+        - user2
 
   - parametrize:
       key: param_val_age
@@ -17,15 +18,17 @@ marks:
         - 30
 
 stages:
-  - name: 200が返ってくるかどうかのテスト
+  - name: HTTP レスポンスステータスコードのチェック
     # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
     response:
+      # HTTP レスポンスステータスコードで200が返る
       status_code: 200
 
-  - name: jsonのテスト
+  - name: HTTPレスポンス(json)のチェック(外部関数利用なし)
+    # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -57,7 +60,7 @@ stages:
         - id: !anything
           etc: !anything
 
-  - name: jsonのテスト(外部関数)
+  - name: HTTPレスポンス(json)のチェック(外部関数利用あり)
     # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
@@ -71,7 +74,7 @@ stages:
             name: "{var_name:s}"
             age: "{var_age:d}"
 
-  - name: responseの保存
+  - name: HTTPレスポンス(json)の保存
     # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
@@ -83,7 +86,7 @@ stages:
         extra_kwargs:
           fname: response.txt
 
-  - name: request変数
+  - name: クエリパラメータ＋HTTPレスポンス(json)の保存
     # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/requestval?name="{param_val_name}"&age={param_val_age}
@@ -94,3 +97,28 @@ stages:
         function: helper.testing_utils:save_response
         extra_kwargs:
           fname: requestval_{param_val_name}_{param_val_age}.txt
+
+  - name: HTTPレスポンス(_id)を変数(_id)に保存する
+    # skip: True    # ステージ単位でのSkip
+    request:
+      url: http://127.0.0.1:5000/items
+      method: GET
+    response:
+      status_code: 200
+      save:
+        json:
+          # 変数保存(次のStageで使用可能)
+          save_id: "_id"
+
+  - name: 保存した変数(_id)を使用する
+    # skip: True    # ステージ単位でのSkip
+    request:
+      url: http://127.0.0.1:5000/items
+      method: GET
+    response:
+      status_code: 200
+      verify_response_with:
+        function: helper.testing_utils:disp_response
+        extra_kwargs:
+          # 変数利用
+          _id: "{save_id:s}"
