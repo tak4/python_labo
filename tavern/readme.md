@@ -11,6 +11,7 @@ source ./venv_atvern/bin/activate
 ## インストール
 
 pip install tavern
+pip install azure-storage-blob
 
 
 ## テスト実行

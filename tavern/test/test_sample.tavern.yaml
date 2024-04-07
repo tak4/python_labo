@@ -9,17 +9,17 @@ marks:
       key: param_val_name
       vals:
         - user1
-        - user2
+        # - user2
 
   - parametrize:
       key: param_val_age
       vals:
         - 20
-        - 30
+        # - 30
 
 stages:
   - name: HTTP レスポンスステータスコードのチェック
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -28,7 +28,7 @@ stages:
       status_code: 200
 
   - name: HTTPレスポンス(json)のチェック(外部関数利用なし)
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -61,7 +61,7 @@ stages:
           etc: !anything
 
   - name: HTTPレスポンス(json)のチェック(外部関数利用あり)
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -75,7 +75,7 @@ stages:
             age: "{var_age:d}"
 
   - name: HTTPレスポンス(json)の保存
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -87,7 +87,7 @@ stages:
           fname: response.txt
 
   - name: クエリパラメータ＋HTTPレスポンス(json)の保存
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/requestval?name="{param_val_name}"&age={param_val_age}
       method: GET
@@ -99,7 +99,7 @@ stages:
           fname: requestval_{param_val_name}_{param_val_age}.txt
 
   - name: HTTPレスポンス(_id)を変数(_id)に保存する
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -111,7 +111,7 @@ stages:
           save_id: "_id"
 
   - name: 保存した変数(_id)を使用する
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -122,3 +122,14 @@ stages:
         extra_kwargs:
           # 変数利用
           _id: "{save_id:s}"
+
+  - name: Azure blob をダウンロードする
+    # skip: True    # ステージ単位でのSkip
+    request:
+      url: http://127.0.0.1:5000/items
+      method: GET
+    response:
+      status_code: 200
+      verify_response_with:
+        function: helper.testing_utils:download_azure_blob
+        extra_kwargs:
