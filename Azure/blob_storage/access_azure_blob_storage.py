@@ -77,8 +77,13 @@ print("\nListing blobs...")
 # List the blobs in the container
 container_client = blob_service_client.get_container_client(container=container_name) 
 blob_list = container_client.list_blobs()
+latest_blob = None
 for blob in blob_list:
     print("\t" + blob.name, blob.last_modified)
+    if latest_blob is None or blob.last_modified > latest_blob.last_modified:
+        latest_blob = blob
+
+print("latest_blob.name : " + latest_blob.name)
 
 # Download the blob to a local file
 # Add 'DOWNLOAD' before the .txt extension so you can see both files in the data directory
