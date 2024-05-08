@@ -1,0 +1,8 @@
+{
+    "Germany": "Berlin",
+    "Canada": "Ottawa",
+    "England": "London",
+    "Japan": {
+        "Tokyo": 2194
+    }
+}
