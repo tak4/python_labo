@@ -1,0 +1,5 @@
+Azure/eventhubs/venv/
+Azure/blob_storage/venv/
+pillow/venv/
+tavern/venv/
+avro/venv/
