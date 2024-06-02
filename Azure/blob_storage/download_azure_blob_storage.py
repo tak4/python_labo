@@ -1,4 +1,5 @@
 import os
+import sys
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 # 初期設定
@@ -39,25 +40,32 @@ container_client = blob_service_client.get_container_client(container=container_
 blob_list = container_client.list_blobs()
 latest_blob = None
 for blob in blob_list:
-    print("\t" + blob.name, blob.last_modified)
-    if latest_blob is None or blob.last_modified > latest_blob.last_modified:
-        latest_blob = blob
+    # avro のみを対象にする
+    if blob.name.endswith('.avro'):
+        print("\t" + blob.name, blob.last_modified)
+        if latest_blob is None or blob.last_modified > latest_blob.last_modified:
+            latest_blob = blob
+
+if latest_blob is None:
+    print('\tNo target file...')
+    sys.exit()
 
 print("latest_blob.name : " + latest_blob.name)
 
 # ファイル名とパスを分離
 basename = os.path.basename(latest_blob.name)
 dirname = os.path.dirname(latest_blob.name)
-print(basename)
-print(dirname)
 
 # ダウンロードするファイルのディレクトリを再帰的に作成
 download_path = os.path.join(download_path, dirname)
 if not os.path.exists(download_path):
     os.makedirs(download_path)  # 再帰的にディレクトリ作成
 
-print(download_path)
-print(latest_blob.name)
+print()
+print('basename         :' + basename)
+print('dirname          :' + dirname)
+print('download_path    :' + download_path)
+print('latest_blob.name :' + latest_blob.name)
 
 # Download the blob to a local file
 # Add 'DOWNLOAD' before the .txt extension so you can see both files in the data directory
