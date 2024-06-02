@@ -9,18 +9,18 @@ from azure.eventhub.aio import EventHubProducerClient
 # Linuxの場合
 # export AZURE_STORAGE_CONNECTION_STRING=""
 # 接続文字列は、ストレージアカウント＞アクセスキー で取得する
-EVENT_HUB_CONNECTION_STR = os.getenv("EVENT_HUB_CONNECTION_STR")
-EVENT_HUB_NAME = os.getenv("EVENT_HUB_NAME")
+event_hub_connection_string = os.getenv("AZURE_EVENT_HUB_CONNECTION_STR")
+event_hub_name = os.getenv("AZURE_EVENT_HUB_NAME")
 
-print(EVENT_HUB_CONNECTION_STR)
-print(EVENT_HUB_NAME)
+print("AZURE_EVENT_HUB_CONNECTION_STR=" + event_hub_connection_string)
+print("AZURE_EVENT_HUB_NAME=" + event_hub_name)
 
 async def run():
     # Create a producer client to send messages to the event hub.
     # Specify a connection string to your event hubs namespace and
     # the event hub name.
     producer = EventHubProducerClient.from_connection_string(
-        conn_str=EVENT_HUB_CONNECTION_STR, eventhub_name=EVENT_HUB_NAME
+        conn_str=event_hub_connection_string, eventhub_name=event_hub_name
     )
     async with producer:
         # Create a batch.
