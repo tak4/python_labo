@@ -1,5 +1,4 @@
-Azure/eventhubs/venv/
-Azure/blob_storage/venv/
+Azure/venv/
 pillow/venv/
 tavern/venv/
 avro/venv/
