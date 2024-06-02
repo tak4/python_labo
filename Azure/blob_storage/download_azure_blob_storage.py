@@ -45,9 +45,23 @@ for blob in blob_list:
 
 print("latest_blob.name : " + latest_blob.name)
 
+# ファイル名とパスを分離
+basename = os.path.basename(latest_blob.name)
+dirname = os.path.dirname(latest_blob.name)
+print(basename)
+print(dirname)
+
+# ダウンロードするファイルのディレクトリを再帰的に作成
+download_path = os.path.join(download_path, dirname)
+if not os.path.exists(download_path):
+    os.makedirs(download_path)  # 再帰的にディレクトリ作成
+
+print(download_path)
+print(latest_blob.name)
+
 # Download the blob to a local file
 # Add 'DOWNLOAD' before the .txt extension so you can see both files in the data directory
-download_file_path = os.path.join(download_path, str.replace(latest_blob.name ,'.txt', '_DOWNLOAD.txt'))
+download_file_path = os.path.join(download_path, str.replace(basename ,'.txt', '_DOWNLOAD.txt'))
 print("\nDownloading blob to \n\t" + download_file_path)
 
 with open(file=download_file_path, mode="wb") as download_file:
