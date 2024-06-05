@@ -1,4 +1,5 @@
 import os
+from box import Box
 import json
 from azure.storage.blob import BlobServiceClient
 
@@ -76,6 +77,13 @@ def download_azure_blob(response):
     finally:
         print("処理が完了しました")
 
+
+def generate_bearer_token():
+    token = "abcdefg"
+    auth_header = {
+        "Authorization": "Bearer {}".format(token)
+    }
+    return Box(auth_header)
 
 if __name__ == '__main__':
     download_azure_blob()

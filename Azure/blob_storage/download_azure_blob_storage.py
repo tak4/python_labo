@@ -37,7 +37,7 @@ blob_service_client = get_blob_service_client_connection_string()
 print("\nListing blobs...")
 
 container_client = blob_service_client.get_container_client(container=container_name) 
-blob_list = container_client.list_blobs()
+blob_list = container_client.list_blobs(name_starts_with='')
 latest_blob = None
 for blob in blob_list:
     # avro のみを対象にする

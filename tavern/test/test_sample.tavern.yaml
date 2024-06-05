@@ -19,7 +19,7 @@ marks:
 
 stages:
   - name: HTTP レスポンスステータスコードのチェック
-    skip: True    # ステージ単位でのSkip
+    # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -124,7 +124,7 @@ stages:
           _id: "{save_id:s}"
 
   - name: Azure blob をダウンロードする
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -133,3 +133,17 @@ stages:
       verify_response_with:
         function: helper.testing_utils:download_azure_blob
         extra_kwargs:
+
+  - name: login
+    request:
+      url: http://127.0.0.1:5000/items
+      method: GET
+      headers:
+        x-my-header: abc123
+        $ext:
+          function: helper.testing_utils:generate_bearer_token
+      json:
+        username: test_user
+        password: abc123
+    response:
+      status_code: 200
