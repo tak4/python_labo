@@ -1,13 +1,25 @@
 from PIL import Image
 import os
+import sys
 
-#######ユーザー入力変数#######
+# ファイル名取得
+args = sys.argv
+if 1 == len(args):
+    print("Usage " + args[0] + " jpeg folder")
+    sys.exit()
 
 # 圧縮したい画像が保存されているフォルダパスを指定
-file_path = r"D:\develop\python\Pillow\20240225"
+file_path = args[1]
+print(file_path)
 
 # 圧縮後の画像を保存したいフォルダパスを指定
-save_file_path = r"D:\develop\python\Pillow\work\output"
+save_file_path = os.path.join(file_path, 'output')
+os.makedirs(save_file_path, exist_ok=True)
+
+# os.makedirs(save_file_path)
+print(save_file_path)
+
+#######ユーザー入力変数#######
 
 # 保存したい画像フォーマットを指定
 # jpg, png, webpのいずれかを指定する
