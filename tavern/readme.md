@@ -18,3 +18,4 @@ pip install azure-storage-blob
 
 pytest -v test
 
+pytest -vv --durations=0 --tb=short -p no:logging test
