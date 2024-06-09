@@ -2,3 +2,8 @@ Azure/venv/
 pillow/venv/
 tavern/venv/
 avro/venv/
+pytest/venv/
+tavern/.pytest_cache
+tavern/**/__pycache__
+pytest/.pytest_cache
+pytest/**/__pycache__
