@@ -1,24 +1,25 @@
 version: 1
-disable_existing_loggers: False
 formatters:
- simple:
-    format: "%(asctime)s [%(bold)s%(log_color)s%(levelname)s%(reset)s]: (%(bold)s%(name)s:%(lineno)d%(reset)s) %(message)s"
+    default:
+        # colorlog is really useful
+        (): colorlog.ColoredFormatter
+        format: "%(asctime)s [%(bold)s%(log_color)s%(levelname)s%(reset)s]: (%(bold)s%(name)s:%(lineno)d%(reset)s) %(message)s"
+        style: "%"
+        datefmt: "%X"
+        log_colors:
+            DEBUG:    cyan
+            INFO:     green
+            WARNING:  yellow
+            ERROR:    red
+            CRITICAL: red,bg_white
+
 handlers:
- console:
-   class: logging.StreamHandler
-   level: DEBUG
-   formatter: simple
-   stream: ext://sys.stdout
-root:
- level: DEBUG
- handlers: [console]
+    stderr:
+        class: colorlog.StreamHandler
+        formatter: default
+
 loggers:
- development:
-   level: DEBUG
-   handlers: [console]
- staging:
-   level: INFO
-   handlers: [console]
- production:
-   level: WARNING
-   handlers: [console]
+    tavern:
+        handlers:
+            - stderr
+        level: DEBUG
