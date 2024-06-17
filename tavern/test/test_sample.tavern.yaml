@@ -19,7 +19,7 @@ marks:
 
 stages:
   - name: HTTP レスポンスステータスコードのチェック
-    # skip: True    # ステージ単位でのSkip
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -61,7 +61,7 @@ stages:
           etc: !anything
 
   - name: HTTPレスポンス(json)のチェック(外部関数利用あり)
-    skip: True    # ステージ単位でのSkip
+    # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET
@@ -135,6 +135,7 @@ stages:
         extra_kwargs:
 
   - name: login
+    skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/items
       method: GET

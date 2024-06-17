@@ -5,6 +5,16 @@ from azure.storage.blob import BlobServiceClient
 
 SAVE_DIR = f"./save/"
 
+def response_test(response):
+    j = response.json()
+    ret = False
+    if j['name'] == "Cannon Wood":
+        ret = True
+    else:
+        ret = False
+
+    return ret
+
 def is_specified_json(response, schema):
     json = response.json()
     assert json.get("name") == schema.get("name")
