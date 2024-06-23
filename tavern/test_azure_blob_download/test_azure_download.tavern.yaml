@@ -1,0 +1,17 @@
+test_name: 外部関数によるazure blob の ダウンロード
+
+includes:
+  - !include ../include/includes.yaml
+
+stages:
+  - name: Azure blob をダウンロードする
+    # skip: True    # ステージ単位でのSkip
+    request:
+      url: http://127.0.0.1:5000/case1
+      method: GET
+    response:
+      status_code: 200
+      verify_response_with:
+        function: helper.testing_utils:download_azure_blob
+        extra_kwargs:
+

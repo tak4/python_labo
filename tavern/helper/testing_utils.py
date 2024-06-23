@@ -75,7 +75,7 @@ def download_azure_blob(response):
 
         # Download the blob to a local file
         # Add 'DOWNLOAD' before the .txt extension so you can see both files in the data directory
-        download_file_path = os.path.join(local_path, str.replace(latest_blob.name ,'.txt', 'DOWNLOAD.txt'))
+        download_file_path = os.path.join(local_path, str.replace(latest_blob.name ,'.txt', '_DOWNLOAD.txt'))
         container_client = blob_service_client.get_container_client(container=container_name) 
 
         with open(file=download_file_path, mode="wb") as download_file:
@@ -94,6 +94,8 @@ def generate_bearer_token():
         "Authorization": "Bearer {}".format(token)
     }
     return Box(auth_header)
+
+
 
 if __name__ == '__main__':
     download_azure_blob()

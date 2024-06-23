@@ -1,0 +1,18 @@
+test_name: レスポンスの全体ファイル保存
+
+includes:
+  - !include ../include/includes.yaml
+
+stages:
+  - name: HTTPレスポンス(json)の保存
+    # skip: True    # ステージ単位でのSkip
+    request:
+      url: http://127.0.0.1:5000/case1
+      method: GET
+    response:
+      status_code: 200
+      verify_response_with:
+        function: helper.testing_utils:save_response
+        extra_kwargs:
+          fname: response.txt
+
