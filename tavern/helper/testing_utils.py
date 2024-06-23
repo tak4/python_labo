@@ -19,7 +19,7 @@ def is_specified_json(response, schema):
     json = response.json()
     assert json.get("name") == schema.get("name")
 
-def save_response(response, fname):
+def save_response_file(response, fname):
     j = response.json()
 
     if not os.path.isdir(SAVE_DIR):
@@ -36,6 +36,27 @@ def disp_response(response, _id):
 
     with open(f"./save/_id.txt", "w") as f:
         f.write(_id)
+
+def save_response_box(response):
+    json = response.json()
+    r_name = json.get("name")
+    print()
+    print('r_name : {}'.format(r_name))
+
+    ret_box = Box({'box_name': r_name, 'box_int_val': 123, 'box_float_val': 123.4})
+    print('ret_box.box_name      : {} / {}'.format(ret_box.box_name, type(ret_box.box_name)))
+    print('ret_box.box_int_val   : {} / {}'.format(ret_box.box_int_val, type(ret_box.box_int_val)))
+    print('ret_box.box_float_val : {} / {}'.format(ret_box.box_float_val, type(ret_box.box_float_val)))
+
+    return ret_box
+
+def disp_response_box(response, name, int_val, float_val):
+    print()
+    # tavernより渡されてきた変数は、tavern._core.formatted_str.FormattedString という型になる
+    print('name      : {} / {}'.format(name, type(name)))
+    print('int_val   : {} / {}'.format(int_val, type(int_val)))
+    print('float_val : {} / {}'.format(float_val, type(float_val)))
+
 
 # 予め環境変数 AZURE_STORAGE_CONNECTION_STRING に接続文字列を設定しておく
 # Linuxの場合

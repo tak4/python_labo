@@ -4,7 +4,7 @@ includes:
   - !include ../include/includes.yaml
 
 stages:
-  - name: HTTPレスポンス(_id)を変数(_id)に保存する
+  - name: HTTPレスポンス(_id)を変数(_id)に保存する(外部関数利用なし)
     # skip: True    # ステージ単位でのSkip
     request:
       url: http://127.0.0.1:5000/case1
@@ -29,3 +29,28 @@ stages:
           # 変数利用
           _id: "{save_id:s}"
 
+  - name: HTTPレスポンスをBoxに保存する(外部関数利用あり)
+    # skip: True    # ステージ単位でのSkip
+    request:
+      url: http://127.0.0.1:5000/case1
+      method: GET
+    response:
+      status_code: 200
+      save:
+        $ext:
+          function: helper.testing_utils:save_response_box
+
+  - name: 保存したBoxを使用する
+    # skip: True    # ステージ単位でのSkip
+    request:
+      url: http://127.0.0.1:5000/case1
+      method: GET
+    response:
+      status_code: 200
+      verify_response_with:
+        function: helper.testing_utils:disp_response_box
+        extra_kwargs:
+          # 変数利用
+          name: "{box_name:s}"
+          int_val: "{box_int_val}"
+          float_val: "{box_float_val}"

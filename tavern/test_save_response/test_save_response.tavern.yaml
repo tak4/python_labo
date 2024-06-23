@@ -12,7 +12,7 @@ stages:
     response:
       status_code: 200
       verify_response_with:
-        function: helper.testing_utils:save_response
+        function: helper.testing_utils:save_response_file
         extra_kwargs:
           fname: response.txt
 
