@@ -31,6 +31,26 @@ target_software_metrics.py:27:3: E111 indentation is not a multiple of 4
 target_software_metrics.py:29:3: E111 indentation is not a multiple of 4
 target_software_metrics.py:32:7: E111 indentation is not a multiple of 4
 
+----
+
+flake8 --statistics ./target_software_metrics.py
+
+./target_software_metrics.py:4:1: E302 expected 2 blank lines, found 1
+./target_software_metrics.py:10:1: E302 expected 2 blank lines, found 1
+./target_software_metrics.py:18:1: E302 expected 2 blank lines, found 1
+./target_software_metrics.py:19:4: E111 indentation is not a multiple of 4
+./target_software_metrics.py:22:1: E302 expected 2 blank lines, found 1
+./target_software_metrics.py:23:4: E111 indentation is not a multiple of 4
+./target_software_metrics.py:24:7: E111 indentation is not a multiple of 4
+./target_software_metrics.py:26:1: E302 expected 2 blank lines, found 1
+./target_software_metrics.py:27:3: E111 indentation is not a multiple of 4
+./target_software_metrics.py:29:3: E111 indentation is not a multiple of 4
+./target_software_metrics.py:32:7: E111 indentation is not a multiple of 4
+6     E111 indentation is not a multiple of 4
+5     E302 expected 2 blank lines, found 1
+
+
+
 # radon
 
 ## oficial
