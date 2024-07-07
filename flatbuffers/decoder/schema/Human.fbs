@@ -1,0 +1,7 @@
+namespace generate.Human;
+
+table Human {
+    name:string;
+    age:short;
+}
+
