@@ -1,11 +1,12 @@
 import pytest
 from target.prime import is_prime
 from target.calc import add
+from target.assert_test import check_param
 import target.numbers_sorted
 
 from test_target.utility import Environment
 
-# @pytest.mark.skip(reason="no way of currently testing this")
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_add():
     answer = add(1, 2)
     assert(answer == 3)
@@ -43,10 +44,20 @@ def test_is_prime_parametrize(number, expected):
 def test_load_numbers_sorted(txt):
     assert target.numbers_sorted.load_numbers_sorted(txt) == [1, 2, 3, 4, 5]
 
+@pytest.mark.skip(reason="no way of currently testing this")
 # setting/setting.yaml をテストコードで参照する試み
 def test_ref_setting():
     setting = Environment.get_setting()
     print('    {}    '.format(setting['key']), end="")
+
+def test_assert_ok():
+    check_param(0)
+
+def test_assert_error():
+    try:
+        check_param(1)
+    except AssertionError as ex:
+        print('< {} >'.format(ex), end='')
 
 @pytest.mark.skip(reason="no way of currently testing this")
 def test_send(mocker):
