@@ -9,6 +9,7 @@ loglevel = args.log
 
 print(loglevel)
 
+print(loglevel.upper())
 numeric_level = getattr(logging, loglevel.upper(), None)
 print('log level: %s' % loglevel)
 if not isinstance(numeric_level, int):
