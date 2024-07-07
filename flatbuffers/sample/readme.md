@@ -27,6 +27,9 @@ make -j
 
 ## ビルドせずにインストール
 
+apt インストール
+sudo apt install flatbuffers-compiler
+
 snap インストール
 sudo snap install flatbuffers
 

@@ -8,8 +8,9 @@ import MyGame.Sample.Weapon
 
 def main():
 
-    buf = open('output_monster.bin', 'rb').read()
-    buf = bytearray(buf)
+    with open('output_monster.bin', 'rb') as f:
+        buf = f.read()
+        buf = bytearray(buf)
 
     # Note: We use `0` for the offset here, since we got the data using the
     # `builder.Output()` method. This simulates the data you would store/receive
