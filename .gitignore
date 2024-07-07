@@ -1,6 +1,9 @@
 avro/venv
 Azure/venv
 flask/__pycache__
+flatbuffers/venv
+flatbuffers/generate/__pycache__
+flatbuffers/Human/__pycache__
 pillow/venv
 tavern/venv
 tavern/data
