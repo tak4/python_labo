@@ -12,9 +12,9 @@ country_capitals = {
 with open('./output/country_capitals.json', 'w') as f:
     json.dump(country_capitals, f, indent=4)
 
-# dictionay to json file
+# dictionay to json string
 s = json.dumps(country_capitals, indent=4)
-print(s)
+print(s, type(s))
 
 # with open('./output/country_capitals_shape.json', 'w') as f:
 #     print(country_capitals)
