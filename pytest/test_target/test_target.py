@@ -1,9 +1,11 @@
 import pytest
 from target.prime import is_prime
 from target.calc import add
-from target.numbers_sorted import load_numbers_sorted
+import target.numbers_sorted
 
-@pytest.mark.skip(reason="no way of currently testing this")
+from test_target.utility import Environment
+
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_add():
     answer = add(1, 2)
     assert(answer == 3)
@@ -37,11 +39,16 @@ def test_is_prime():
 def test_is_prime_parametrize(number, expected):
     assert is_prime(number) == expected
 
-
 @pytest.mark.skip(reason="no way of currently testing this")
 def test_load_numbers_sorted(txt):
-    assert load_numbers_sorted(txt) == [1, 2, 3, 4, 5]
+    assert target.numbers_sorted.load_numbers_sorted(txt) == [1, 2, 3, 4, 5]
 
+# setting/setting.yaml をテストコードで参照する試み
+def test_ref_setting():
+    setting = Environment.get_setting()
+    print('    {}    '.format(setting['key']), end="")
 
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_send(mocker):
+    # 工事中
     receive = mocker.patch('studies.interaction.receive')
