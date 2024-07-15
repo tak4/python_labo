@@ -1,6 +1,7 @@
 import base64
 import flatbuffers
 import json
+import os
 import generate.Human.Human
 
 def main():
@@ -22,7 +23,9 @@ def main():
     buf = builder.Output()
 
     # Write the binary data to a file
-    with open('output_human.bin', 'wb') as f:
+    output_dir = os.path.dirname(__file__)
+    output_bin = os.path.join(output_dir, 'output_human.bin')
+    with open(output_bin, 'wb') as f:
         f.write(buf)
 
     # base64エンコード
@@ -32,7 +35,9 @@ def main():
     # json 出力
     json_data = {'data': base64s}
 
-    with open('encode_human.json', 'w') as json_file:
+    output_dir = os.path.dirname(__file__)
+    output_json = os.path.join(output_dir, 'encode_human.json')
+    with open(output_json, 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
 

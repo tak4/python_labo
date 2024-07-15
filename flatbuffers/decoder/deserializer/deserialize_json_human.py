@@ -1,11 +1,12 @@
 import base64
 import json
+import os
 import generate.Human.Human
 
 
 def main():
 
-    with open('encode_human.json', 'r') as json_file:
+    with open('./serializer/encode_human.json', 'r') as json_file:
         json_data = json.load(json_file)
 
     buf_encode = json_data['data']
@@ -25,7 +26,9 @@ def main():
     json_data['data'] = {name: age}
     print(json_data)
 
-    with open('decode_human.json', 'w') as json_file:
+    output_dir = os.path.dirname(__file__)
+    output_json = os.path.join(output_dir, 'decode_human.json')
+    with open(output_json, 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
 
