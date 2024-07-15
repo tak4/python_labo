@@ -9,7 +9,11 @@ def test_is_specified_json():
     response = requests.get(url)
 
     schema = {'name': 'Cannon Wood', 'age': 26}
-    helper.testing_utils.is_specified_json(response, schema)
+
+    # AssertionErrorがraiseされることをテストする
+    # raiseされなければエラー
+    with pytest.raises(AssertionError, match=r'name error'):
+        helper.testing_utils.is_specified_json(response, schema)
 
 @pytest.mark.skip(reason="no way of currently testing this")
 def test_generate_bearer_token():

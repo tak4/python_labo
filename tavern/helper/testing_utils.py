@@ -17,7 +17,7 @@ def response_test(response):
 
 def is_specified_json(response, schema):
     json = response.json()
-    assert json.get("name") == schema.get("name")
+    assert json.get("name") == schema.get("name"), 'xxxx name error'
 
 def save_response_file(response, fname):
     j = response.json()
