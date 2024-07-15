@@ -3,7 +3,7 @@ import generate.Human.Human
 
 def main():
 
-    with open('./serializer/output_human.bin', 'rb') as f:
+    with open('./serializer/human/output_human.bin', 'rb') as f:
       buf = f.read()
       buf = bytearray(buf)
 

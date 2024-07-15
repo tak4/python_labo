@@ -6,7 +6,7 @@ import generate.Human.Human
 
 def main():
 
-    with open('./serializer/encode_human.json', 'r') as json_file:
+    with open('./serializer/human/encode_human.json', 'r') as json_file:
         json_data = json.load(json_file)
 
     buf_encode = json_data['data']
