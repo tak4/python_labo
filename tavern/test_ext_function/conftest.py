@@ -1,7 +1,14 @@
+import logging
+from logging import config
 import os
 import sys
+import yaml
 
 from test_ext_function.utility import Environment
+
+# loggerの設定
+with open("./log_setting/log_spec_custom.yaml", "r") as log_spec_file:
+    config.dictConfig(yaml.load(log_spec_file, Loader=yaml.FullLoader))
 
 # カレントディレクトリ(=pytestを実行したディレクトリという想定)を取得
 pytest_dir = os.getcwd()

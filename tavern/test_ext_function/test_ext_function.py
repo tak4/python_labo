@@ -3,8 +3,16 @@ import requests
 import helper.testing_utils
 from test_ext_function.utility import Environment
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_is_specified_json():
+    url = "http://127.0.0.1:5000/case1"
+    response = requests.get(url)
+
+    schema = {'name': 'Cannon Wood', 'age': 26}
+    helper.testing_utils.is_specified_json(response, schema)
+
+@pytest.mark.skip(reason="no way of currently testing this")
+def test_generate_bearer_token():
     box = helper.testing_utils.generate_bearer_token()
     print(box)
 
