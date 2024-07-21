@@ -5,8 +5,7 @@ https://tavern.readthedocs.io/en/latest/
 
 ## 仮想環境
 
-python3 -m venv venv_atvern
-source ./venv_atvern/bin/activate
+source ../venv_flask_tavern/bin/activate
 
 ## インストール
 
@@ -16,6 +15,14 @@ pip install azure-storage-blob
 
 ## テスト実行
 
-pytest -v test
+### -v：yamlファイルとnameを表示
+pytest -v test_basic
 
-pytest -vv --durations=0 --tb=short -p no:logging test
+### durations=0：長さが0秒を超えるテストのリストを取得
+pytest --durations=0 test_basic
+
+### --tb=short：
+pytest --tb=showlocals test_basic
+
+### -p no:logging
+pytest --tb=showlocals -p no:logging test_basic
