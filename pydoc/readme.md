@@ -13,12 +13,12 @@ pydoc sys
 python -m pydoc -w sys
 pydoc -w sys
 
-pydoc ./sample_root_pydoc.py
-python -m pydoc ./sample_root_pydoc.py
-python -m pydoc sample_root_pydoc
+pydoc -w ./sample_root_pydoc.py
+python -m pydoc -w ./sample_root_pydoc.py
+python -m pydoc -w sample_root_pydoc
 
-python -m pydoc ./test/test_functions.py
-pydoc ./test/test_functions.py
+python -m pydoc -w ./test/test_functions.py
+pydoc -w ./test/test_functions.py
 
 # ローカルマシンにウェブブラウザから閲覧可能なドキュメントサーバを起動する
 python -m pydoc -p 1234
