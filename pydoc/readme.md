@@ -1,6 +1,11 @@
 # document
 https://docs.python.org/ja/3/library/pydoc.html
 
+# document google style guide
+https://google.github.io/styleguide/
+https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings
+https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
+
 # sample_pydocのドキュメントを表示する
 python -m pydoc sample_pydoc
 pydoc sample_pydoc
