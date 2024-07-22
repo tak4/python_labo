@@ -19,3 +19,15 @@ pytest -pdb test
 ### https://docs.pytest.org/en/7.1.x/how-to/usage.html#profiling-test-execution-duration
 
 pytest --durations=0 test
+
+
+## vscode setting.json
+
+{
+    "python.testing.pytestArgs": [
+        ".",
+        "-s",
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}

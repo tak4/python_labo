@@ -1,3 +1,4 @@
+import os
 import pytest
 from target.prime import is_prime
 from target.calc import add
@@ -6,7 +7,7 @@ import target.numbers_sorted
 
 from test_target.utility import Environment
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_add():
     answer = add(1, 2)
     assert(answer == 3)
@@ -63,3 +64,7 @@ def test_assert_error():
 def test_send(mocker):
     # 工事中
     receive = mocker.patch('studies.interaction.receive')
+
+def test_get_env():
+    env = os.getenv('TEST_ENV_TEST')
+    print("env=", env)
