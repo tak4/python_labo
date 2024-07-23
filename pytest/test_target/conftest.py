@@ -1,6 +1,7 @@
 import pytest
 import os
 import time
+import shutil
 import logging
 
 from test_target.utility import Environment
@@ -10,6 +11,8 @@ pytest_dir = os.getcwd()
 
 # setting/setting.yaml をテストコードで参照する試み
 Environment.read_setting(pytest_dir + '/setting/setting.yaml')
+
+logging.basicConfig(level=logging.DEBUG)
 
 # pytest.fixtur#
 # テスト前後で行いたい処理を記述する
@@ -21,15 +24,21 @@ Environment.read_setting(pytest_dir + '/setting/setting.yaml')
 @pytest.fixture(autouse=False)
 def setup():
     # テスト前に処理
-    sleep_time = 3
+    sleep_time = 1
     time.sleep(sleep_time)
     yield
     # テスト後に処理
     sleep_time += 1
     time.sleep(sleep_time)
 
+@pytest.fixture(autouse=True)
+def setup_logging():
     logger = logging.getLogger(__name__)
     logger.debug('This message should go to the log file')
+
+    if os.path.isdir('./temp_work'):
+        shutil.rmtree('./temp_work')
+    os.makedirs('./temp_work', exist_ok=True)
 
 # pytest.fixtur#
 # # def test_load_numbers_sorted(txt):
