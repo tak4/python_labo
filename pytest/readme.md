@@ -31,3 +31,11 @@ pytest --durations=0 test
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true
 }
+
+## 環境変数を設定する
+
+Pluginが必要
+https://pypi.org/project/pytest-env/
+
+プロジェクト直下に下記ファイルを作成して環境変数の内容を記載する
+pytest.ini
