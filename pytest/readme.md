@@ -39,3 +39,15 @@ https://pypi.org/project/pytest-env/
 
 プロジェクト直下に下記ファイルを作成して環境変数の内容を記載する
 pytest.ini
+
+
+## カバレッジ
+
+https://pypi.org/project/pytest-cov/
+https://pytest-cov.readthedocs.io/en/latest/index.html
+
+C0
+pytest --cov=test_target --cov-report=html
+
+C1
+pytest --cov=test_target --cov-branch --cov-report=html
