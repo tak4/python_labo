@@ -12,7 +12,7 @@ def test_add():
     answer = add(1, 2)
     assert(answer == 3)
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_is_prime():
     assert not is_prime(1)
     assert is_prime(2)
@@ -37,36 +37,38 @@ def test_is_prime():
     (9, False),
     (10, False),
 ])
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_is_prime_parametrize(number, expected):
     assert is_prime(number) == expected
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_load_numbers_sorted(txt):
     assert target.numbers_sorted.load_numbers_sorted(txt) == [1, 2, 3, 4, 5]
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 # setting/setting.yaml をテストコードで参照する試み
 def test_ref_setting():
     setting = Environment.get_setting()
     print('    {}    '.format(setting['key']), end="")
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_assert_ok():
     check_param(0)
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_assert_error():
     try:
         check_param(1)
     except AssertionError as ex:
         print('< {} >'.format(ex), end='')
 
-@pytest.mark.skip(reason="no way of currently testing this")
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_send(mocker):
+    pass
     # 工事中
-    receive = mocker.patch('studies.interaction.receive')
+    # receive = mocker.patch('studies.interaction.receive')
 
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_get_env():
     env = os.getenv('TEST_ENV_TEST')
     print("env=", env)
