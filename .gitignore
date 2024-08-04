@@ -1,5 +1,6 @@
 **/__pycache__
 avro/venv
+docopt/venv
 Azure/venv
 flatbuffers/venv
 pillow/venv
@@ -11,5 +12,5 @@ tavern/.pytest_cache
 pydoc/venv
 pytest/venv
 pytest/.pytest_cache
-docopt/venv
+requests/venv
 venv_flask_tavern
