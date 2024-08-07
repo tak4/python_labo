@@ -1,5 +1,6 @@
 **/__pycache__
 avro/venv
+codestyle/venv
 docopt/venv
 Azure/venv
 flatbuffers/venv
