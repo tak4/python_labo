@@ -6,11 +6,12 @@ import logging
 
 from test_target.utility import Environment
 
-# カレントディレクトリ(=pytestを実行したディレクトリという想定)を取得
-pytest_dir = os.getcwd()
-
-# setting/setting.yaml をテストコードで参照する試み
-Environment.read_setting(pytest_dir + '/setting/setting.yaml')
+# setting.yaml を読み込む
+# setting.yaml へのパスを本ファイルのパスから一階層上のパスから組み立てる
+own_path = __file__
+base_path = os.path.dirname(own_path)
+base_path = os.path.dirname(base_path)
+Environment.read_setting(os.path.join(base_path, 'setting/setting.yaml'))
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -36,9 +37,9 @@ def setup_logging():
     logger = logging.getLogger(__name__)
     logger.debug('This message should go to the log file')
 
-    if os.path.isdir('./temp_work'):
-        shutil.rmtree('./temp_work')
-    os.makedirs('./temp_work', exist_ok=True)
+    if os.path.isdir('./mywork/temp_work'):
+        shutil.rmtree('./mywork/temp_work')
+    os.makedirs('./mywork/temp_work', exist_ok=True)
 
 # pytest.fixtur#
 # # def test_load_numbers_sorted(txt):

@@ -19,5 +19,6 @@ def setup():
     sleep_time += 0.25
     time.sleep(sleep_time)
 
+    # Logger設定
     logger = logging.getLogger(__name__)
     logger.debug('This message should go to the log file')
