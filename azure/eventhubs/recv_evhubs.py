@@ -1,3 +1,4 @@
+# Azure Event Hubsからイベントを受信する
 import os
 import asyncio
 

@@ -1,3 +1,4 @@
+# 指定したprefixのblobを削除する
 import os
 import sys
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient

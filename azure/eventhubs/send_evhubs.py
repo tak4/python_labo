@@ -1,3 +1,4 @@
+# Azure Event Hubsへイベントを送信する
 import os
 import asyncio
 

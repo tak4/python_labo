@@ -1,10 +1,11 @@
 # Azure Blob Storage に対してファイルをアップロード／ダウンロードする
+# uuidを用いて作成したファイル名にてテキストファイルを作成し、Azure blob storageへアップロードする
 # 参考ページ
 # https://learn.microsoft.com/ja-jp/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli&pivots=blob-storage-quickstart-scratch
 
 import os
 import uuid
-from azure.identity import DefaultAzureCredential
+# from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 # 初期設定

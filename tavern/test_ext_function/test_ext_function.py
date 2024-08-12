@@ -1,3 +1,4 @@
+import json
 import pytest
 import requests
 import helper.testing_utils
@@ -8,7 +9,7 @@ def test_is_specified_json():
     url = "http://127.0.0.1:5000/case1"
     response = requests.get(url)
 
-    schema = {'name': 'Cannon Wood', 'age': 26}
+    schema = {'name': 'Cannon Wood_', 'age': 26}    # name の値が期待値と異なる
 
     # AssertionErrorがraiseされることをテストする
     # raiseされなければエラー
@@ -29,4 +30,12 @@ def test_response_test():
     url = "http://127.0.0.1:5000/case1"
     response = requests.get(url)
 
+    helper.testing_utils.response_test(response)
+
+# @pytest.mark.skip(reason="no way of currently testing this")
+def test_mock_response_test():
+    schema = "{'name': 'Cannon Wood', 'age': 26}"
+
+    response = requests.models.Response()
+    response._content = schema.encode()
     helper.testing_utils.response_test(response)

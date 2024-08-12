@@ -1,3 +1,4 @@
+# 指定したコンテナ名以下のblobのリストを取得し、最新のblobを１つダウンロードする
 import os
 import sys
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
@@ -40,11 +41,9 @@ container_client = blob_service_client.get_container_client(container=container_
 blob_list = container_client.list_blobs(name_starts_with='')
 latest_blob = None
 for blob in blob_list:
-    # avro のみを対象にする
-    if blob.name.endswith('.avro'):
-        print("\t" + blob.name, blob.last_modified)
-        if latest_blob is None or blob.last_modified > latest_blob.last_modified:
-            latest_blob = blob
+    # 最新のblobをダウンロードする
+    if latest_blob is None or blob.last_modified > latest_blob.last_modified:
+        latest_blob = blob
 
 if latest_blob is None:
     print('\tNo target file...')
