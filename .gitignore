@@ -3,7 +3,7 @@ avro/venv
 beautifulsoup/venv
 codestyle/venv
 docopt/venv
-Azure/venv
+azure/venv
 flatbuffers/venv
 pillow/venv
 sd_viewer/venv
