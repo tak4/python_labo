@@ -31,6 +31,7 @@ def main():
     parser.add_option('-v',  action='store_true', dest='verbose')
     parser.add_option('-q',  action='store_false', dest='verbose')
     parser.add_option('-r', action='store_const', const='root', dest='user_name')
+    parser.add_option('-i', action='append', type='string', dest='listword')
 
     # callback
     # --release を付けた時、is_release()がCallされて、envが'prd'かどうかチェックされる
@@ -53,7 +54,11 @@ def main():
     options, args = parser.parse_args()
 
     print(type(options)) # options の型は、<class 'optparse.Values'>
+    # -f, -n
     print(options.filename, options.num)
+    # -i
+    for i, l in enumerate(options.listword):
+        print(i, l)
     print(options)
     print(type(args), args) #   args の型は<class 'list'>
 
