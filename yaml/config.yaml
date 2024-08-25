@@ -1,0 +1,13 @@
+# config.yaml
+database:
+  host: localhost
+  port: 3306
+  user: root
+  password: secret
+  name: mydatabase
+  numbers: [1, 2, 3, 4, 5]
+  person: {name: John, age: 30, city: Tokyo}
+  name_str: "YAML Example"
+  is_active: true
+  no_value: null
+  date: 2024-08-05
