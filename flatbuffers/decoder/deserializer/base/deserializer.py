@@ -7,5 +7,5 @@ class BaseDeserializer(metaclass=abc.ABCMeta):
         self.output_file = output_file
 
     @abc.abstractmethod
-    def decode(self):
+    def decode(self, input_file=None, output_file=None):
         pass

@@ -6,8 +6,12 @@ from deserializer.human.generated.Human import Human
 
 class HumanDeserializer(BaseDeserializer):
 
-    def decode(self):
+    def decode(self, input_file=None, output_file=None):
         print('decode')
+        if input_file is not None:
+            self.input_file = input_file 
+        if output_file is not None:
+            self.output_file = output_file 
         print(self.input_file)
         print(self.output_file)
 

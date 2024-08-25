@@ -13,8 +13,4 @@ python3 deserializer/human/deserialize_bin_human.py -i ./input/output_human.bin 
 
 python3 deserializer/human/deserialize_json_human.py -i ./input/encode_human.json -o ./output/decode_human.json
 
-
-parse json
-base64
-deserialize
-generate json
+python3 main.py -k human -i ./input/encode_human.json -o ./output/decode_human.json
