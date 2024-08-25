@@ -1,4 +1,4 @@
-namespace generate.Human;
+namespace generated;
 
 table Human {
     name:string;
