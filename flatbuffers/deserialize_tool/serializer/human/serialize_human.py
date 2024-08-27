@@ -2,7 +2,7 @@ import base64
 import flatbuffers
 import json
 import os
-import generate.Human.Human
+from deserializer.human.generated import Human
 
 def main():
     # バッファーの書記サイズ0
@@ -13,10 +13,10 @@ def main():
     name = builder.CreateString('Mike')
 
     # Human Serialize
-    generate.Human.Human.HumanStart(builder)
-    generate.Human.Human.HumanAddName(builder, name)
-    generate.Human.Human.HumanAddAge(builder, 20)
-    human = generate.Human.Human.HumanEnd(builder)
+    Human.HumanStart(builder)
+    Human.HumanAddName(builder, name)
+    Human.HumanAddAge(builder, 20)
+    human = Human.HumanEnd(builder)
     builder.Finish(human)
 
     # Output the buffer data
