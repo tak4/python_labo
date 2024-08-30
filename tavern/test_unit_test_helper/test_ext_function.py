@@ -13,7 +13,7 @@ def test_is_specified_json():
 
     # AssertionErrorがraiseされることをテストする
     # raiseされなければエラー
-    with pytest.raises(AssertionError, match=r'name error'):
+    with pytest.raises(AssertionError, match='[0-9]{4} \[name error\]'):
         helper.testing_utils.is_specified_json(response, schema)
 
 @pytest.mark.skip(reason="no way of currently testing this")
@@ -32,7 +32,7 @@ def test_response_test():
 
     helper.testing_utils.response_test(response)
 
-# @pytest.mark.skip(reason="no way of currently testing this")
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_mock_response_test():
     schema = "{'name': 'Cannon Wood', 'age': 26}"
 

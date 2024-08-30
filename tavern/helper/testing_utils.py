@@ -3,7 +3,7 @@ from box import Box
 import json
 from azure.storage.blob import BlobServiceClient
 
-SAVE_DIR = f"./save/"
+SAVE_DIR = f"output/save"
 
 def response_test(response):
     j = response.json()
@@ -17,24 +17,22 @@ def response_test(response):
 
 def is_specified_json(response, schema):
     json = response.json()
-    assert json.get("name") == schema.get("name"), 'xxxx name error'
+    assert json.get("name") == schema.get("name"), '1234 [name error]'
 
 def save_response_file(response, fname):
     j = response.json()
 
-    if not os.path.isdir(SAVE_DIR):
-        os.mkdir(SAVE_DIR)
+    os.makedirs(SAVE_DIR, exist_ok=True)
 
-    with open(SAVE_DIR + fname, "w") as f:
+    with open(f"{SAVE_DIR}/{fname}", "w") as f:
         # JSONデータを書き出す
         json.dump(j, f)
 
 def disp_response(response, _id):
 
-    if not os.path.isdir(SAVE_DIR):
-        os.mkdir(SAVE_DIR)
+    os.makedirs(SAVE_DIR, exist_ok=True)
 
-    with open(f"./save/_id.txt", "w") as f:
+    with open(f"{SAVE_DIR}/_id.txt", "w") as f:
         f.write(_id)
 
 def save_response_box(response):
@@ -81,9 +79,8 @@ def download_azure_blob(response):
     container_name = "imageanalysis"
 
     # Create a local directory to hold blob data
-    local_path = "./data"
-    if not os.path.exists(local_path):
-        os.mkdir(local_path)
+    local_path = "output/data"
+    os.makedirs(local_path, exist_ok=True)
 
     try:
         # List the blobs in the container
