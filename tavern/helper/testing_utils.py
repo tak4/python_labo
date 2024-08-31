@@ -1,9 +1,16 @@
-import os
 from box import Box
+import datetime
 import json
+import os
+import pdb
+import pytest
+import sys
 from azure.storage.blob import BlobServiceClient
 
 SAVE_DIR = f"output/save"
+
+class MyException(Exception):
+    pass
 
 def response_test(response):
     j = response.json()
@@ -12,6 +19,29 @@ def response_test(response):
         ret = True
     else:
         ret = False
+
+    return ret
+
+def response_test_retry(response):
+    print(datetime.datetime.now())
+    # pdb.set_trace()       # ここでbreakする
+
+    # テストを失敗させる実験
+    # 下記のいずれでも teardown 動作は行われる
+    # pytest.fail('----- pyetst fail -----')     # ここでテスト失敗 tavern動作としてのリトライもしない
+    sys.exit('----- sys.exit -----')      # ここでテスト失敗 tavern動作としてのリトライもしない
+    # raise SystemExit      # ここでテスト失敗 tavern動作としてのリトライもしない
+    # raise Exception         # テスト失敗にはなるがtavernはリトライ動作を行う
+    # raise MyException         # テスト失敗にはなるがtavernはリトライ動作を行う
+
+    j = response.json()
+    ret = False
+    if j['name'] == "Cannon Wood_":
+        ret = True
+    else:
+        ret = False
+
+    assert ret == True, 'name error'
 
     return ret
 

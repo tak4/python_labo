@@ -1,0 +1,17 @@
+test_name: 簡単なテスト
+
+includes:
+  - !include ../include/includes.yaml
+
+stages:
+  - name: テストリトライ(外部関数利用あり)
+    # skip: True    # ステージ単位でのSkip
+    delay_after: 2
+    max_retries: 5
+    request:
+      url: http://127.0.0.1:5000/case1
+      method: GET
+    response:
+      status_code: 200
+      verify_response_with:
+        function: helper.testing_utils:response_test_retry
