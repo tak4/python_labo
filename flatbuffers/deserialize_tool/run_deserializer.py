@@ -21,8 +21,9 @@ def main():
 
 def call(kind=None, input_file=None, output_file=None):
 
-    deserializer = DesealizeCreator.create(kind)
-    deserializer.decode(input_file, output_file)
+    # deserializer = DesealizeCreator.create(kind)
+    # deserializer.decode(input_file, output_file)
+    deserializer = DesealizeCreator.create2(kind)
 
 if __name__ == "__main__":
     main()
