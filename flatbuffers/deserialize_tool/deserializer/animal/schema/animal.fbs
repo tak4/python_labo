@@ -1,0 +1,7 @@
+namespace generated;
+
+table Animal {
+    kind:string;
+    age:short;
+}
+
