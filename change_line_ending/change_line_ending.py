@@ -1,26 +1,51 @@
 import os
+from optparse import OptionParser
 
-def convert_crlf_to_lf(directory):
-    for foldername, subfolders, filenames in os.walk(directory):
+
+def main():
+    # 入力オプションの処理
+    usage = 'usage: %prog [options]'
+    parser = OptionParser(usage=usage)
+    parser.add_option('-d', action='store_true',
+                      dest='is_lf', help='change lf')
+    parser.add_option('-c', action='store_true',
+                      dest='is_crlf', help='change crlf')
+    parser.add_option('-t', action='store', type='string',
+                      dest='target_dir', help='target_dir')
+    parser.add_option('-x', action='store', type='string',
+                      dest='extension', help='extension')
+
+    options, args = parser.parse_args()
+
+    print(options.is_lf)
+    print(options.is_crlf)
+    print(options.target_dir)
+    print(options.extension)
+
+
+    new_line_code = '\n'
+    if options.is_lf:
+        new_line_code = '\n'
+    elif options.is_crlf:
+        new_line_code = '\r\n'
+
+    change_line_ending(
+        new_line_code,
+        options.target_dir,
+        options.extension
+    )
+
+
+def change_line_ending(new_line_code, target_dir, extension):
+    for foldername, subfolders, filenames in os.walk(target_dir):
         for filename in filenames:
-            if filename.endswith('.txt'):
+            if filename.endswith('.{}'.format(extension)):
                 filepath = os.path.join(foldername, filename)
-                with open(filepath, 'r', encoding='utf-8') as file:
+                print(filepath)
+                with open(filepath, 'r') as file:
                     content = file.read()
-                content = content.replace('\r\n', '\n')
-                with open(filepath, 'w', encoding='utf-8') as file:
+                with open(filepath, 'w', newline=new_line_code) as file:
                     file.write(content)
 
-def convert_lf_to_crlf(directory):
-    for foldername, subfolders, filenames in os.walk(directory):
-        for filename in filenames:
-            if filename.endswith('.txt'):
-                filepath = os.path.join(foldername, filename)
-                with open(filepath, 'r', encoding='utf-8') as file:
-                    content = file.read()
-                content = content.replace('\n', '\r\n')
-                with open(filepath, 'w', encoding='utf-8') as file:
-                    file.write(content)
-
-convert_crlf_to_lf('target')
-# convert_lf_to_crlf('target')
+if __name__ == "__main__":
+    main()
