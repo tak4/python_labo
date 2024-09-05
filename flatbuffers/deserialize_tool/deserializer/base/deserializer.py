@@ -9,3 +9,7 @@ class BaseDeserializer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def decode(self, input_file=None, output_file=None):
         pass
+
+    @abc.abstractmethod
+    def other_output(self, input_file=None) -> list[str]:
+        pass
