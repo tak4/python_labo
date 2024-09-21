@@ -7,6 +7,7 @@ azure/venv
 flatbuffers/venv
 pillow/venv
 sd_viewer/venv
+sklearn/venv
 tavern/venv
 tavern/data
 tavern/save
@@ -16,3 +17,4 @@ pytest/venv
 pytest/.pytest_cache
 requests/venv
 venv_flask_tavern
+zipfile/venv
