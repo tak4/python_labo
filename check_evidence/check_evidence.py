@@ -24,22 +24,33 @@ def main():
     # その為、newline=""を指定しておく
     with open('evidence_list.csv', 'w', newline="") as csvfile:
         # Header作成
-        fieldnames = ['path', 'link', 'datetime']
+        fieldnames = ['fullpath', 'dlink', 'flink', 'fname_wo_ext', 'datetime']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
         # ファイルのリスト作成
         for f in fl:
             if os.path.isfile(f):
+                dname = os.path.dirname(f)
+                bname = os.path.basename(f)
+                basename_without_ext = os.path.splitext(bname)[0]
                 # ファイル名から日時を取得
-                m = p.match(os.path.basename(f))
+                m = p.match(bname)
                 dt = None
                 if m:
                     dt = m.group()
                 # pathをHYPERLINKにする
-                link = '=HYPERLINK("' + f + '")'
+                dlink = '=HYPERLINK("' + dname  + '")'
+                flink = '=HYPERLINK("' + f + '")'
                 # csv書き出し
-                writer.writerow({"path": f, "link": link, "datetime": dt})
+                writer.writerow(
+                    {
+                        "fullpath": f,
+                        "dlink": dlink,
+                        "flink": flink,
+                        "fname_wo_ext": basename_without_ext,
+                        "datetime": dt}
+                    )
 
 if __name__ == "__main__":
     main()
