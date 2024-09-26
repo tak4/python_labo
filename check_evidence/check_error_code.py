@@ -10,9 +10,9 @@ flist = glob.glob('evidence/e1/ev_log/**')
 
 for f in flist:
     with open(f, 'r') as f:
+        data = f.read()
         for w in wlist:
             print(f.name, w)
-            data = f.read()
-            m = re.search(data, w)
+            m = re.search(w, data)
             if m is not None:
                 print('exist {}'.format(m.group()))
