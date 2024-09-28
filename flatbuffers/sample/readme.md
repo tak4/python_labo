@@ -53,3 +53,6 @@ python3 deserialize.py
 # シリアライズ(bin)からjsonを出力する
 
 flatc --json --raw-binary monster.fbs -- output_monster.bin  
+
+https://flatbuffers.dev/flatbuffers_guide_tutorial.html  
+FlatBuffer binary to JSON

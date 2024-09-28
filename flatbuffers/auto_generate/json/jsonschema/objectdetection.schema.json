@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "SmartCamera_BoundingBox" : {
+      "type" : "string",
+      "enum": ["NONE", "BoundingBox2d"]
+    },
+    "SmartCamera_BoundingBox2d" : {
+      "type" : "object",
+      "properties" : {
+        "left" : {
+                "type" : "number"
+              },
+        "top" : {
+                "type" : "number"
+              },
+        "right" : {
+                "type" : "number"
+              },
+        "bottom" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "SmartCamera_GeneralObject" : {
+      "type" : "object",
+      "properties" : {
+        "class_id" : {
+                "type" : "number"
+              },
+        "bounding_box_type" : {
+                "$ref" : "#/definitions/SmartCamera_BoundingBox"
+              },
+        "bounding_box" : {
+                "anyOf": [{ "$ref" : "#/definitions/SmartCamera_BoundingBox2d" }]
+              },
+        "score" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "SmartCamera_ObjectDetectionData" : {
+      "type" : "object",
+      "properties" : {
+        "object_detection_list" : {
+                "type" : "array", "items" : { "$ref" : "#/definitions/SmartCamera_GeneralObject" }
+              }
+      },
+      "additionalProperties" : false
+    },
+    "SmartCamera_ObjectDetectionTop" : {
+      "type" : "object",
+      "properties" : {
+        "perception" : {
+                "$ref" : "#/definitions/SmartCamera_ObjectDetectionData"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/SmartCamera_ObjectDetectionTop"
+}

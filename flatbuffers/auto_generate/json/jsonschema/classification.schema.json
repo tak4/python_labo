@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "SmartCamera_GeneralClassification" : {
+      "type" : "object",
+      "properties" : {
+        "class_id" : {
+                "type" : "number"
+              },
+        "score" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "SmartCamera_ClassificationData" : {
+      "type" : "object",
+      "properties" : {
+        "classification_list" : {
+                "type" : "array", "items" : { "$ref" : "#/definitions/SmartCamera_GeneralClassification" }
+              }
+      },
+      "additionalProperties" : false
+    },
+    "SmartCamera_ClassificationTop" : {
+      "type" : "object",
+      "properties" : {
+        "perception" : {
+                "$ref" : "#/definitions/SmartCamera_ClassificationData"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/SmartCamera_ClassificationTop"
+}
