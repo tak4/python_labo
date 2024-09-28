@@ -7,5 +7,7 @@ flatc --python ./schema/monster.fbs
 flatc -o ./json/jsonschema --jsonschema ./schema/monster.fbs  
 flatc -o ./json/jsonschema_strict-json --jsonschema --strict-json ./schema/monster.fbs  
 
+jsonディレクトリ以下に出力
+
 # AITRIOS flatbuffers schema
 https://github.com/SonySemiconductorSolutions/aitrios-sdk-vision-sensing-app/tree/main/tutorials/4_prepare_application/1_develop/sdk/schema
