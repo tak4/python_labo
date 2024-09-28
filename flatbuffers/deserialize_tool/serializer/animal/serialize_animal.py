@@ -5,7 +5,7 @@ import os
 from deserializer.animal.generated import Animal
 
 def main():    
-    # バッファーの書記サイズ0
+    # バッファーの初期サイズ0
     # 必要に応じて拡張されるらしい
     builder = flatbuffers.Builder(0)
 
