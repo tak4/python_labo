@@ -1,5 +1,3 @@
-import inspect
-import importlib
 import json
 import os
 import pprint
@@ -19,23 +17,18 @@ with open('../json/jsonschema/objectdetection.schema.json', 'r') as f:
 
 # pprint.pprint(json_schema, indent=2)
 
-# for k, v in json_schema['definitions'].items():
-#     print(k)
+for k, v in json_schema['definitions'].items():
+    definition = k.split('_')
+    print(definition[-1])
+    if 'type' in v:
+        type = v['type']
+        print(type)
 
-modules = inspect.getmembers(SmartCamera, inspect.ismodule)
-for m in modules:
-    module = importlib.import_module('SmartCamera.' + m[0])
-    print(module.__name__)
-    classes = inspect.getmembers(module, inspect.isclass)
-    for class_name, class_obj in classes:
-        print(f"Class: {class_name}")
-        methods = inspect.getmembers(class_obj, inspect.isfunction)
-        for method_name, _ in methods:
-            print(f"  Method: {method_name}")
+    if 'properties' in v:
+        for property, property_v in v['properties'].items():
+            print(property)
+            if 'type' in property_v:
+                property_type = property_v['type']
+                print(property_type)
 
-# classes = inspect.getmembers(ObjectDetectionTop, inspect.isclass)
-# for class_name, class_obj in classes:
-#     print(f"Class: {class_name}")
-#     methods = inspect.getmembers(class_obj, inspect.isfunction)
-#     for method_name, _ in methods:
-#         print(f"  Method: {method_name}")
+

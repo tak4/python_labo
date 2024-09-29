@@ -1,6 +1,6 @@
 import re
 
-with open('fbs/monster.fbs') as f:
+with open('../schema/monster.fbs') as f:
     data = f.read()
 
 m = re.search(r'struct\s+(\w+)\s*\{((\s*[\w:\w]+[ ;])+\s*)\}', data, re.MULTILINE)
