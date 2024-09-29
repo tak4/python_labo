@@ -11,5 +11,5 @@ class BaseDeserializer(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def other_output(self, input_file=None) -> list[str]:
+    def decode_and_process(self, input_file=None) -> list[str]:
         pass

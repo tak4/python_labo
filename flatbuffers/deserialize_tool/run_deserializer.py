@@ -23,9 +23,10 @@ def call(kind=None, input_file=None, output_file=None):
 
     deserializer = DesealizeCreator.create(kind)
     deserializer.decode(input_file, output_file)
-    fl = deserializer.other_output(input_file)
-    for v in fl:
-        print(v)
+    fl = deserializer.decode_and_process(input_file)
+    if fl is not None:
+        for v in fl:
+            print(v)
     # deserializer = DesealizeCreator.create2(kind)
 
 

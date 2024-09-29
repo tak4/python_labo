@@ -38,6 +38,6 @@ class HumanDeserializer(BaseDeserializer):
         with open(self.output_file, 'w') as json_file:
             json.dump(json_data, json_file, indent=4)
 
-    def other_output(self, input_file=None):
+    def decode_and_process(self, input_file=None):
         l = [1, 2, 3]
         return l

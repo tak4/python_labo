@@ -37,3 +37,7 @@ class AnimalDeserializer(BaseDeserializer):
 
         with open(self.output_file, 'w') as json_file:
             json.dump(json_data, json_file, indent=4)
+
+
+    def decode_and_process(self, input_file=None) -> list[str]:
+        return None
