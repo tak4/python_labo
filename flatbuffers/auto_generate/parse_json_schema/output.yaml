@@ -1,0 +1,40 @@
+SmartCamera_ObjectDetectionTop:
+  additionalProperties: false
+  properties:
+    perception:
+      SmartCamera_ObjectDetectionData:
+        additionalProperties: false
+        properties:
+          object_detection_list:
+            items:
+              SmartCamera_GeneralObject:
+                additionalProperties: false
+                properties:
+                  bounding_box:
+                    anyOf:
+                    - SmartCamera_BoundingBox2d:
+                        additionalProperties: false
+                        properties:
+                          bottom:
+                            type: number
+                          left:
+                            type: number
+                          right:
+                            type: number
+                          top:
+                            type: number
+                        type: object
+                  bounding_box_type:
+                    SmartCamera_BoundingBox:
+                      enum:
+                      - NONE
+                      - BoundingBox2d
+                      type: string
+                  class_id:
+                    type: number
+                  score:
+                    type: number
+                type: object
+            type: array
+        type: object
+  type: object
