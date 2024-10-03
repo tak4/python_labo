@@ -1,0 +1,18 @@
+namespace MyGame.Sample02;
+
+attribute "priority";
+
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+
+table Monster {
+  mana:short;
+  hp:short;
+  name:string;
+  friendly:bool = false (deprecated, priority: 1);
+}
+
+root_type Monster;

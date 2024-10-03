@@ -1,0 +1,6 @@
+{
+  mana: 100,
+  hp: 200,
+  name: "test_name",
+  friendly: true
+}

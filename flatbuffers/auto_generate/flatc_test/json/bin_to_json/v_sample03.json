@@ -1,0 +1,11 @@
+{
+  pos: {
+    x: 1.0,
+    y: 2.0,
+    z: 3.0
+  },
+  mana: 100,
+  hp: 200,
+  name: "test",
+  friendly: true
+}

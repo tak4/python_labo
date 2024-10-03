@@ -1,0 +1,10 @@
+namespace MyGame.Sample01;
+
+table Monster {
+  mana:short;
+  hp:short;
+  name:string;
+  friendly:bool = false (deprecated);
+}
+
+root_type Monster;
