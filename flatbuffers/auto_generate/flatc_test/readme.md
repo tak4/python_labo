@@ -24,3 +24,5 @@ python3 bin_to_json.py ./bin/v_sample01.bin
 python3 json_to_bin.py ./v_sample01.json
 python3 bin_to_json.py ./v_sample01.bin
 flatc -o ./json/bin_to_json --json --raw-binary ./schema/sample01.fbs -- ./v_sample01.bin
+
+flatc -o ./json/bin_to_json_check --json --raw-binary ./schema/sample01.fbs -- ./v_sample01.bin
