@@ -36,6 +36,9 @@
               },
         "dfielda" : {
                 "type" : "number"
+              },
+        "stfielda" : {
+                "type" : "string"
               }
       },
       "additionalProperties" : false

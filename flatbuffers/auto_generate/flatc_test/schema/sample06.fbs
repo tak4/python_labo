@@ -13,6 +13,7 @@ table TopTable {
   lfielda:long;
   ulfielda:ulong;
   dfielda:double;
+  stfielda:string;
 }
 
 root_type TopTable;

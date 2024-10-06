@@ -97,7 +97,14 @@ class TopTable(object):
             return self._tab.Get(flatbuffers.number_types.Float64Flags, o + self._tab.Pos)
         return 0.0
 
-def TopTableStart(builder): builder.StartObject(11)
+    # TopTable
+    def Stfielda(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
+        if o != 0:
+            return self._tab.String(o + self._tab.Pos)
+        return None
+
+def TopTableStart(builder): builder.StartObject(12)
 def TopTableAddBfeilda(builder, bfeilda): builder.PrependInt8Slot(0, bfeilda, 0)
 def TopTableAddUbfeilda(builder, ubfeilda): builder.PrependUint8Slot(1, ubfeilda, 0)
 def TopTableAddBofielda(builder, bofielda): builder.PrependBoolSlot(2, bofielda, 0)
@@ -109,4 +116,5 @@ def TopTableAddFfielda(builder, ffielda): builder.PrependFloat32Slot(7, ffielda,
 def TopTableAddLfielda(builder, lfielda): builder.PrependInt64Slot(8, lfielda, 0)
 def TopTableAddUlfielda(builder, ulfielda): builder.PrependUint64Slot(9, ulfielda, 0)
 def TopTableAddDfielda(builder, dfielda): builder.PrependFloat64Slot(10, dfielda, 0.0)
+def TopTableAddStfielda(builder, stfielda): builder.PrependUOffsetTRelativeSlot(11, flatbuffers.number_types.UOffsetTFlags.py_type(stfielda), 0)
 def TopTableEnd(builder): return builder.EndObject()

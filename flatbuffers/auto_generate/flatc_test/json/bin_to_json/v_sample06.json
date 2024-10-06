@@ -9,5 +9,6 @@
   ffielda: 400.5,
   lfielda: -500,
   ulfielda: 500,
-  dfielda: 600.5
+  dfielda: 600.5,
+  stfielda: "test"
 }
