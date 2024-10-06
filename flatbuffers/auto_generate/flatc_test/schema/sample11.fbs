@@ -1,0 +1,9 @@
+// Optional Values 
+namespace MySample.Sample11;
+
+table TopTable {
+    ifielda:int;
+    ifieldb:int = 200;
+}
+
+root_type TopTable;

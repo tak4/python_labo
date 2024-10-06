@@ -1,0 +1,10 @@
+// File Extension
+namespace MySample.Sample15;
+
+table TopTable {
+    ifielda:int;
+    ifieldb:int;
+}
+
+root_type TopTable;
+file_extension "bin";

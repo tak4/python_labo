@@ -1,0 +1,9 @@
+// Default Values 
+namespace MySample.Sample10;
+
+table TopTable {
+    ifielda:int = 100;
+    ifieldb:int = 200;
+}
+
+root_type TopTable;

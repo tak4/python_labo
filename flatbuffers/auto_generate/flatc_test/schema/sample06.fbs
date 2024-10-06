@@ -1,0 +1,18 @@
+// Types
+namespace MySample.Sample06;
+
+table TopTable {
+  bfeilda:byte;
+  ubfeilda:ubyte;
+  bofielda:bool;
+  sfielda:short;
+  usfielda:ushort;
+  ifielda:int;
+  uifielda:uint;
+  ffielda:float;
+  lfielda:long;
+  ulfielda:ulong;
+  dfielda:double;
+}
+
+root_type TopTable;

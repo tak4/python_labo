@@ -1,0 +1,8 @@
+{
+  uniona_type: "tablea",
+  uniona: {
+    ifielda: 10,
+    ifieldb: 20,
+    ifieldc: 30
+  }
+}

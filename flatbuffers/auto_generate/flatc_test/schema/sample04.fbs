@@ -1,0 +1,14 @@
+// Structs
+namespace MySample.Sample04;
+
+struct Struct1 {
+  ifielda:int;
+  ifieldb:int;
+  ifieldc:int;
+}
+
+table TopTable {
+    structa:Struct1;
+}
+
+root_type TopTable;

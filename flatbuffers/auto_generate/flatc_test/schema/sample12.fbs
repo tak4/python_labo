@@ -1,0 +1,9 @@
+// Required Values
+namespace MySample.Sample12;
+
+table TopTable {
+    ifielda:int = 100 (required);
+    ifieldb:int = 200;
+}
+
+root_type TopTable;

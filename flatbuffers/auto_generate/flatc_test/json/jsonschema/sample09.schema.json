@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample09_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "affielda" : {
+                "type" : "array", "items" : { "type" : "number" },
+                "minItems": 3,
+                "maxItems": 3
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample09_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "structa" : {
+                "$ref" : "#/definitions/MySample_Sample09_Struct1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample09_TopTable"
+}

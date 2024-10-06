@@ -1,0 +1,8 @@
+{
+  uniona_type: "tableb",
+  uniona: {
+    ifielda: 10000000000,
+    ifieldb: 20000000000,
+    ifieldc: 30000000000
+  }
+}

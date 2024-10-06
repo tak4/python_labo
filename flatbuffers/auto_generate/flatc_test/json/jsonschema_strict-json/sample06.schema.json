@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample06_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "bfeilda" : {
+                "type" : "number"
+              },
+        "ubfeilda" : {
+                "type" : "number"
+              },
+        "bofielda" : {
+                "type" : "boolean"
+              },
+        "sfielda" : {
+                "type" : "number"
+              },
+        "usfielda" : {
+                "type" : "number"
+              },
+        "ifielda" : {
+                "type" : "number"
+              },
+        "uifielda" : {
+                "type" : "number"
+              },
+        "ffielda" : {
+                "type" : "number"
+              },
+        "lfielda" : {
+                "type" : "number"
+              },
+        "ulfielda" : {
+                "type" : "number"
+              },
+        "dfielda" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample06_TopTable"
+}

@@ -1,0 +1,14 @@
+// Tables
+namespace MySample.Sample05;
+
+table Table1 {
+  ifielda:int;
+  ifieldb:int;
+  ifieldc:int;
+}
+
+table TopTable {
+    tablea:Table1;
+}
+
+root_type TopTable;

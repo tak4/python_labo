@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample14_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda" : {
+                "type" : "number"
+              },
+        "ifieldb" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample14_TopTable"
+}

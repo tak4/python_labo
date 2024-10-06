@@ -1,0 +1,6 @@
+// Includes
+include "include_schema.fbs";
+
+namespace MySample.Sample13;
+
+root_type TopTable;

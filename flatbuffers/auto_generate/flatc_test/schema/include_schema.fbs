@@ -1,0 +1,6 @@
+namespace MySample.Sample13;
+
+table TopTable {
+    ifielda:int = 100;
+    ifieldb:int = 200;
+}

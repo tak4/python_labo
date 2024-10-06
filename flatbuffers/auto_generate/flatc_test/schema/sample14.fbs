@@ -1,0 +1,10 @@
+// File identification
+namespace MySample.Sample14;
+
+table TopTable {
+    ifielda:int;
+    ifieldb:int;
+}
+
+root_type TopTable;
+file_identifier "MYFI";

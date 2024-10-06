@@ -1,0 +1,12 @@
+// Arrays
+namespace MySample.Sample09;
+
+struct Struct1 {
+    affielda:[float:3];
+}
+
+table TopTable {
+    structa:Struct1;
+}
+
+root_type TopTable;
