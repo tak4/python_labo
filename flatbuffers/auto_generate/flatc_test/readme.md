@@ -3,7 +3,7 @@ root_typeは、tableでないといけない
 structの中にtableは含められない
 unionには、table/struct/stringしか含められない
 pythonの場合、unionには、tableしか含められない
-Arraysはstructの中にしか作成できない（tableの中には作成できない）
+Arraysはtableの中にしか作成できない（structの中には作成できない）
 
 # fbs -> json
 flatc -o ./json/jsonschema --jsonschema ./schema/sample01.fbs

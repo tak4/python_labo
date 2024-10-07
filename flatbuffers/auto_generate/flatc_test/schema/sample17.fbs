@@ -1,0 +1,17 @@
+// structの中にtableは含められない
+// error: structs may contain only scalar or struct fields
+namespace MySample.Sample17;
+
+table Table1 {
+    ifielda:int;
+}
+
+struct Struct1 {
+    tablea:Table1;
+}
+
+table TopTable {
+    structa:Struct1;
+}
+
+root_type TopTable;

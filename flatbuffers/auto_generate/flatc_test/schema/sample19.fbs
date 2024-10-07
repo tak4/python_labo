@@ -1,0 +1,27 @@
+// 固定長のArraysはstructの中にしか作成できない（tableの中には作成できない）
+// fixed-length array in table must be wrapped in struct
+// 可変長のArrayはstructの中にしか作成できない（tableの中には作成できない）
+//
+namespace MySample.Sample19;
+
+struct Struct2 {
+  ffielda:[float:3];
+}
+
+struct Struct1 {
+  //ffielda:[float];      // error: structs may contain only scalar or struct fields
+  //ffielda:[float:3];  // error: fixed-length array in table must be wrapped in struct
+  structb:[Struct2:3];  // 
+}
+
+table Table1 {
+  //ffielda:[float];  // OK
+  ffielda:[float:3];  // error: fixed-length array in table must be wrapped in struct
+}
+
+table TopTable {
+    structa:Struct1;
+    //tablea:Table1;
+}
+
+root_type TopTable;

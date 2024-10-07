@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample16_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda" : {
+                "type" : "number"
+              },
+        "ifieldb" : {
+                "type" : "number"
+              },
+        "ifieldc" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample16_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "structa" : {
+                "$ref" : "#/definitions/MySample_Sample16_Struct1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample16_TopTable"
+}

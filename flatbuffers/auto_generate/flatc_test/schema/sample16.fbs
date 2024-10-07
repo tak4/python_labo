@@ -1,0 +1,20 @@
+// root_typeは、tableでないといけない
+// error: root type must be a table
+// unknown root type: Union1
+namespace MySample.Sample16;
+
+struct Struct1 {
+  ifielda:int;
+  ifieldb:int;
+  ifieldc:int;
+}
+
+//union Union1 {
+//    structa:Struct1
+//}
+
+table TopTable {
+    structa:Struct1;
+}
+
+root_type TopTable;

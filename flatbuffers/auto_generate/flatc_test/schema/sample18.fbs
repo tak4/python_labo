@@ -1,0 +1,28 @@
+// unionには、table/struct/stringしか含められない
+// pythonの場合、unionには、table, stringしか含められない
+// error: only tables can be union elements in the generated language: struct
+namespace MySample.Sample18;
+
+struct Struct1 {
+  ifielda:int;
+  ifieldb:int;
+  ifieldc:int;
+}
+
+table Table1 {
+  ifielda:int;
+  ifieldb:int;
+  ifieldc:int;
+}
+
+union Union1 {
+    tablea:Table1,
+    //struct:Struct1,
+    stifielda:string
+}
+
+table TopTable {
+    uniona:Union1;
+}
+
+root_type TopTable;
