@@ -22,6 +22,7 @@ def resolve_refs(schema, definitions):
     '''
 
     if isinstance(schema, dict):
+        # dictであれば、dictを展開する
         if '$ref' in schema:
             # keyが'$ref' の場合は子要素を探す
             ref_path = schema['$ref'].split('/')
@@ -31,15 +32,15 @@ def resolve_refs(schema, definitions):
             # keyが'$ref'でなければdictを展開する
             return {k: resolve_refs(v, definitions) for k, v in schema.items()}
     elif isinstance(schema, list):
-        # keyがlistであれば、listを展開する
+        # listであれば、listを展開する
         return [resolve_refs(item, definitions) for item in schema]
     else:
-        # keyがdictかlistでなく、末端の要素の場合は再帰せず、そのまま返す
+        # dictでのlistでなく、末端の要素の場合は再帰せず、そのまま返す
         return schema
 
 def get_object_value(schema, key):
     ret_value = None
-    # object内を走査する
+    # object内を走査して、keyのbalueを返す
     if isinstance(schema, dict):
         for k, v in schema.items():
             if key == k:
@@ -47,14 +48,16 @@ def get_object_value(schema, key):
                 break
     return ret_value
 
-def snake_to_camel(snake_str):
+def snake_to_pascal(snake_str):
     components = snake_str.split('_')
-    return components[0] + ''.join(x.title() for x in components[1:])
+    return ''.join(x.title() for x in components)
+
+def get_local_value_name(key):
+    vname = key.replace('.', '_').lower()
+    return vname
 
 stack = deque()
 def recursive(schema = None, parent = None, indent = 0):
-    if parent is not None:
-        stack.append(parent)
 
     indent = len(stack)
 
@@ -65,19 +68,34 @@ def recursive(schema = None, parent = None, indent = 0):
                 if parent is None:
                     # root_typeの処理
                     module_names = k.split('_')
-                    print(f'elem{indent} = ', end="")
+                    print(f'{get_local_value_name(k)} = ', end="")
                     print('.'.join(module_names[1:]) + '.', end="")
                     print(f'GetRootAs{module_names[-1]}(buf, 0)')
+
+                # properties
                 obj_properties = get_object_value(schema[k], "properties")
+                stack.append(k)
                 recursive(obj_properties, k, len(stack))
+                stack.pop()
+
             if "array" == obj_type:
                 obj_items = get_object_value(schema[k], "items")
-                print('  ' * indent + f'elem{indent} = elem{indent-1}.{snake_to_camel(k)}()')
+                length_function_name = f"{get_local_value_name(parent)}.{snake_to_pascal(k)}"
+                local_value_name = get_local_value_name(length_function_name)
+                print(f'{local_value_name} = {length_function_name}Length()')
+                print(f'for i in range({local_value_name}):')
+                print(f'{get_local_value_name(parent)}.{snake_to_pascal(k)}()')
+                stack.append(k)
                 recursive(obj_items, k, len(stack))
+                stack.pop()
+
             elif "number" == obj_type or "string" == obj_type:
                 print(k, v)
+
             elif obj_type == None:
-                print('  ' * indent + f'elem{indent} = elem{indent-1}.{k.title()}()')
+                if parent is not None:
+                    local_value_name = get_local_value_name(f'{get_local_value_name(parent)}.{snake_to_pascal(k)}')
+                    print(f'{local_value_name} = {get_local_value_name(parent)}.{snake_to_pascal(k)}()')
                 recursive(v, k, len(stack))
 
             # if 'type' == k:
@@ -109,8 +127,6 @@ def recursive(schema = None, parent = None, indent = 0):
     elif isinstance(schema, list):
         for l in schema:
             recursive(l, stack[-1], indent)
-    if parent is not None:
-        stack.pop()
 
 resolved_schema = resolve_refs(json_schema, json_schema.get('definitions', {}))
 
