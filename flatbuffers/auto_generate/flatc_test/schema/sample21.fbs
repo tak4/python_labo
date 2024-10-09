@@ -1,0 +1,26 @@
+// Unions
+namespace MySample.Sample21;
+
+table Table1 {
+  ifielda1:int;
+}
+
+table Table2 {
+  bfielda2:byte;
+}
+
+table Table3 {
+  lfielda3:long;
+}
+
+union Union1 {
+  tablea1:Table1,
+  tableb2:Table2,
+  tablec3:Table3
+}
+
+table TopTable {
+    uniona:Union1;
+}
+
+root_type TopTable;

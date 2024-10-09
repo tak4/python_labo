@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample21_Union1" : {
+      "type" : "string",
+      "enum": ["NONE", "tablea1", "tableb2", "tablec3"]
+    },
+    "MySample_Sample21_Table1" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda1" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample21_Table2" : {
+      "type" : "object",
+      "properties" : {
+        "bfielda2" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample21_Table3" : {
+      "type" : "object",
+      "properties" : {
+        "lfielda3" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample21_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "uniona_type" : {
+                "$ref" : "#/definitions/MySample_Sample21_Union1"
+              },
+        "uniona" : {
+                "anyOf": [{ "$ref" : "#/definitions/MySample_Sample21_Table1" },{ "$ref" : "#/definitions/MySample_Sample21_Table2" },{ "$ref" : "#/definitions/MySample_Sample21_Table3" }]
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample21_TopTable"
+}

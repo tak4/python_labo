@@ -1,0 +1,5 @@
+下記のloopで、loopの初回のみprint出力しないスマートな方法を教えてください
+
+module_names = k.split('_')
+for module in module_names:
+    print(f'{module}.', end="")
