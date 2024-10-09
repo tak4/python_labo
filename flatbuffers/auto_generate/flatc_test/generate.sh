@@ -6,7 +6,6 @@ set -x
 
 # fbs -> json
 flatc -o ./json/jsonschema --jsonschema ./schema/${filename}.fbs
-flatc -o ./json/jsonschema_strict-json --jsonschema --strict-json ./schema/${filename}.fbs
 
 # generate
 flatc --python ./schema/${filename}.fbs

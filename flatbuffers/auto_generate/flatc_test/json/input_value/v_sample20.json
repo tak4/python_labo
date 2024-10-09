@@ -1,0 +1,18 @@
+{
+    struct1: {
+      ifielda1: 10,
+      ifieldb1: 20,
+      ifieldc1: 30,
+      struct21: {
+        bfielda21: 40,
+        bfieldb21: 50,
+        bfieldc21: 60  
+      },
+      struct22: {
+        ifielda22: 70,
+        ifieldb22: 80,
+        ifieldc22: 90  
+      }
+    }
+  }
+  

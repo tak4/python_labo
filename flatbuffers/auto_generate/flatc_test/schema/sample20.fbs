@@ -1,0 +1,28 @@
+// Structs
+namespace MySample.Sample20;
+
+struct Struct21 {
+  bfielda21:byte;
+  bfieldb21:byte;
+  bfieldc21:byte;
+}
+
+struct Struct22 {
+  ifielda22:int;
+  ifieldb22:int;
+  ifieldc22:int;
+}
+
+struct Struct1 {
+  ifielda1:int;
+  ifieldb1:int;
+  ifieldc1:int;
+  struct21:Struct21;
+  struct22:Struct22;
+}
+
+table TopTable {
+    struct1:Struct1;
+}
+
+root_type TopTable;

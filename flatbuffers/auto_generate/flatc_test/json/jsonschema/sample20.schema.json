@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample20_Struct21" : {
+      "type" : "object",
+      "properties" : {
+        "bfielda21" : {
+                "type" : "number"
+              },
+        "bfieldb21" : {
+                "type" : "number"
+              },
+        "bfieldc21" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample20_Struct22" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda22" : {
+                "type" : "number"
+              },
+        "ifieldb22" : {
+                "type" : "number"
+              },
+        "ifieldc22" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample20_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda1" : {
+                "type" : "number"
+              },
+        "ifieldb1" : {
+                "type" : "number"
+              },
+        "ifieldc1" : {
+                "type" : "number"
+              },
+        "struct21" : {
+                "$ref" : "#/definitions/MySample_Sample20_Struct21"
+              },
+        "struct22" : {
+                "$ref" : "#/definitions/MySample_Sample20_Struct22"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample20_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "struct1" : {
+                "$ref" : "#/definitions/MySample_Sample20_Struct1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample20_TopTable"
+}
