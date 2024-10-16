@@ -3,13 +3,15 @@ import pprint
 import sys
 import json
 
-KEY_SUMMARY         = 'summary'
-KEY_PARAMETERS      = 'parameters'
-KEY_REQUEST_BODY    = 'requestBody'
+KEY_SUMMARY = 'summary'
+KEY_PARAMETERS = 'parameters'
+KEY_REQUEST_BODY = 'requestBody'
+KEY_RESPOMSES = 'responses'
 
-KEY_APPLICATION_JSON        = 'application/json'
-KEY_MILTIPART_FORM_DATA     = 'multipart/form-data'
+KEY_APPLICATION_JSON = 'application/json'
+KEY_MILTIPART_FORM_DATA = 'multipart/form-data'
 
+target_summary = ''
 
 # ファイル名取得
 args = sys.argv
@@ -34,33 +36,34 @@ for path in data_paths_keys:
 
     # method get/put/delete 等でまわす
     for rm in req_methods:
-        print(data_path[rm][KEY_SUMMARY])
+        summary = data_path[rm][KEY_SUMMARY]
+        if target_summary == '' or summary == target_summary:
+            print(f'##### {summary}')
 
-        # parameters
-        if KEY_PARAMETERS in data_path[rm]:
-            parameters = data_path[rm][KEY_PARAMETERS]
-            print(KEY_PARAMETERS)
-            for param in parameters:
-                # print(param['name'])
-                pprint.pprint(param)
+            # parameters
+            if KEY_PARAMETERS in data_path[rm]:
+                parameters = data_path[rm][KEY_PARAMETERS]
+                print(f'----- {KEY_PARAMETERS}')
+                for param in parameters:
+                    pprint.pprint(param)
 
-        # requestBody
-        if KEY_REQUEST_BODY in data_path[rm]:
-            request_body_content = data_path[rm][KEY_REQUEST_BODY]['content']
-            print(KEY_REQUEST_BODY)
-            if KEY_APPLICATION_JSON in request_body_content:
-                # print(request_body_content[KEY_APPLICATION_JSON]['schema'])
-                # pprint.pprint(request_body_content[KEY_APPLICATION_JSON]['schema'])
-                if '$ref' in request_body_content[KEY_APPLICATION_JSON]['schema']:
-                    ref = request_body_content[KEY_APPLICATION_JSON]['schema']['$ref']
-                    ref_list = ref.split('/')
-                    data_contents = data[ref_list[1]][ref_list[2]][ref_list[3]]
-                    pprint.pprint(data_contents)
-            if KEY_MILTIPART_FORM_DATA in request_body_content:
-                # print(request_body_content[KEY_MILTIPART_FORM_DATA]['schema'])
-                # pprint.pprint(request_body_content[KEY_MILTIPART_FORM_DATA]['schema'])
-                if '$ref' in request_body_content[KEY_MILTIPART_FORM_DATA]['schema']:
-                    ref = request_body_content[KEY_MILTIPART_FORM_DATA]['schema']['$ref']
-                    ref_list = ref.split('/')
-                    data_contents = data[ref_list[1]][ref_list[2]][ref_list[3]]
-                    pprint.pprint(data_contents)
+            # requestBody
+            if KEY_REQUEST_BODY in data_path[rm]:
+                responses = data_path[rm][KEY_REQUEST_BODY]['content']
+                print(f'----- {KEY_REQUEST_BODY}')
+                for response in responses.keys():
+                    print(response)
+                    if '$ref' in responses[response]['schema']:
+                        ref = responses[response]['schema']['$ref']
+                        ref_list = ref.split('/')
+                        data_contents = data[ref_list[1]][ref_list[2]][ref_list[3]]
+                        pprint.pprint(data_contents)
+
+            # responses
+            if KEY_RESPOMSES in data_path[rm]:
+                responses = data_path[rm][KEY_RESPOMSES]
+                print(f'----- {KEY_RESPOMSES}')
+                for response in responses:
+                    pprint.pprint(responses[response])
+
+            print()
