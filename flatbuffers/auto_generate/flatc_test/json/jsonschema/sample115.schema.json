@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample115_Struct3" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample115_Struct2" : {
+      "type" : "object",
+      "properties" : {
+        "struct3a" : {
+                "type" : "array", "items" : { "$ref" : "#/definitions/MySample_Sample115_Struct3" },
+                "minItems": 3,
+                "maxItems": 3
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample115_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "struct2a" : {
+                "type" : "array", "items" : { "$ref" : "#/definitions/MySample_Sample115_Struct2" },
+                "minItems": 3,
+                "maxItems": 3
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample115_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "struct1a" : {
+                "$ref" : "#/definitions/MySample_Sample115_Struct1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample115_TopTable"
+}

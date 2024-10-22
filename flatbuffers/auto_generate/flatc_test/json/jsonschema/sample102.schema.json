@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample102_Struct3" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample102_Table2" : {
+      "type" : "object",
+      "properties" : {
+        "struct3a" : {
+                "type" : "array", "items" : { "$ref" : "#/definitions/MySample_Sample102_Struct3" }
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample102_Table1" : {
+      "type" : "object",
+      "properties" : {
+        "table2a" : {
+                "type" : "array", "items" : { "$ref" : "#/definitions/MySample_Sample102_Table2" }
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample102_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "table1a" : {
+                "$ref" : "#/definitions/MySample_Sample102_Table1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample102_TopTable"
+}

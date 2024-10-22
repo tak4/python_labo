@@ -1,0 +1,20 @@
+// Array
+namespace MySample.Sample100;
+
+table Table3 {
+  ifielda:int;
+}
+
+table Table2 {
+  table3a:[Table3];
+}
+
+table Table1 {
+  table2a:[Table2];
+}
+
+table TopTable {
+  table1a:Table1;
+}
+
+root_type TopTable;

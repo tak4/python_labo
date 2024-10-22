@@ -1,0 +1,20 @@
+// Array
+namespace MySample.Sample111;
+
+struct Struct3 {
+  ifielda:int;
+}
+
+struct Struct2 {
+  stuct3a:[Struct3:3];
+}
+
+struct Struct1 {
+  struct2a:[Struct2];
+}
+
+table TopTable {
+  struct1a:Struct1;
+}
+
+root_type TopTable;

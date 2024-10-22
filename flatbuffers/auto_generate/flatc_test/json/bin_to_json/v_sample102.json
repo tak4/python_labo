@@ -1,0 +1,45 @@
+{
+  table1a: {
+    table2a: [
+      {
+        struct3a: [
+          {
+            ifielda: 1
+          },
+          {
+            ifielda: 2
+          },
+          {
+            ifielda: 3
+          }
+        ]
+      },
+      {
+        struct3a: [
+          {
+            ifielda: 4
+          },
+          {
+            ifielda: 5
+          },
+          {
+            ifielda: 6
+          }
+        ]
+      },
+      {
+        struct3a: [
+          {
+            ifielda: 7
+          },
+          {
+            ifielda: 8
+          },
+          {
+            ifielda: 9
+          }
+        ]
+      }
+    ]
+  }
+}
