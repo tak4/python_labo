@@ -26,10 +26,11 @@ def recursive_ref(nc, data, d):
                 data_contents = data[ref_list[1]][ref_list[2]][ref_list[3]]
                 recursive_ref(nc + 1, data, data_contents)
             else:
-                print('    ' * nc + '{:<15}: {}'.format(k, v))
+                # print('    ' * nc + '{:<15}: {}'.format(k, v))
+                print('\t' * nc + f'{k}')
                 recursive_ref(nc + 1, data, v)
-    # else:
-    #     print(d)
+    else:
+        print('\t' * nc + f'{d}')
 
 def main():
 
@@ -82,6 +83,7 @@ def main():
                     print(f'----- {KEY_TAGS}')
                     print(tags)
 
+                # operationid
                 if KEY_OPERATIONID in data_path[rm]:
                     opeid = data_path[rm][KEY_OPERATIONID]
                     print(f'----- {KEY_OPERATIONID}')
@@ -92,8 +94,11 @@ def main():
                     parameters = data_path[rm][KEY_PARAMETERS]
                     print(f'----- {KEY_PARAMETERS}')
                     for params in parameters:
+                        print('{}\t {}'.format('in', params['in']))
+                        print('{}\t {}'.format('name', params['name']))
                         for k, v in params.items():
-                            print('{:<15}: {}'.format(k, v))
+                            if k != 'in' and k != 'name':
+                                print('{}\t {}'.format(k, v))
 
                 # requestBody
                 if KEY_REQUEST_BODY in data_path[rm]:
