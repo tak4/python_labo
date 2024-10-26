@@ -29,14 +29,16 @@ def response_test_retry(response):
     # テストを失敗させる実験
     # 下記のいずれでも teardown 動作は行われる
     # pytest.fail('----- pyetst fail -----')     # ここでテスト失敗 tavern動作としてのリトライもしない
-    sys.exit('----- sys.exit -----')      # ここでテスト失敗 tavern動作としてのリトライもしない
+    # sys.exit('----- sys.exit -----')      # ここでテスト失敗 tavern動作としてのリトライもしない
     # raise SystemExit      # ここでテスト失敗 tavern動作としてのリトライもしない
-    # raise Exception         # テスト失敗にはなるがtavernはリトライ動作を行う
-    # raise MyException         # テスト失敗にはなるがtavernはリトライ動作を行う
+    # raise Exception         # tavernはリトライ動作を行い、テスト失敗になる
+    # raise MyException         # tavernはリトライ動作を行い、テスト失敗になる
+    # assert False, '----- assert -----'  # tavernはリトライ動作を行い、テスト失敗になる
 
+    # 以下はテスト成功を想定
     j = response.json()
     ret = False
-    if j['name'] == "Cannon Wood_":
+    if j['name'] == "Cannon Wood":
         ret = True
     else:
         ret = False
