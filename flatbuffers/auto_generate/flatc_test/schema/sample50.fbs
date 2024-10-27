@@ -1,0 +1,28 @@
+// 0, null の検証
+namespace MySample.Sample50;
+
+enum Color : byte {
+  Red = 0,
+  Green,
+  Blue
+}
+
+table Table1 {
+  ifielda:int;
+  colora:Color;
+  stringa: string;
+}
+struct Struct1 {
+  ifielda:int;
+  colora:Color;
+  // stringa: string;
+}
+
+table TopTable {
+  tablea:Table1;
+  tableb:Table1;
+  structa:Struct1;
+  structb:Struct1;
+}
+
+root_type TopTable;

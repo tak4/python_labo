@@ -1,0 +1,20 @@
+{
+  tablea: {
+    ifielda: 0,
+    colora: "Red",
+    // stringa: "test"
+  },
+  // tableb: {
+  //   ifielda: 0,
+  //   colora: "Red",
+  //   stringa: "test"
+  // },
+  structa: {
+    ifielda: 0,
+    colora: "Red"
+  },
+  // structb: {
+  //   ifielda: 0,
+  //   colora: "Red"
+  // }
+}

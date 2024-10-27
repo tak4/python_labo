@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample50_Color" : {
+      "type" : "string",
+      "enum": ["Red", "Green", "Blue"]
+    },
+    "MySample_Sample50_Table1" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda" : {
+                "type" : "number"
+              },
+        "colora" : {
+                "$ref" : "#/definitions/MySample_Sample50_Color"
+              },
+        "stringa" : {
+                "type" : "string"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample50_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "ifielda" : {
+                "type" : "number"
+              },
+        "colora" : {
+                "$ref" : "#/definitions/MySample_Sample50_Color"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample50_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "tablea" : {
+                "$ref" : "#/definitions/MySample_Sample50_Table1"
+              },
+        "tableb" : {
+                "$ref" : "#/definitions/MySample_Sample50_Table1"
+              },
+        "structa" : {
+                "$ref" : "#/definitions/MySample_Sample50_Struct1"
+              },
+        "structb" : {
+                "$ref" : "#/definitions/MySample_Sample50_Struct1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample50_TopTable"
+}
