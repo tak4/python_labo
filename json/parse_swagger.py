@@ -27,7 +27,7 @@ def recursive_ref(nc, data, d):
                 recursive_ref(nc + 1, data, data_contents)
             else:
                 # print('    ' * nc + '{:<15}: {}'.format(k, v))
-                print('\t' * nc + f'{k}')
+                print('\t' * nc + f'{k}', end='')
                 recursive_ref(nc + 1, data, v)
     else:
         print('\t' * nc + f'{d}')
