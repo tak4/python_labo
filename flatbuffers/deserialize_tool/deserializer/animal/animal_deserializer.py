@@ -6,6 +6,10 @@ from deserializer.animal.generated.Animal import Animal
 
 class AnimalDeserializer(BaseDeserializer):
 
+    def __init__(self):
+        self.input_file = 'input/encode_animal.json'
+        self.output_file = 'output/decode_animal.json'
+
     def decode(self, input_file=None, output_file=None):
         print('decode')
         if input_file is not None:

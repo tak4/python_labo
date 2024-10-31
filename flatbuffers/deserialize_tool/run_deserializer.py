@@ -1,6 +1,7 @@
 from optparse import OptionParser
 
-from creator.deserializer_creator import DesealizeCreator
+from creator.deserializer_creator import DesealizeCreator as dc
+from creator.deserializer_creator_importlib import DesealizeCreator as dcil
 
 def main():
 
@@ -21,7 +22,10 @@ def main():
 
 def call(kind=None, input_file=None, output_file=None):
 
-    deserializer = DesealizeCreator.create(kind)
+    # デバッグ：creater切り替え
+    # deserializer = dc.create(kind)
+    deserializer = dcil.create(kind)
+
     deserializer.decode(input_file, output_file)
     fl = deserializer.decode_and_process(input_file)
     if fl is not None:

@@ -6,6 +6,10 @@ from deserializer.human.generated.Human import Human
 
 class HumanDeserializer(BaseDeserializer):
 
+    def __init__(self):
+        self.input_file = 'input/encode_human.json'
+        self.output_file = 'output/decode_human.json'
+
     def decode(self, input_file=None, output_file=None):
         print('decode')
         if input_file is not None:
