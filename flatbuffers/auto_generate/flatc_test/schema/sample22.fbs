@@ -1,0 +1,13 @@
+// root_type が2つある場合の検証
+namespace MySample.Sample22;
+
+table TopTable1 {
+  ifielda:int;
+}
+
+table TopTable2 {
+  ifielda:int;
+}
+
+root_type TopTable2;
+root_type TopTable1;
