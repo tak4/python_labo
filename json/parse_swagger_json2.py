@@ -1,5 +1,12 @@
 import json
-import pprint
+import os
+import sys
+
+if len(sys.argv) <= 1:
+    print('need input file')
+    sys.exit()
+
+input_swagger_json_file = sys.argv[1]
 
 # Function to expand the $ref parts in the JSON data
 def expand_refs(data, components):
@@ -7,6 +14,7 @@ def expand_refs(data, components):
         if "$ref" in data:
             ref = data["$ref"]
             parts = ref.split('/')
+            # $refを差し替える
             data[parts[3]] = components[parts[2]][parts[3]]
             del data["$ref"]
             return data
@@ -18,12 +26,19 @@ def expand_refs(data, components):
         return data
 
 # Read the before JSON data from a file
-with open('input/1_8_1_swagger.json', 'r') as f:
-    before = json.load(f)
+with open(input_swagger_json_file, 'r') as f:
+    input_json = json.load(f)
 
-# Extract components
-components = before.get("components", {})
+# components部分を取得
+components = input_json.get("components", {})
 
-j = expand_refs(before, components)
+# refを展開する
+j = expand_refs(input_json, components)
 
-print(json.dumps(j, indent=2))
+output_filename = os.path.basename(input_swagger_json_file)
+
+output_swagger_json_file = 'expand_' + output_filename
+with open(output_swagger_json_file, 'w') as f:
+    json.dump(j, f, indent=2)
+
+# print(json.dumps(j, indent=2))
