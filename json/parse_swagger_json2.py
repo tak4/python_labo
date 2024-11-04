@@ -1,4 +1,5 @@
 import json
+import pprint
 
 # Function to expand the $ref parts in the JSON data
 def expand_refs(data, components):
@@ -6,10 +7,9 @@ def expand_refs(data, components):
         if "$ref" in data:
             ref = data["$ref"]
             parts = ref.split('/')
-            ref_data = components
-            for part in parts[1:]:
-                ref_data = ref_data.get(part, {})
-            return expand_refs(ref_data, components)
+            data[parts[3]] = components[parts[2]][parts[3]]
+            del data["$ref"]
+            return data
         else:
             return {k: expand_refs(v, components) for k, v in data.items()}
     elif isinstance(data, list):
@@ -18,28 +18,12 @@ def expand_refs(data, components):
         return data
 
 # Read the before JSON data from a file
-with open('input/1_8_1_swagger_sample_before.json', 'r') as f:
+with open('input/1_8_1_swagger.json', 'r') as f:
     before = json.load(f)
 
 # Extract components
 components = before.get("components", {})
 
-# Expand the $ref parts in the before JSON data
-for path, path_item in before["paths"].items():
-    for method, operation in path_item.items():
-        if "requestBody" in operation:
-            schema_ref = operation["requestBody"]["content"]["application/json"]["schema"]
-            if "$ref" in schema_ref:
-                ref_key = schema_ref["$ref"].split("/")[-1]
-                operation["requestBody"]["content"]["application/json"]["schema"] = components["schemas"][ref_key]
-        if "responses" in operation:
-            for response_code, response in operation["responses"].items():
-                if "content" in response:
-                    schema_ref = response["content"]["application/json"]["schema"]
-                    if "$ref" in schema_ref:
-                        ref_key = schema_ref["$ref"].split("/")[-1]
-                        response["content"]["application/json"]["schema"] = components["schemas"][ref_key]
+j = expand_refs(before, components)
 
-# Print the after JSON data
-print(json.dumps(before, indent=2, ensure_ascii=False))
-
+print(json.dumps(j, indent=2))
