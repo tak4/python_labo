@@ -1,0 +1,8 @@
+// unsigned int
+namespace MySample.Sample22;
+
+table TopTable1 {
+  ifielda:uint32;
+}
+
+root_type TopTable1;
