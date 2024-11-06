@@ -20,9 +20,9 @@ def main():
 
     toptable = TopTable.GetRootAsTopTable(buf, 0)
     # unsigned_value = toptable.Ifielda()
-    unsigned_value = toptable.Ifielda() & 0xFFFFFFFF # マスクして32ビットに制限
+    # unsigned_value = toptable.Ifielda() & 0xFFFFFFFF # マスクして32ビットに制限
     # unsigned_value = struct.unpack('I', struct.pack('I', toptable.Ifielda()))[0]
-    # unsigned_value = np.array([toptable.Ifielda()], dtype=np.uint32)
+    unsigned_value = np.array([toptable.Ifielda()], dtype=np.uint64)[0]
     print(unsigned_value)
 
 if __name__ == '__main__':
