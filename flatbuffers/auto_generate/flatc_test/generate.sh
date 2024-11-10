@@ -8,6 +8,8 @@ set -x
 flatc -o ./json/jsonschema --jsonschema ./schema/${filename}.fbs
 
 # generate
+# fbsでincludeが使用されている場合は、下記のようにincludeされる側のfbsファイルの指定も必要
+# flatc --python ./schema/sample13.fbs ./schema/include_schema.fbs
 flatc --python ./schema/${filename}.fbs
 
 # serialize fbs+jsop > bin

@@ -1,7 +1,7 @@
 import os
 import sys
 
-from MySample.Sample10.TopTable import TopTable
+from MySample.Sample11.TopTable import TopTable
 
 def main():
 
