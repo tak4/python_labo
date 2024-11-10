@@ -1,0 +1,10 @@
+{
+  uniona_type: "unionb1",
+  uniona1: {
+    uniona_type: "tablea1",
+    unionb1: {
+      ifielda1: 10
+    }
+  }
+}
+  

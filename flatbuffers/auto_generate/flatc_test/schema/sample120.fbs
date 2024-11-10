@@ -1,0 +1,31 @@
+// Unionのネスト
+// error: union value type may only be table/struct/string
+namespace MySample.Sample120;
+
+table Table1 {
+  ifielda1:int;
+}
+
+table Table2 {
+  bfielda2:byte;
+}
+
+table Table3 {
+  lfielda3:long;
+}
+
+union Union2 {
+  tablea1:Table1,
+  tableb2:Table2,
+  tablec3:Table3
+}
+
+union Union1 {
+  unionb1:Union2;
+}
+
+table TopTable {
+  uniona1:Union1;
+}
+
+root_type TopTable;

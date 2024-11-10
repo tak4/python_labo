@@ -1,0 +1,9 @@
+{
+  uniona1_type: "tablea1",
+  uniona1: {
+    unionb1_type: "tableb2",
+    unionb1: {
+      bfielda2: 10
+    }
+  }
+}
