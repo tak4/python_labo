@@ -6,7 +6,7 @@ struct Struct1 {
 }
 
 table TopTable {
-    structa: Struct1;
+  struct1: Struct1;
 }
 
 root_type TopTable;

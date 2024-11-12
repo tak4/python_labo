@@ -17,8 +17,8 @@ def main():
     print(buf)
 
     toptable = TopTable.GetRootAsTopTable(buf, 0)
-    structa = toptable.Structa()
-    sint32 = structa.Sint32()
+    struct1 = toptable.Struct1()
+    sint32 = struct1.Sint32()
     print(sint32, type(sint32))
 
 

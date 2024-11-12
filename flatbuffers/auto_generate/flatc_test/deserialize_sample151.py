@@ -17,12 +17,12 @@ def main():
     print(buf)
 
     toptable = TopTable.GetRootAsTopTable(buf, 0)
-    tablea = toptable.Tablea()
-    length = tablea.Sint32Length()
+    table1 = toptable.Table1()
+    length = table1.Sint32Length()
     print(length)
-    sint32 = [tablea.Sint32(i) for i in range(length)]
+    sint32 = [table1.Sint32(i) for i in range(length)]
     print(sint32, type(sint32))
-    sint32_numpy = tablea.Sint32AsNumpy()
+    sint32_numpy = table1.Sint32AsNumpy()
     print(sint32_numpy, type(sint32_numpy))
 
 if __name__ == '__main__':

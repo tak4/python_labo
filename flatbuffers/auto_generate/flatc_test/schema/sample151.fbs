@@ -6,7 +6,7 @@ table Table1 {
 }
 
 table TopTable {
-    tablea: Table1;
+  table1: Table1;
 }
 
 root_type TopTable;
