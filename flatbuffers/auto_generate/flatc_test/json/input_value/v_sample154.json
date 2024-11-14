@@ -1,6 +1,6 @@
 {
   "table1": {
-    "table2": [
+    "struct1": [
       {
         "sint32": 1
       },

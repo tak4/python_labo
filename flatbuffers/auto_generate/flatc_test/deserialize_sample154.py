@@ -1,6 +1,6 @@
 import sys
 
-from MySample.Sample151.TopTable import TopTable
+from MySample.Sample154.TopTable import TopTable
 
 def main():
 
@@ -18,12 +18,13 @@ def main():
 
     toptable = TopTable.GetRootAsTopTable(buf, 0)
     table1 = toptable.Table1()
-    length = table1.Sint32Length()
-    print(length)
-    sint32 = [table1.Sint32(i) for i in range(length)]
-    print(sint32, type(sint32))
-    sint32_numpy = table1.Sint32AsNumpy()
-    print(sint32_numpy, type(sint32_numpy))
+
+    try:
+        length = table1.Struct1Length()
+        print(length)
+    except Exception as e:
+        print(f"Error deserializing FlatBuffers: {e}")
+        print(f"Buffer size: {len(buf)}")
 
 if __name__ == '__main__':
     main()

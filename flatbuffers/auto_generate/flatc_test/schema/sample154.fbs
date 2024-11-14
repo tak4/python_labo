@@ -5,7 +5,7 @@ struct Struct1 {
   sint32:int;
 }
 
-table Table1 {
+struct Table1 {
   struct1:[Struct1:3];
 }
 
