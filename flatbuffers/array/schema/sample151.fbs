@@ -1,0 +1,12 @@
+// Array
+namespace MySample.Sample151;
+
+table Table1 {
+  sint32:[int];
+}
+
+table TopTable {
+  table1: Table1;
+}
+
+root_type TopTable;

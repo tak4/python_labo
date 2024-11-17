@@ -1,0 +1,12 @@
+// Array
+namespace MySample.Sample150;
+
+struct Struct1 {
+  sint32:[int:3];
+}
+
+table TopTable {
+  struct1: Struct1;
+}
+
+root_type TopTable;
