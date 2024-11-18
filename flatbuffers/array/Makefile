@@ -3,7 +3,7 @@
 #ターゲット名は gcc -o の代わり
 
 CC=g++
-CFLAG=-g -Wall -I/home/takashi/develop/flatbuffers/include
+CFLAG=-g -Wall -I/home/takashi/develop/flatbuffers/flatbuffers_24_3_25/include
 
 all	:			deserialize_sample154
 deserialize_sample154:	deserialize_sample154.o

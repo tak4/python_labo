@@ -6,115 +6,125 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
+              FLATBUFFERS_VERSION_MINOR == 3 &&
+              FLATBUFFERS_VERSION_REVISION == 25,
+             "Non-compatible flatbuffers version included");
+
 namespace MySample {
 namespace Sample154 {
 
-struct Struct1;
+struct Struct2;
 
-struct Table1;
+struct Struct1;
 
 struct TopTable;
 struct TopTableBuilder;
 
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Struct2 FLATBUFFERS_FINAL_CLASS {
+ private:
+  uint32_t sint32_;
+
+ public:
+  Struct2()
+      : sint32_(0) {
+  }
+  Struct2(uint32_t _sint32)
+      : sint32_(::flatbuffers::EndianScalar(_sint32)) {
+  }
+  uint32_t sint32() const {
+    return ::flatbuffers::EndianScalar(sint32_);
+  }
+};
+FLATBUFFERS_STRUCT_END(Struct2, 4);
+
 FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Struct1 FLATBUFFERS_FINAL_CLASS {
  private:
-  int32_t sint32_;
+  MySample::Sample154::Struct2 struct2_[3];
 
  public:
   Struct1()
-      : sint32_(0) {
+      : struct2_() {
   }
-  Struct1(int32_t _sint32)
-      : sint32_(flatbuffers::EndianScalar(_sint32)) {
+  Struct1(::flatbuffers::span<const MySample::Sample154::Struct2, 3> _struct2) {
+    ::flatbuffers::CastToArray(struct2_).CopyFromSpan(_struct2);
   }
-  int32_t sint32() const {
-    return flatbuffers::EndianScalar(sint32_);
-  }
-};
-FLATBUFFERS_STRUCT_END(Struct1, 4);
-
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Table1 FLATBUFFERS_FINAL_CLASS {
- private:
-  MySample::Sample154::Struct1 struct1_[3];
-
- public:
-  Table1()
-      : struct1_() {
-  }
-  const flatbuffers::Array<MySample::Sample154::Struct1, 3> *struct1() const {
-    return reinterpret_cast<const flatbuffers::Array<MySample::Sample154::Struct1, 3> *>(struct1_);
+  const ::flatbuffers::Array<MySample::Sample154::Struct2, 3> *struct2() const {
+    return &::flatbuffers::CastToArray(struct2_);
   }
 };
-FLATBUFFERS_STRUCT_END(Table1, 12);
+FLATBUFFERS_STRUCT_END(Struct1, 12);
 
-struct TopTable FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TopTable FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TopTableBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TABLE1 = 4
+    VT_STRUCT1 = 4
   };
-  const MySample::Sample154::Table1 *table1() const {
-    return GetStruct<const MySample::Sample154::Table1 *>(VT_TABLE1);
+  const MySample::Sample154::Struct1 *struct1() const {
+    return GetStruct<const MySample::Sample154::Struct1 *>(VT_STRUCT1);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<MySample::Sample154::Table1>(verifier, VT_TABLE1, sizeof(MySample::Sample154::Table1)) &&
+           VerifyField<MySample::Sample154::Struct1>(verifier, VT_STRUCT1, 4) &&
            verifier.EndTable();
   }
 };
 
 struct TopTableBuilder {
   typedef TopTable Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_table1(const MySample::Sample154::Table1 *table1) {
-    fbb_.AddStruct(TopTable::VT_TABLE1, table1);
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_struct1(const MySample::Sample154::Struct1 *struct1) {
+    fbb_.AddStruct(TopTable::VT_STRUCT1, struct1);
   }
-  explicit TopTableBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TopTableBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TopTable> Finish() {
+  ::flatbuffers::Offset<TopTable> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TopTable>(end);
+    auto o = ::flatbuffers::Offset<TopTable>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TopTable> CreateTopTable(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const MySample::Sample154::Table1 *table1 = 0) {
+inline ::flatbuffers::Offset<TopTable> CreateTopTable(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const MySample::Sample154::Struct1 *struct1 = nullptr) {
   TopTableBuilder builder_(_fbb);
-  builder_.add_table1(table1);
+  builder_.add_struct1(struct1);
   return builder_.Finish();
 }
 
 inline const MySample::Sample154::TopTable *GetTopTable(const void *buf) {
-  return flatbuffers::GetRoot<MySample::Sample154::TopTable>(buf);
+  return ::flatbuffers::GetRoot<MySample::Sample154::TopTable>(buf);
 }
 
 inline const MySample::Sample154::TopTable *GetSizePrefixedTopTable(const void *buf) {
-  return flatbuffers::GetSizePrefixedRoot<MySample::Sample154::TopTable>(buf);
+  return ::flatbuffers::GetSizePrefixedRoot<MySample::Sample154::TopTable>(buf);
 }
 
 inline bool VerifyTopTableBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifyBuffer<MySample::Sample154::TopTable>(nullptr);
 }
 
 inline bool VerifySizePrefixedTopTableBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifySizePrefixedBuffer<MySample::Sample154::TopTable>(nullptr);
 }
 
 inline void FinishTopTableBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<MySample::Sample154::TopTable> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<MySample::Sample154::TopTable> root) {
   fbb.Finish(root);
 }
 
 inline void FinishSizePrefixedTopTableBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<MySample::Sample154::TopTable> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<MySample::Sample154::TopTable> root) {
   fbb.FinishSizePrefixed(root);
 }
 

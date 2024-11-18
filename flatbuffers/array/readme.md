@@ -1,3 +1,10 @@
+# github
+flatbuffers_24_3_25/
+
+# make
+cmake -G "Unix Makefiles"
+make -j
+
 # cpp コード生成
 flatc --cpp ./schema/sample154.fbs  
 
@@ -18,25 +25,6 @@ In file included from /home/takashi/develop/flatbuffers/include/flatbuffers/flat
                  from /home/takashi/develop/flatbuffers/include/flatbuffers/flatbuffers.h:29,
                  from float_double_generated.h:7,
                  from serialize.cpp:1:
-
-# Compie error 修正
-
-## 修正前
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_F_VAL) &&
-           VerifyField<double>(verifier, VT_D_VAL) &&
-           verifier.EndTable();
-  }
-
-## 修正後
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_F_VAL, sizeof(float)) &&
-           VerifyField<double>(verifier, VT_D_VAL, sizeof(double)) &&
-           verifier.EndTable();
-  }
-
 
 
 # Compile error

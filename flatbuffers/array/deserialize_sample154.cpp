@@ -42,17 +42,17 @@ int main(int argc, char *argv[]) {
     }
 
     auto toptable = GetTopTable(buffer.data());
-    auto table1 = toptable->table1();
-    if (!table1) {
+    auto struct1 = toptable->struct1();
+    if (!struct1) {
         std::cerr << "Error deserializing FlatBuffers: Table1 is null" << std::endl;
         return 1;
     }
 
-    // std::cout << table1 << std::endl;
+    // std::cout << struct1 << std::endl;
 
     try {
-        const flatbuffers::Array<Struct1, 3> *a = table1->struct1();
-        std::cout << a[0].sint32() << std::endl;
+        const flatbuffers::Array<Struct2, 3> *s = struct1->struct2();
+        std::cout << s[0].sint32() << std::endl;
         
     } catch (const std::exception &e) {
         std::cerr << "Error deserializing FlatBuffers: " << e.what() << std::endl;
