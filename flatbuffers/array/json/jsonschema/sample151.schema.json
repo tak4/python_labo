@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "definitions": {
+    "MySample_Sample151_Table1" : {
+      "type" : "object",
+      "properties" : {
+        "sint32" : {
+                "type" : "array", "items" : {"type" : "integer", "minimum" : -2147483648, "maximum" : 2147483647}
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample151_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "table1" : {
+                "$ref" : "#/definitions/MySample_Sample151_Table1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample151_TopTable"
+}

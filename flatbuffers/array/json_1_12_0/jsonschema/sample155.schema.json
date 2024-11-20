@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample155_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "sint32" : {
+                "type" : "number"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample155_Table1" : {
+      "type" : "object",
+      "properties" : {
+        "struct1" : {
+                "type" : "array", "items" : { "$ref" : "#/definitions/MySample_Sample155_Struct1" }
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample155_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "table1" : {
+                "$ref" : "#/definitions/MySample_Sample155_Table1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample155_TopTable"
+}

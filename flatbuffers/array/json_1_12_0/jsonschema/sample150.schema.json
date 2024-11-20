@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "MySample_Sample150_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "sint32" : {
+                "type" : "array", "items" : { "type" : "number" },
+                "minItems": 3,
+                "maxItems": 3
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample150_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "struct1" : {
+                "$ref" : "#/definitions/MySample_Sample150_Struct1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample150_TopTable"
+}
