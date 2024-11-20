@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "definitions": {
+    "MySample_Sample200_Struct2" : {
+      "type" : "object",
+      "properties" : {
+        "sint32" : {
+                "type" : "integer", "minimum" : -2147483648, "maximum" : 2147483647
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample200_Struct1" : {
+      "type" : "object",
+      "properties" : {
+        "struct2" : {
+                "$ref" : "#/definitions/MySample_Sample200_Struct2"
+              }
+      },
+      "additionalProperties" : false
+    },
+    "MySample_Sample200_TopTable" : {
+      "type" : "object",
+      "properties" : {
+        "struct1" : {
+                "$ref" : "#/definitions/MySample_Sample200_Struct1"
+              }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "$ref" : "#/definitions/MySample_Sample200_TopTable"
+}
