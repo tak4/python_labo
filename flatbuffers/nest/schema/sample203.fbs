@@ -1,0 +1,15 @@
+namespace MySample.Sample203;
+
+table Table2 {
+  sint32:int;
+}
+
+struct Struct1 {
+  table2:Table2;
+}
+
+table TopTable {
+  struct1: Struct1;
+}
+
+root_type TopTable;
