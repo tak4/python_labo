@@ -1,0 +1,29 @@
+{
+  "bfeilda":-100,
+  "ubfeilda":100,
+  "bofielda":true,
+  "sfielda":-200,
+  "usfielda":200,
+  "ifielda":-300,
+  "uifielda":300,
+  "ffielda":400.5,
+  "lfielda":-500,
+  "ulfielda":500,
+  "dfielda":600.5,
+  "strfielda":"test",
+  "tbfielda" :{
+    "bfeilda": -100,
+    "stfielda":"test"
+  },
+  "stfielda": {
+    "bfeilda": -100,
+    "bofielda": true
+  },
+  "unfielda_type": "Table1",
+  "unfielda": {
+      "bfeilda": -100,
+      "stfielda":"test"  
+  },
+  "enfielda": 0,
+  "alfielda": [10, 20, 30]
+}

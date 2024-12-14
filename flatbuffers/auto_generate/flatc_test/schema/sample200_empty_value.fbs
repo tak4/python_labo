@@ -1,0 +1,48 @@
+// All Types sample200と同じschema 空データテスト用
+namespace MySample.Sample200;
+
+table Table1 {
+  bfeilda:byte;
+  stfielda:string;
+}
+
+table Table2 {
+  bofielda:bool;
+  sfielda:short;
+}
+
+struct Struct1 {
+  bfeilda:byte;
+  bofielda:bool;
+}
+
+struct Struct2 {
+  bfeilda:byte;
+  bofielda:bool;
+}
+
+union Union1 { Table1, Table2 }
+
+enum Enum1 : byte { E1, E2, E3 }
+
+table TopTable {
+  bfeilda:byte;
+  ubfeilda:ubyte;
+  bofielda:bool;
+  sfielda:short;
+  usfielda:ushort;
+  ifielda:int;
+  uifielda:uint;
+  ffielda:float;
+  lfielda:long;
+  ulfielda:ulong;
+  dfielda:double;
+  strfielda:string;
+  tbfielda:Table1;
+  stfielda:Struct1;
+  unfielda:Union1;
+  enfielda:Enum1;
+  alfielda:[byte];
+}
+
+root_type TopTable;

@@ -18,7 +18,7 @@ def main():
 
     toptable = TopTable.GetRootAsTopTable(buf, 0)
     table1 = toptable.Table1()
-
+    print(table1)
     try:
         length = table1.Struct1Length()
         print(length)
