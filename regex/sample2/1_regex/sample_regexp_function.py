@@ -16,7 +16,7 @@ if m is not None:
     print(m.group())
 
 # search
-# 戦闘でなくてもマッチするか調べる(１つだけ)
+# 先頭でなくてもマッチするか調べる(１つだけ)
 print('--- search ---')
 m = re.search('a.c', 'test abc test abc')
 print(type(m), m)    # マッチオブジェクトが返る
