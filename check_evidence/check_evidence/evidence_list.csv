@@ -1,0 +1,7 @@
+fullpath,dlink,flink,fname_wo_ext,datetime
+./evidence/e1/tool_logs/t1/s2/20240901121050_api_c.txt,"=HYPERLINK(""./evidence/e1/tool_logs/t1/s2"")","=HYPERLINK(""./evidence/e1/tool_logs/t1/s2/20240901121050_api_c.txt"")",20240901121050_api_c,20240901121050
+./evidence/e1/tool_logs/t1/s2/20240901121030_api_a.txt,"=HYPERLINK(""./evidence/e1/tool_logs/t1/s2"")","=HYPERLINK(""./evidence/e1/tool_logs/t1/s2/20240901121030_api_a.txt"")",20240901121030_api_a,20240901121030
+./evidence/e1/tool_logs/t1/s2/20240901121040_api_b.txt,"=HYPERLINK(""./evidence/e1/tool_logs/t1/s2"")","=HYPERLINK(""./evidence/e1/tool_logs/t1/s2/20240901121040_api_b.txt"")",20240901121040_api_b,20240901121040
+./evidence/e1/tool_logs/t1/s1/20240901120050_api_c.txt,"=HYPERLINK(""./evidence/e1/tool_logs/t1/s1"")","=HYPERLINK(""./evidence/e1/tool_logs/t1/s1/20240901120050_api_c.txt"")",20240901120050_api_c,20240901120050
+./evidence/e1/tool_logs/t1/s1/20240901120040_api_b.txt,"=HYPERLINK(""./evidence/e1/tool_logs/t1/s1"")","=HYPERLINK(""./evidence/e1/tool_logs/t1/s1/20240901120040_api_b.txt"")",20240901120040_api_b,20240901120040
+./evidence/e1/tool_logs/t1/s1/20240901120030_api_a.txt,"=HYPERLINK(""./evidence/e1/tool_logs/t1/s1"")","=HYPERLINK(""./evidence/e1/tool_logs/t1/s1/20240901120030_api_a.txt"")",20240901120030_api_a,20240901120030

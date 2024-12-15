@@ -1,20 +1,18 @@
 import csv
 import glob
-from optparse import OptionParser
 import os
+import sys
 import re
 
 def main():
-    # 入力オプションの処理
-    usage = 'usage: %prog [options]'
-    parser = OptionParser(usage=usage)
-    parser.add_option('-i', action='store', type='string',
-                      dest='input_path', help='input path')
-    options, args = parser.parse_args()
 
-    # glob
-    target_path = os.path.join(options.input_path, '**')
-    fl = glob.glob(target_path, recursive=True)
+    if len(sys.argv) <= 1:
+        print('no input file...')
+        sys.exit()
+
+    input_path = sys.argv[1]
+    target_path = os.path.join(input_path, '**')
+    file_path_list = glob.glob(target_path, recursive=True)
 
     # re：日時
     p = re.compile('[0-9]{14}')
@@ -29,7 +27,7 @@ def main():
         writer.writeheader()
 
         # ファイルのリスト作成
-        for f in fl:
+        for f in file_path_list:
             if os.path.isfile(f):
                 dname = os.path.dirname(f)
                 bname = os.path.basename(f)
