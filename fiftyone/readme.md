@@ -31,3 +31,5 @@ Brain Builder
 **🔲 Uploading data - Detectors**
 
 [Creating Datasets and Uploading Images](https://support.neurala.com/docs/creating-datasets-and-uploading-images)
+
+🔲 Uploading data - Detectors
