@@ -1,3 +1,4 @@
+# https://docs.voxel51.com/getting_started/install.html#quickstart
 import fiftyone as fo
 import fiftyone.zoo as foz
 
