@@ -1,5 +1,6 @@
 # https://docs.voxel51.com/dataset_zoo/api.html#getting-information-about-zoo-datasets
 import textwrap
+import fiftyone as fo
 import fiftyone.zoo as foz
 
 dataset_name = 'cifar10'
@@ -15,6 +16,11 @@ print("%s\n" % ", ".join(zoo_dataset.tags))
 
 print("***** Supported splits *****")
 print("%s\n" % ", ".join(zoo_dataset.supported_splits))
+
+# https://docs.voxel51.com/api/fiftyone.utils.openimages.html#fiftyone.utils.openimages.get_classes
+oiv7_classes = fo.utils.openimages.get_classes(version='v7', dataset_dir=None)
+for name in oiv7_classes:
+    print(name)
 
 # download
 # dataset_dir = foz.find_zoo_dataset(dataset_name)
