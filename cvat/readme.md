@@ -1,4 +1,3 @@
-
 # CVAT
 
 [CVAT](https://www.cvat.ai/)
@@ -82,7 +81,31 @@ docker-ce docker-ce-cli containerd.io docker-compose-plugin
     - **containerd.io:** コンテナランタイムのデーモンです。Docker Engineがコンテナを管理するために利用します。
     - **docker-compose-plugin:** Docker Composeプラグインです。複数のコンテナをまとめて管理するためのツールです。
 
-docker ステータス確認
+docker サービス開始
+
+```bash
+sudo systemctl start docker
+```
+
+docker サービス停止
+
+```bash
+sudo systemctl stop docker
+```
+
+docker サービス永続化
+
+```bash
+sudo systemctl enable docker
+```
+
+docker サービス永続化無効
+
+```bash
+sudo systemctl disable docker
+```
+
+docker サービスステータス確認
 
 ```bash
 sudo systemctl status docker
@@ -90,8 +113,18 @@ sudo systemctl status docker
 
 起動
 
+cvatをcloneしたディレクトリで実行
+
 ```bash
 sudo docker compose up -d
+```
+
+停止
+
+cvatをcloneしたディレクトリで実行
+
+```bash
+sudo docker compose down
 ```
 
 スーパーユーザー追加
