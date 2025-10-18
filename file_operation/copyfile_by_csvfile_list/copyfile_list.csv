@@ -1,0 +1,3 @@
+source_path,source_file,target_path,target_file
+source,file1.txt,target,file1.txt
+source,file2.txt,target, 
