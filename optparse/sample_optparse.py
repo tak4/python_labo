@@ -1,5 +1,5 @@
-from optparse import OptionParser
-from optparse import OptionGroup
+from optparse import OptionGroup, OptionParser
+
 
 # optparse
 # コマンドラインからのオプション指定を処理するための仕組み
@@ -15,6 +15,7 @@ from optparse import OptionGroup
 # python sample_optparse.py -e prd --release
 # python sample_optparse.py -e develop --release
 # python sample_optparse.py -g
+# python sample_optparse.py test hello
 def main():
     #
     # optionを追加
@@ -57,10 +58,12 @@ def main():
     # -f, -n
     print(options.filename, options.num)
     # -i
-    for i, l in enumerate(options.listword):
-        print(i, l)
-    print(options)
-    print(type(args), args) #   args の型は<class 'list'>
+    if options.listword:
+        for i, l in enumerate(options.listword):
+            print(i, l)
+
+    print(options)          # オプションが辞書型で格納される
+    print(type(args), args) # args の型は<class 'list'>
 
 if __name__ == '__main__':
     main()
