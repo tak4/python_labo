@@ -10,6 +10,9 @@ with open(file_path, 'r', encoding='utf-8') as file:
 # The regular expression to find a word, a newline, and then digits
 # \s+ matches one or more whitespace characters (including newlines)
 pattern = re.compile(r'([A-Z_]+)\s+(\d+)')
+# The regular expression to find a word, a space/tab, and then digits within a single line.
+# [ \t]+ matches one or more space or tab characters.
+# pattern = re.compile(r'([A-Z_]+)[ \t]+(\d+)')
 
 # The replacement string, using backreferences to the captured groups
 # \1 refers to the first group ([A-Z_]+)
