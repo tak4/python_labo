@@ -1,3 +1,4 @@
+import os
 import sys
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt, QMimeData
@@ -25,6 +26,8 @@ class DropLabel(QLabel):
         if mime.hasUrls():
             paths = [url.toLocalFile() for url in mime.urls()]
             self.setText("ドロップされたファイル:\n" + "\n".join(paths))
+            p = os.path.join(paths[0], 'samlple_dir')
+            os.makedirs(p, exist_ok=True)
         elif mime.hasText():
             self.setText("ドロップされたテキスト:\n" + mime.text())
         else:
