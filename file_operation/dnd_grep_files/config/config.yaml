@@ -1,0 +1,9 @@
+search_conditions:
+  - target_file: .*_test_.*.log
+    keywords:
+      - keyword: test_str_a
+      - keyword: test_str_b
+  - target_file: .*_sample_.*.log
+    keywords:
+      - keyword: sample_str_a
+      - keyword: sample_str_b
