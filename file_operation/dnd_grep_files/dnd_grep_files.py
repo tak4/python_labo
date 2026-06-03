@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+import yaml
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt, QMimeData
@@ -23,6 +24,10 @@ class GrepPaths():
         files = self.get_target_file_list()
         for f in files:
             print(f)
+
+        with open('./config/config.yaml', 'r') as yaml_file:
+            data = yaml.safe_load(yaml_file)
+            print(data, type(data))
 
     def get_target_file_list(self) -> list:
         for p in self.paths:
