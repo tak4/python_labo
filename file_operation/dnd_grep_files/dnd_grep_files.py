@@ -11,22 +11,24 @@ class GrepPaths():
     def __init__(self, paths: list):
         self.paths = paths
 
-    def grepTarget(self):
+    def grep_target(self):
         self.paths
         for p in self.paths:
-            self.grepPath(p)
+            self.grep_path(p)
 
-    def grepPath(self, p: str):
+    def grep_path(self, p: str):
         output_folder = os.path.join(p, 'output')
         os.makedirs(output_folder, exist_ok=True)
 
+        files = self.get_target_file_list()
+        for f in files:
+            print(f)
+
+    def get_target_file_list(self) -> list:
         for p in self.paths:
             p = Path(p)
             files = [str(p) for p in p.rglob('*.log')]
-            for f in files:
-                print(f)
-
-
+        return files
 
 class DropLabel(QLabel):
     def __init__(self, parent=None):
@@ -50,7 +52,7 @@ class DropLabel(QLabel):
             paths = [url.toLocalFile() for url in mime.urls()]
             self.setText("dropped file:\n" + "\n".join(paths))
             gp = GrepPaths(paths)
-            gp.grepTarget()
+            gp.grep_target()
         elif mime.hasText():
             self.setText("dropped text:\n" + mime.text())
         else:
