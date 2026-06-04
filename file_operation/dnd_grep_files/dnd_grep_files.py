@@ -21,18 +21,18 @@ class GrepPaths():
         output_folder = os.path.join(p, 'output')
         os.makedirs(output_folder, exist_ok=True)
 
-        files = self.get_target_file_list()
-        for f in files:
-            print(f)
-
         with open('./config/config.yaml', 'r') as yaml_file:
             data = yaml.safe_load(yaml_file)
             print(data, type(data))
 
-    def get_target_file_list(self) -> list:
+        files = self.get_target_file_list('*.log')
+        for f in files:
+            print(f)
+
+    def get_target_file_list(self, ext: str) -> list:
         for p in self.paths:
             p = Path(p)
-            files = [str(p) for p in p.rglob('*.log')]
+            files = [str(p) for p in p.rglob(ext)]
         return files
 
 class DropLabel(QLabel):
