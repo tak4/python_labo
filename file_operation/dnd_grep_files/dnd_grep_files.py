@@ -1,6 +1,7 @@
-import glob
 import os
+import re
 import sys
+from typing import List
 import yaml
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
@@ -18,22 +19,60 @@ class GrepPaths():
             self.grep_path(p)
 
     def grep_path(self, p: str):
+        """ 
+        """
+
+        # grep結果出力先ディレクトリを作成する
         output_folder = os.path.join(p, 'output')
         os.makedirs(output_folder, exist_ok=True)
 
+        # 設定ファイル読み込み
         with open('./config/config.yaml', 'r') as yaml_file:
             data = yaml.safe_load(yaml_file)
-            print(data, type(data))
 
-        files = self.get_target_file_list('*.log')
-        for f in files:
-            print(f)
+        file_list = []
+        for condition in data['search_conditions']:
+            # conditionごとの処理
+            files = self.get_rglob_file_list(condition['target_file'])
 
-    def get_target_file_list(self, ext: str) -> list:
+            # grep結果出力先ファイル
+            output_file = os.path.join(output_folder, condition['output_file'])
+
+            # grep
+            self.do_reqex_search(files, output_file, condition['keywords'])
+
+    def get_rglob_file_list(self, target_files: List[str]) -> list:
+        target_file_list = []
         for p in self.paths:
             p = Path(p)
-            files = [str(p) for p in p.rglob(ext)]
-        return files
+            for target_file in target_files:
+                target_file_list.extend([str(p) for p in p.rglob(target_file)])
+        return target_file_list
+
+    def do_reqex_search(self, target_files: List[str], output_file: str, keywords: dict):
+        # 検索条件の作成
+        # リテラル
+        parts = [re.escape(k) for k in keywords['literal']]
+        pattern = "|".join(parts)
+        pattern = r"(" + pattern + r")"
+        flags = re.MULTILINE
+        regex = re.compile(pattern, flags)
+
+        try:
+            with open(output_file, mode='w', encoding="utf-8", errors="ignore") as o_fp:
+                try:
+                    for tf in target_files:
+                        with open(tf, mode='r', encoding="utf-8", errors="ignore") as i_fp:
+                            for i, line in enumerate(i_fp, start=1):
+                                print(line)
+                                if regex.search(line):
+                                    wline = f"{tf}:{i}:{line.rstrip()}"
+                                    print(wline)
+                                    o_fp.write("{}\n".format(wline))
+                except (OSError,) as e:
+                    print(f"# error opening {tf}: {e}")
+        except (OSError,) as e:
+            print(f"# error opening {output_file}: {e}")
 
 class DropLabel(QLabel):
     def __init__(self, parent=None):
@@ -68,7 +107,7 @@ class DropLabel(QLabel):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PyQt6 Drag & Drop")
+        self.setWindowTitle("dnd grep files")
         self.resize(400, 250)
 
         layout = QVBoxLayout()

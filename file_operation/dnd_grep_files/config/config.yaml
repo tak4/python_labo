@@ -1,9 +1,25 @@
 search_conditions:
-  - target_file: .*_test_.*.log
+  - condition:
+    target_file:
+      - "*_test_*.log"
+      - "*_test_*.txt"
+    output_file: output_a.txt
     keywords:
-      - keyword: test_str_a
-      - keyword: test_str_b
-  - target_file: .*_sample_.*.log
+      literal:
+        - "test_str_a"
+        - "test_str_b"
+      regex:
+        - ".*test_str_a"
+        - ".*test_str_b"
+  - condition:
+    target_file:
+      - "*_sample_*.log"
+      - "*_sample_*.txt"
+    output_file: output_b.txt
     keywords:
-      - keyword: sample_str_a
-      - keyword: sample_str_b
+      literal:
+        - "sample_str_a"
+        - "sample_str_b"
+      regex:
+        - ".*sample_str_a"
+        - ".*sample_str_b"

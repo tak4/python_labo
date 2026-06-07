@@ -1,6 +1,6 @@
 from pathlib import Path
 
-p = Path('.')
+p = Path('D:/develop/github/python_labo/file_operation/dnd_grep_files/log')
 
 for path in p.glob('**/*.log'):
     print(path)
