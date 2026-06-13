@@ -1,5 +1,5 @@
-from ..dnd_grep_files import GrepPaths
+from ..dnd_grep_files import FileKeywordSearcher
 
 def test_GrepPaths():
-    gp = GrepPaths(['D:/develop/github/python_labo/file_operation/dnd_grep_files/log'])
-    gp.grep_target()
+    gp = FileKeywordSearcher(['D:/develop/github/python_labo/file_operation/dnd_grep_files/log'])
+    gp.search()

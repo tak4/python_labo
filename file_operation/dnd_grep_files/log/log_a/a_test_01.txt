@@ -1,1 +1,1 @@
-test_str_a
+test_str_a*

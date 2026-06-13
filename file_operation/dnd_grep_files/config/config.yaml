@@ -6,8 +6,8 @@ search_conditions:
     output_file: output_a.txt
     keywords:
       literal:
-        - "test_str_a"
-        - "test_str_b"
+        - ".*test_str_a"
+        - ".*test_str_b"
       regex:
         - ".*test_str_a"
         - ".*test_str_b"
@@ -18,8 +18,8 @@ search_conditions:
     output_file: output_b.txt
     keywords:
       literal:
-        - "sample_str_a"
-        - "sample_str_b"
+        - ".*sample_str_a"
+        - ".*sample_str_b"
       regex:
         - ".*sample_str_a"
         - ".*sample_str_b"

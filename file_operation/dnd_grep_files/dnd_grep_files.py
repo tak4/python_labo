@@ -1,3 +1,4 @@
+"""ドラッグアンドドロップ指定したフォルダ内を検索する"""
 import os
 import re
 import sys
@@ -9,39 +10,54 @@ from PyQt6.QtCore import Qt, QMimeData
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
 
 
-class GrepPaths():
+class FileKeywordSearcher():
+    """
+    """
+
     def __init__(self, paths: list):
+        # 検索対象のパス
         self.paths = paths
 
-    def grep_target(self):
-        self.paths
-        for p in self.paths:
-            self.grep_path(p)
+        # 設定ファイル読み込み
+        with open('./config/config.yaml', 'r') as yaml_file:
+            self.data = yaml.safe_load(yaml_file)
 
-    def grep_path(self, p: str):
+
+    def search(self):
+        """ 
+        """
+        # Drag and Drop で取得したディレクトリを順に処理する
+        for p in self.paths:
+            self._grep_path(p)
+
+
+    def _grep_path(self, target_path: str):
         """ 
         """
 
         # grep結果出力先ディレクトリを作成する
-        output_folder = os.path.join(p, 'output')
+        output_folder = os.path.join(target_path, 'output')
         os.makedirs(output_folder, exist_ok=True)
 
-        # 設定ファイル読み込み
-        with open('./config/config.yaml', 'r') as yaml_file:
-            data = yaml.safe_load(yaml_file)
-
-        file_list = []
-        for condition in data['search_conditions']:
+        # 検索条件を取得
+        for condition in self.data['search_conditions']:
             # conditionごとの処理
-            files = self.get_rglob_file_list(condition['target_file'])
+            files = self._get_rglob_file_list(condition['target_file'])
+
+            for f in files:
+                print(f)
 
             # grep結果出力先ファイル
             output_file = os.path.join(output_folder, condition['output_file'])
 
             # grep
-            self.do_reqex_search(files, output_file, condition['keywords'])
+            self._do_reqex_search(files, output_file, condition['keywords'])
 
-    def get_rglob_file_list(self, target_files: List[str]) -> list:
+
+    def _get_rglob_file_list(self, target_files: List[str]) -> list:
+        """
+        """
+
         target_file_list = []
         for p in self.paths:
             p = Path(p)
@@ -49,10 +65,17 @@ class GrepPaths():
                 target_file_list.extend([str(p) for p in p.rglob(target_file)])
         return target_file_list
 
-    def do_reqex_search(self, target_files: List[str], output_file: str, keywords: dict):
+
+    def _do_reqex_search(self, target_files: List[str], output_file: str, keywords: dict):
+        """
+        """
+
         # 検索条件の作成
-        # リテラル
+        # リテラル (メタ文字をエスケープする)
         parts = [re.escape(k) for k in keywords['literal']]
+        # 正規表現
+        parts = parts + [k for k in keywords['regex']]
+
         pattern = "|".join(parts)
         pattern = r"(" + pattern + r")"
         flags = re.MULTILINE
@@ -60,19 +83,15 @@ class GrepPaths():
 
         try:
             with open(output_file, mode='w', encoding="utf-8", errors="ignore") as o_fp:
-                try:
-                    for tf in target_files:
-                        with open(tf, mode='r', encoding="utf-8", errors="ignore") as i_fp:
-                            for i, line in enumerate(i_fp, start=1):
-                                print(line)
-                                if regex.search(line):
-                                    wline = f"{tf}:{i}:{line.rstrip()}"
-                                    print(wline)
-                                    o_fp.write("{}\n".format(wline))
-                except (OSError,) as e:
-                    print(f"# error opening {tf}: {e}")
+                for target_file in target_files:
+                    with open(target_file, mode='r', encoding="utf-8", errors="ignore") as i_fp:
+                        for i, line in enumerate(i_fp, start=1):
+                            if regex.search(line):
+                                wline = f"{target_file}:{i}:{line.rstrip()}"
+                                o_fp.write("{}\n".format(wline))
         except (OSError,) as e:
-            print(f"# error opening {output_file}: {e}")
+            print(f"{e}")
+
 
 class DropLabel(QLabel):
     def __init__(self, parent=None):
@@ -95,8 +114,8 @@ class DropLabel(QLabel):
         if mime.hasUrls():
             paths = [url.toLocalFile() for url in mime.urls()]
             self.setText("dropped file:\n" + "\n".join(paths))
-            gp = GrepPaths(paths)
-            gp.grep_target()
+            gp = FileKeywordSearcher(paths)
+            gp.search()
         elif mime.hasText():
             self.setText("dropped text:\n" + mime.text())
         else:
