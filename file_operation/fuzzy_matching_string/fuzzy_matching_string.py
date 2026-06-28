@@ -34,10 +34,10 @@ def filter_match_string():
 
     with open(args.output_csv, 'w', newline='') as csvfile:
         result_writer = csv.writer(csvfile)
-        with open(args.input_list, mode="r", encoding="utf-8") as input_f:
+        with open(args.input_list, mode="r", encoding="utf-8", errors="ignore") as input_f:
             while True:
                 input_f_line = input_f.readline()
-                with open(args.target_list, mode="r", encoding="utf-8") as target_f:
+                with open(args.target_list, mode="r", encoding="utf-8", errors="ignore") as target_f:
                     while True:
                         target_f_line = target_f.readline()
                         if not target_f_line:          # ファイルの終端に達したら終了
