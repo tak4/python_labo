@@ -1,10 +1,5 @@
 """ドラッグアンドドロップ指定したフォルダ内を検索する"""
-import os
-import re
 import sys
-from typing import List
-import yaml
-from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt, QMimeData
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
