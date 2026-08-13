@@ -1,3 +1,5 @@
 **/__pycache__
 **/.pytest_cache
 **/venv
+**/pyqt6/build
+**/pyqt6/dist
