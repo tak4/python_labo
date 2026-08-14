@@ -1,18 +1,18 @@
 search_conditions:
-  - condition:
-    target_file:
+  - target_file:
       - "*_test_*.log"
       - "*_test_*.txt"
+      - "test_*.log"
     output_file: output_a.txt
     keywords:
       literal:
         - ".*test_str_a"
         - ".*test_str_b"
+        - "conditions"
       regex:
         - ".*test_str_a"
         - ".*test_str_b"
-  - condition:
-    target_file:
+  - target_file:
       - "*_sample_*.log"
       - "*_sample_*.txt"
     output_file: output_b.txt

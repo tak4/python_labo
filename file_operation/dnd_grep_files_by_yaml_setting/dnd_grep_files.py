@@ -1,8 +1,6 @@
 """ドラッグアンドドロップ指定したフォルダ内を検索する"""
-import os
 import re
 import sys
-from typing import List
 import yaml
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
@@ -16,10 +14,11 @@ class FileKeywordSearcher():
 
     def __init__(self, paths: list):
         # 検索対象のパス 後のパス比較のため、パスを正規化(resolve)しておく
-        self.paths = [str(Path(p).resolve()) for p in paths]
+        self.paths = [Path(p) for p in paths]
 
         # 設定ファイル読み込み
-        with open('config/config.yaml', 'r') as yaml_file:
+        config_path = Path(__file__).parent / 'config' / 'config.yaml'
+        with open(config_path, 'r', encoding='utf-8') as yaml_file:
             self.data = yaml.safe_load(yaml_file)
 
 
@@ -31,54 +30,55 @@ class FileKeywordSearcher():
             self._grep_path(p)
 
 
-    def _grep_path(self, target_path: str):
+    def _grep_path(self, target_path: Path):
         """ 指定パス内の検索を行う
         """
 
         # grep結果出力先ディレクトリを作成する
-        output_folder = Path(target_path).joinpath('output')
-        os.makedirs(output_folder, exist_ok=True)
+        output_folder = target_path.joinpath('output')
+        output_folder.mkdir(exist_ok=True)   # parents=True も必要なら追加
 
         # 検索条件(condition)ごとの処理
         for condition in self.data['search_conditions']:
             # 検索対象ファイル名を取得する
-            files = self._get_rglob_file_list(condition['target_file'])
+            files = self._get_rglob_file_list(target_path, condition['target_file'])
 
             # grep結果出力先ファイル名を取得
-            output_file = os.path.join(output_folder, condition['output_file'])
+            output_file = output_folder / condition['output_file']
 
             # grep実行
-            self._do_reqex_search(target_path, files, output_file, condition['keywords'])
+            self._do_regex_search(target_path, files, output_file, condition['keywords'])
 
 
-    def _get_rglob_file_list(self, target_files: List[str]) -> list:
+    def _get_rglob_file_list(self, path: Path, target_files: list[str]) -> list[Path]:
         """ 検索対象ファイルをパス名＋ファイル名で取得する
         """
 
         # rglobでフルパス取得すると共に後のパス比較のため、パスを正規化(resolve)しておく
         target_file_list = []
-        for path in self.paths:
-            p = Path(path)
-            for target_file in target_files:
-                target_file_list.extend([str(Path(p).resolve()) for p in p.rglob(target_file)])
+        for target_file in target_files:
+            target_file_list.extend([Path(p) for p in path.rglob(target_file)])
 
         return target_file_list
 
 
-    def _do_reqex_search(self, target_path: str, target_files_with_path: List[str], output_file: str, keywords: dict):
+    def _do_regex_search(self, target_path: Path, target_files_with_path: list[Path], output_file: str, keywords: dict):
         """ リテラル／正規表現による検索を行う
         """
 
         # 検索条件の作成
         # リテラル (メタ文字をエスケープする)
-        parts = [re.escape(k) for k in keywords['literal']]
+        parts = [re.escape(k) for k in keywords.get('literal',[])]
         # 正規表現
-        parts = parts + [k for k in keywords['regex']]
+        parts = parts + [k for k in keywords.get('regex',[])]
 
         pattern = "|".join(parts)
         pattern = r"(" + pattern + r")"
         flags = re.MULTILINE
         regex = re.compile(pattern, flags)
+
+        # 相対パスにする為にベースパスを用意しておく
+        base = Path(target_path).resolve()
 
         # 検索の実行
         # 結果をoutput_fileに出力する
@@ -88,11 +88,11 @@ class FileKeywordSearcher():
                     with open(target_file, mode='r', encoding="utf-8", errors="ignore") as i_fp:    # 検索対象ファイル
                         for i, line in enumerate(i_fp, start=1):
                             if regex.search(line):
-                                print(target_path, target_file)
-                                relative_path = target_file.replace(target_path, '')
-                                wline = f"{relative_path}:{i}:{line.rstrip()}"
-                                o_fp.write("{}\n".format(wline))
-        except (OSError,) as e:
+                                # 検索結果のファイル名は相対パスにする
+                                relative_path = target_file.relative_to(base)
+                                # 結果ファイル書き込み
+                                o_fp.write("{}\n".format(f"{relative_path}:{i}:{line.rstrip()}"))
+        except OSError as e:
             print(f"{e}")
 
 
@@ -117,8 +117,12 @@ class DropLabel(QLabel):
         if mime.hasUrls():
             paths = [url.toLocalFile() for url in mime.urls()]
             self.setText("dropped file:\n" + "\n".join(paths))
-            gp = FileKeywordSearcher(paths)
-            gp.execute()
+            try:
+                gp = FileKeywordSearcher(paths)
+                gp.execute()
+                self.setText("Complete!")
+            except Exception as e:
+                self.setText(f"Error: {e}")
         elif mime.hasText():
             self.setText("dropped text:\n" + mime.text())
         else:
