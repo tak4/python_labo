@@ -3,6 +3,7 @@ import re
 import sys
 import yaml
 from pathlib import Path
+from pathlib import PurePosixPath
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt, QMimeData
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
@@ -30,6 +31,23 @@ class FileKeywordSearcher():
             self._grep_path(p)
 
 
+    def _natural_path_key(self, path):
+        """ 検索結果ソート用の為のキー関数
+        """
+        key = []
+        # as_posix()でパス区切り文字を/に統一する
+        # OS異存の実ファイルパスではなく、文字列としてのパス表現で扱いたい為、
+        # PurePosixPath を使用する
+        for part in PurePosixPath(path.as_posix()).parts:
+            m = re.search(r'(?i)(N)(\d+)', part)
+            if m:
+                prefix, number = m.groups()
+                key.append((prefix or "", int(number), part.lower()))
+            else:
+                key.append(("", 0, part.lower()))
+        return tuple(key)
+
+
     def _grep_path(self, target_path: Path):
         """ 指定パス内の検索を行う
         """
@@ -54,7 +72,7 @@ class FileKeywordSearcher():
         """ 検索対象ファイルをパス名＋ファイル名で取得する
         """
 
-        # rglobでフルパス取得すると共に後のパス比較のため、パスを正規化(resolve)しておく
+        # rglobでフルパス取得する 相対パスを得る処理の為、Pathオブジェクトで保持しておく
         target_file_list = []
         for target_file in target_files:
             target_file_list.extend([Path(p) for p in path.rglob(target_file)])
@@ -77,11 +95,12 @@ class FileKeywordSearcher():
         flags = re.MULTILINE
         regex = re.compile(pattern, flags)
 
-        # 相対パスにする為にベースパスを用意しておく
+        # 相対パスにする為に、検索対象のパスを用意しておく
         base = Path(target_path).resolve()
 
         # 検索の実行
         # 結果をoutput_fileに出力する
+        records = []
         try:
             with open(output_file, mode='w', encoding="utf-8", errors="ignore") as o_fp:    # 結果出力ファイル
                 for target_file in target_files_with_path:
@@ -90,8 +109,12 @@ class FileKeywordSearcher():
                             if regex.search(line):
                                 # 検索結果のファイル名は相対パスにする
                                 relative_path = target_file.relative_to(base)
-                                # 結果ファイル書き込み
-                                o_fp.write("{}\n".format(f"{relative_path}:{i}:{line.rstrip()}"))
+                                # 検索結果をソートする為に一旦結果をリストで保持
+                                records.append((relative_path, i, line.rstrip()))
+                                
+                for relative_path, i, line in sorted(records, key=lambda x: self._natural_path_key(x[0])):
+                    o_fp.write(f"{relative_path}:{i}:{line}\n")
+
         except OSError as e:
             print(f"{e}")
 
