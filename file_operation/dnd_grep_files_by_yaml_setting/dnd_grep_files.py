@@ -2,11 +2,13 @@
 import re
 import sys
 import yaml
+import threading
 from pathlib import Path
 from pathlib import PurePosixPath
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
-from PyQt6.QtCore import Qt, QMimeData
+from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QPushButton
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
+from PyQt6.QtCore import QObject, pyqtSignal, QThread
 
 
 class FileKeywordSearcher():
@@ -23,12 +25,14 @@ class FileKeywordSearcher():
             self.data = yaml.safe_load(yaml_file)
 
 
-    def execute(self):
+    def execute(self, cancel_event=None):
         """ 検索を行う
         """
         # Drag and Drop で取得したディレクトリを順に処理する
         for p in self.paths:
-            self._grep_path(p)
+            if cancel_event is not None and cancel_event.is_set():
+                break
+            self._grep_path(p, cancel_event)
 
 
     def _natural_path_key(self, path):
@@ -48,24 +52,27 @@ class FileKeywordSearcher():
         return tuple(key)
 
 
-    def _grep_path(self, target_path: Path):
+    def _grep_path(self, target_path: Path, cancel_event=None):
         """ 指定パス内の検索を行う
         """
 
         # grep結果出力先ディレクトリを作成する
-        output_folder = target_path.joinpath('output')
-        output_folder.mkdir(exist_ok=True)   # parents=True も必要なら追加
+        output_folder = target_path.joinpath("output")
+        output_folder.mkdir(exist_ok=True)
 
         # 検索条件(condition)ごとの処理
-        for condition in self.data['search_conditions']:
+        for condition in self.data["search_conditions"]:
+            if cancel_event is not None and cancel_event.is_set():
+                break
+
             # 検索対象ファイル名を取得する
-            files = self._get_rglob_file_list(target_path, condition['target_file'])
+            files = self._get_rglob_file_list(target_path, condition["target_file"])
 
             # grep結果出力先ファイル名を取得
-            output_file = output_folder / condition['output_file']
+            output_file = output_folder / condition["output_file"]
 
             # grep実行
-            self._do_regex_search(target_path, files, output_file, condition['keywords'])
+            self._do_regex_search(target_path, files, output_file, condition["keywords"], cancel_event)
 
 
     def _get_rglob_file_list(self, path: Path, target_files: list[str]) -> list[Path]:
@@ -80,7 +87,7 @@ class FileKeywordSearcher():
         return target_file_list
 
 
-    def _do_regex_search(self, target_path: Path, target_files_with_path: list[Path], output_file: str, keywords: dict):
+    def _do_regex_search(self, target_path: Path, target_files_with_path: list[Path], output_file: str, keywords: dict, cancel_event=None):
         """ リテラル／正規表現による検索を行う
         """
 
@@ -104,6 +111,9 @@ class FileKeywordSearcher():
         try:
             with open(output_file, mode='w', encoding="utf-8", errors="ignore") as o_fp:    # 結果出力ファイル
                 for target_file in target_files_with_path:
+                    if cancel_event is not None and cancel_event.is_set():
+                        break
+
                     with open(target_file, mode='r', encoding="utf-8", errors="ignore") as i_fp:    # 検索対象ファイル
                         for i, line in enumerate(i_fp, start=1):
                             if regex.search(line):
@@ -119,15 +129,65 @@ class FileKeywordSearcher():
             print(f"{e}")
 
 
-class DropLabel(QLabel):
+class SearchWorker(QObject):
+    progress = pyqtSignal(str)
+    finished = pyqtSignal()
+    error = pyqtSignal(str)
+
+    def __init__(self, paths, config_data):
+        super().__init__()
+        self.paths = paths
+        self.config_data = config_data
+        self.cancel_event = threading.Event()
+
+    def cancel(self):
+        self.cancel_event.set()
+
+    def run(self):
+        try:
+            for p in self.paths:
+                if self.cancel_event.is_set():
+                    break
+
+                self.progress.emit(f"検索中: {p}")
+                searcher = FileKeywordSearcher([str(p)])
+                searcher.data = self.config_data
+                searcher.execute(cancel_event=self.cancel_event)
+            self.finished.emit()
+        except Exception as e:
+            self.error.emit(str(e))
+
+
+class DropLabel(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setText("Please drop your folder here.")
-        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setStyleSheet(
+
+        self.label = QLabel("Please drop your folder here.")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label.setStyleSheet(
             "QLabel { border: 2px dashed #888; font-size: 16px; padding: 20px; }"
         )
         self.setAcceptDrops(True)
+
+        self.cancel_btn = QPushButton("キャンセル")
+        self.cancel_btn.hide()
+
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.label)
+        layout.addWidget(self.cancel_btn)
+
+    def update_status(self, message):
+        self.label.setText(message)
+
+    def on_error(self, message):
+        self.label.setText(f"Error: {message}")
+
+    def on_finished(self):
+        if self.worker.cancel_event.is_set():
+            self.label.setText("Cancelled")
+        else:
+            self.label.setText("Complete!")
+        self.cancel_btn.hide()
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls() or event.mimeData().hasText():
@@ -139,13 +199,26 @@ class DropLabel(QLabel):
         mime = event.mimeData()
         if mime.hasUrls():
             paths = [url.toLocalFile() for url in mime.urls()]
-            self.setText("dropped file:\n" + "\n".join(paths))
-            try:
-                gp = FileKeywordSearcher(paths)
-                gp.execute()
-                self.setText("Complete!")
-            except Exception as e:
-                self.setText(f"Error: {e}")
+
+            self.label.setText("検索中...")
+            self.cancel_btn.show()
+
+            self.thread = QThread()
+            self.worker = SearchWorker(paths, FileKeywordSearcher(paths).data)
+
+            self.worker.moveToThread(self.thread)
+            self.thread.started.connect(self.worker.run)
+            self.worker.progress.connect(self.update_status)
+            self.worker.finished.connect(self.on_finished) 
+            self.worker.finished.connect(self.thread.quit)
+            self.worker.finished.connect(self.worker.deleteLater)
+            self.thread.finished.connect(self.thread.deleteLater)
+            self.worker.error.connect(self.on_error)
+
+            self.cancel_btn.clicked.connect(self.worker.cancel)
+
+            self.thread.start()
+
         elif mime.hasText():
             self.setText("dropped text:\n" + mime.text())
         else:
