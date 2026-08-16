@@ -5,7 +5,7 @@ import yaml
 import threading
 from pathlib import Path
 from pathlib import PurePosixPath
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QPushButton
+from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QPushButton, QProgressBar
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
 from PyQt6.QtCore import QObject, pyqtSignal, QThread
@@ -25,14 +25,14 @@ class FileKeywordSearcher():
             self.data = yaml.safe_load(yaml_file)
 
 
-    def execute(self, cancel_event=None):
+    def execute(self, cancel_event=None, progress_callback=None):
         """ 検索を行う
         """
         # Drag and Drop で取得したディレクトリを順に処理する
         for p in self.paths:
             if cancel_event is not None and cancel_event.is_set():
                 break
-            self._grep_path(p, cancel_event)
+            self._grep_path(p, cancel_event, progress_callback)
 
 
     def _natural_path_key(self, path):
@@ -52,7 +52,7 @@ class FileKeywordSearcher():
         return tuple(key)
 
 
-    def _grep_path(self, target_path: Path, cancel_event=None):
+    def _grep_path(self, target_path: Path, cancel_event=None, progress_callback=None):
         """ 指定パス内の検索を行う
         """
 
@@ -72,7 +72,7 @@ class FileKeywordSearcher():
             output_file = output_folder / condition["output_file"]
 
             # grep実行
-            self._do_regex_search(target_path, files, output_file, condition["keywords"], cancel_event)
+            self._do_regex_search(target_path, files, output_file, condition["keywords"], cancel_event, progress_callback)
 
 
     def _get_rglob_file_list(self, path: Path, target_files: list[str]) -> list[Path]:
@@ -87,7 +87,7 @@ class FileKeywordSearcher():
         return target_file_list
 
 
-    def _do_regex_search(self, target_path: Path, target_files_with_path: list[Path], output_file: str, keywords: dict, cancel_event=None):
+    def _do_regex_search(self, target_path: Path, target_files_with_path: list[Path], output_file: str, keywords: dict, cancel_event=None, progress_callback=None):
         """ リテラル／正規表現による検索を行う
         """
 
@@ -108,11 +108,15 @@ class FileKeywordSearcher():
         # 検索の実行
         # 結果をoutput_fileに出力する
         records = []
+        total_files = len(target_files_with_path)
         try:
             with open(output_file, mode='w', encoding="utf-8", errors="ignore") as o_fp:    # 結果出力ファイル
-                for target_file in target_files_with_path:
+                for index, target_file in enumerate(target_files_with_path, start=1):
                     if cancel_event is not None and cancel_event.is_set():
                         break
+
+                    if progress_callback is not None:
+                        progress_callback(f"検索中: {target_file.name}", index, total_files)
 
                     with open(target_file, mode='r', encoding="utf-8", errors="ignore") as i_fp:    # 検索対象ファイル
                         for i, line in enumerate(i_fp, start=1):
@@ -130,7 +134,7 @@ class FileKeywordSearcher():
 
 
 class SearchWorker(QObject):
-    progress = pyqtSignal(str)
+    progress = pyqtSignal(str, int, int)
     finished = pyqtSignal()
     error = pyqtSignal(str)
 
@@ -149,16 +153,16 @@ class SearchWorker(QObject):
                 if self.cancel_event.is_set():
                     break
 
-                self.progress.emit(f"検索中: {p}")
+                self.progress.emit(f"検索中: {p}", 0, 1)
                 searcher = FileKeywordSearcher([str(p)])
                 searcher.data = self.config_data
-                searcher.execute(cancel_event=self.cancel_event)
+                searcher.execute(cancel_event=self.cancel_event, progress_callback=lambda message, current, total: self.progress.emit(message, current, total))
             self.finished.emit()
         except Exception as e:
             self.error.emit(str(e))
 
 
-class DropLabel(QWidget):
+class DropWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -169,18 +173,31 @@ class DropLabel(QWidget):
         )
         self.setAcceptDrops(True)
 
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setRange(0, 1)
+        self.progress_bar.setValue(0)
+        self.progress_bar.hide()
+
         self.cancel_btn = QPushButton("キャンセル")
         self.cancel_btn.hide()
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.label)
+        layout.addWidget(self.progress_bar)
         layout.addWidget(self.cancel_btn)
 
-    def update_status(self, message):
+    def update_status(self, message, current=0, total=0):
         self.label.setText(message)
+        if total > 0:
+            self.progress_bar.setRange(0, total)
+            self.progress_bar.setValue(current)
+            self.progress_bar.show()
+        else:
+            self.progress_bar.hide()
 
     def on_error(self, message):
         self.label.setText(f"Error: {message}")
+        self.progress_bar.hide()
 
     def on_finished(self):
         if self.worker.cancel_event.is_set():
@@ -188,6 +205,7 @@ class DropLabel(QWidget):
         else:
             self.label.setText("Complete!")
         self.cancel_btn.hide()
+        self.progress_bar.hide()
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls() or event.mimeData().hasText():
@@ -233,7 +251,7 @@ class MainWindow(QMainWindow):
         self.resize(400, 250)
 
         layout = QVBoxLayout()
-        layout.addWidget(DropLabel())
+        layout.addWidget(DropWidget())
 
         container = QWidget()
         container.setLayout(layout)
