@@ -29,7 +29,7 @@ with open(args.output_csv, 'w', newline='') as csvfile:
                 while True:
                     target_f_line = target_f.readline()
                     if not target_f_line:          # ファイルの終端に達したら終了
-                        break                    
+                        break
                     check_line = input_f_line.rstrip()
                     target_line = target_f_line.rstrip()
                     sim_score = similarity(input_f_line, target_f_line)
