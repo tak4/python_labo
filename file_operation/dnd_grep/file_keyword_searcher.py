@@ -17,7 +17,7 @@ class FileKeywordSearcher():
         # Drag and Drop で取得したファイルを順に処理する
         for p in self.files:
             if Path(p).is_file():
-                self._grep_files(self.files)
+                self._grep_files(p)
             else:
                 pass
 
