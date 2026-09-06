@@ -80,17 +80,28 @@ class KeywordSearcher(BaseSearcher):
         """
 
         # rglobでフルパス取得する 相対パスを得る処理の為、Pathオブジェクトで保持しておく
-        target_file_list = []
+        target_file_list = set()
         for target_file in target_files:
             for file_path in path.rglob(target_file):
+                # ファイルは対象外
+                if not file_path.is_file():
+                    continue
+
+                # シンボリックリンクは対象外
+                if not file_path.is_file() or file_path.is_symlink():
+                    continue
+
+                # 除外対象ディレクトリを除外
                 if excluded_dir is not None and excluded_dir in file_path.parents:
                     continue
-                target_file_list.append(file_path)
+
+                target_file_list.add(file_path)
 
         return target_file_list
 
 
-    def _do_regex_search(self, target_path: Path, 
+    def _do_regex_search(self, 
+                         target_path: Path, 
                          target_files_with_path: list[Path], 
                          output_file: str, 
                          keywords: dict, 
@@ -102,9 +113,9 @@ class KeywordSearcher(BaseSearcher):
         # 検索条件の作成
         # リテラル (メタ文字をエスケープする)
         parts = [re.escape(k) for k in keywords.get('literal',[])]
+
         # 正規表現
         parts = parts + [k for k in keywords.get('regex',[])]
-
         pattern = "|".join(parts)
         pattern = r"(" + pattern + r")"
         flags = re.MULTILINE

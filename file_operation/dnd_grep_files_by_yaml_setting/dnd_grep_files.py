@@ -10,8 +10,10 @@ from PyQt6.QtCore import QObject, pyqtSignal, QThread
 from keyword_searcher import KeywordSearcher
 
 class SearchWorker(QObject):
+    """検索スレッドを構成するクラス
+    """
     progress = pyqtSignal(str, int, int)
-    finished = pyqtSignal()
+    finished = pyqtSignal(bool)
     stopped = pyqtSignal()
     error = pyqtSignal(str)
 
@@ -21,9 +23,13 @@ class SearchWorker(QObject):
         self.cancel_event = threading.Event()
 
     def cancel(self):
+        """キャンセルイベントをセット
+        """
         self.cancel_event.set()
 
     def run(self):
+        """検索スレッドによる検索処理
+        """
         try:
             for p in self.paths:
                 if self.cancel_event.is_set():
@@ -35,17 +41,23 @@ class SearchWorker(QObject):
                                  progress_callback=lambda message, 
                                  current, 
                                  total: self.progress.emit(message, current, total))
-            self.finished.emit()
 
-        except Exception as e:
-            self.error.emit(str(e))
+        except Exception as error:
+            self.error.emit(str(error))
+
+        else:
+            self.finished.emit(self.cancel_event.is_set())
 
         finally:
             self.stopped.emit()
 
+
 class DropWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.thread = None
+        self.worker = None
 
         self.label = QLabel("Please drop your folder here.")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -61,6 +73,7 @@ class DropWidget(QWidget):
 
         self.cancel_btn = QPushButton("キャンセル")
         self.cancel_btn.hide()
+        self.cancel_btn.clicked.connect(self.cancel_search)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.label)
@@ -81,21 +94,36 @@ class DropWidget(QWidget):
         self.progress_bar.hide()
         self.cancel_btn.hide()
 
-    def on_finished(self):
-        if self.worker.cancel_event.is_set():
-            self.label.setText("Cancelled")
-        else:
-            self.label.setText("Complete!")
+    def on_finished(self, cancelled):
+        """検索処理が正常終了したことを画面へ通知
+        """
+        self.label.setText("Cancelled" if cancelled else "Complete!")
         self.cancel_btn.hide()
         self.progress_bar.hide()
 
+    def on_thread_finished(self):
+        """QThread自体が終了した後の後始末
+        """
+        self.thread = None
+        self.worker = None
+
     def dragEnterEvent(self, event: QDragEnterEvent):
+        # 検索中は受付拒否
+        if self.is_searching():
+            event.ignore()
+            return
+
         if event.mimeData().hasUrls() or event.mimeData().hasText():
             event.acceptProposedAction()
         else:
             event.ignore()
 
     def dropEvent(self, event: QDropEvent):
+        # 検索中は受付拒否
+        if self.is_searching():
+            event.ignore()
+            return
+
         mime = event.mimeData()
         if mime.hasUrls():
             paths = [url.toLocalFile() for url in mime.urls()]
@@ -105,17 +133,17 @@ class DropWidget(QWidget):
 
             self.thread = QThread()
             self.worker = SearchWorker(paths)
-
             self.worker.moveToThread(self.thread)
+
             self.thread.started.connect(self.worker.run)
             self.worker.progress.connect(self.update_status)
             self.worker.finished.connect(self.on_finished) 
+            self.thread.finished.connect(self.on_thread_finished)
+            self.thread.finished.connect(self.thread.deleteLater)
             self.worker.stopped.connect(self.thread.quit)
             self.worker.stopped.connect(self.worker.deleteLater)
-            self.thread.finished.connect(self.thread.deleteLater)
-            self.worker.error.connect(self.on_error)
 
-            self.cancel_btn.clicked.connect(self.worker.cancel)
+            self.worker.error.connect(self.on_error)
 
             self.thread.start()
 
@@ -124,6 +152,16 @@ class DropWidget(QWidget):
         else:
             self.label.setText("This data is not supported.")
         event.acceptProposedAction()
+
+    def is_searching(self):
+        """検索中を判定する
+        """
+        return self.thread is not None and self.thread.isRunning()
+
+    def cancel_search(self):
+        """キャンセル処理"""
+        if self.worker is not None:
+            self.worker.cancel()
 
 
 class MainWindow(QMainWindow):
