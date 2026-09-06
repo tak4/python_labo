@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import yaml
 from pathlib import Path
 from base_keyword_searcher import BaseSearcher
@@ -13,7 +14,11 @@ class FileKeywordSearcher(BaseSearcher):
         self.paths = [Path(p).resolve() for p in paths]
 
         # 設定ファイル読み込み
-        config_path = Path(__file__).parent / 'config' / 'config.yaml'
+        if getattr(sys, "frozen", False):
+            config_path = Path(sys.executable).parent / "config" / "config.yaml"
+        else:
+            config_path = Path(__file__).resolve().parent / "config" / "config.yaml"
+
         with open(config_path, 'r', encoding='utf-8') as yaml_file:
             self.data = yaml.safe_load(yaml_file)
 
