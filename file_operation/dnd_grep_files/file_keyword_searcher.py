@@ -65,10 +65,18 @@ class FileKeywordSearcher(BaseSearcher):
             search_word = condition["search_word"]
 
             # リテラル (メタ文字をエスケープする)
-            parts = [re.escape(k) for k in search_word.get('literal',[])]
+            parts = [
+                re.escape(k)
+                for k in search_word.get("literal", [])
+                if k    # 空文字を除外
+            ]
 
             # 正規表現
-            parts = parts + [k for k in search_word.get('regex',[])]
+            parts += [
+                k
+                for k in search_word.get("regex", [])
+                if k    # 空文字を除外
+            ]
             pattern = "|".join(parts)
             pattern = r"(" + pattern + r")"
             flags = re.MULTILINE
