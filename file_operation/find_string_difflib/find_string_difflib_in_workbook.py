@@ -45,5 +45,5 @@ while True:
 
     row_target += 1
 
-for r in results:
-    print(r)
+for k, v in results.items():
+    print(k, v)
