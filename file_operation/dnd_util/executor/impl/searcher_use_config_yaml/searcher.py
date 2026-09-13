@@ -22,7 +22,7 @@ class FileKeywordSearcher(BaseExecutor):
             config_path = Path(__file__).resolve().parent / "config" / "config.yaml"
 
         with open(config_path, 'r', encoding='utf-8') as yaml_file:
-            self.data = yaml.safe_load(yaml_file)
+            self.config_data = yaml.safe_load(yaml_file)
 
 
         # Drag and Drop で取得したファイルを順に処理する
@@ -48,7 +48,7 @@ class FileKeywordSearcher(BaseExecutor):
         os.makedirs(output_folder, exist_ok=True)
 
         # 検索条件へアクセス
-        search_conditions = self.data["search_conditions"]
+        search_conditions = self.config_data["search_conditions"]
 
         # 検索対象ファイル
         input_file = Path(target_path)
