@@ -3,9 +3,9 @@ import re
 import sys
 import yaml
 from pathlib import Path
-from searcher.base.base_searcher import BaseSearcher
+from executor.base.base_executor import BaseExecutor
 
-class FileKeywordSearcher(BaseSearcher):
+class FileKeywordSearcher(BaseExecutor):
     """検索条件文字列(config.yaml)を元に指定ファイルを検索する
     """
 

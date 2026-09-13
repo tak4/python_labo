@@ -7,7 +7,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
 from PyQt6.QtCore import QObject, pyqtSignal, QThread
 
-from searcher.base.base_searcher import BaseSearcher
+from executor.base.base_executor import BaseExecutor
 
 class SearchWorker(QObject):
     """検索スレッドを構成するクラス
@@ -17,7 +17,7 @@ class SearchWorker(QObject):
     stopped = pyqtSignal()
     error = pyqtSignal(str)
 
-    def __init__(self, searcher: BaseSearcher, paths: list[str]):
+    def __init__(self, searcher: BaseExecutor, paths: list[str]):
         super().__init__()
 
         self.searcher = searcher

@@ -1,9 +1,9 @@
 import os
 import re
 from pathlib import Path
-from searcher.base.base_searcher import BaseSearcher
+from executor.base.base_executor import BaseExecutor
 
-class SimpleSearcher(BaseSearcher):
+class SimpleSearcher(BaseExecutor):
     """
     """
 

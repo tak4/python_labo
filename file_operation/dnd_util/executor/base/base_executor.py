@@ -1,6 +1,6 @@
 import abc
 
-class BaseSearcher(abc.ABC):
+class BaseExecutor(abc.ABC):
     """検索処理のベースクラス
     """
     @abc.abstractmethod
