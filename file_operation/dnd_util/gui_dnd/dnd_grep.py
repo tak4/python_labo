@@ -37,7 +37,7 @@ class SearchWorker(QObject):
                 if self.cancel_event.is_set():
                     break
 
-                self.progress.emit(f"検索中: {p}", 0, 1)
+                self.progress.emit(f"処理中: {p}", 0, 1)
                 self.searcher.execute([str(p)],
                                  cancel_event=self.cancel_event, 
                                  progress_callback=lambda message, 
