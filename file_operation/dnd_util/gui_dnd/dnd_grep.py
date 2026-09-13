@@ -56,7 +56,7 @@ class SearchWorker(QObject):
 
 
 class DropWidget(QWidget):
-    def __init__(self, searcher: BaseSearcher, parent=None):
+    def __init__(self, searcher: BaseExecutor, parent=None):
         super().__init__(parent)
 
         self.searcher = searcher
@@ -169,7 +169,7 @@ class DropWidget(QWidget):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, searcher: BaseSearcher):
+    def __init__(self, searcher: BaseExecutor):
         super().__init__()
         self.setWindowTitle("dnd grep files")
         self.resize(400, 250)
