@@ -1,5 +1,4 @@
 """ドラッグアンドドロップ指定したフォルダ内を検索する"""
-import sys
 import threading
 import traceback
 
@@ -8,7 +7,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
 from PyQt6.QtCore import QObject, pyqtSignal, QThread
 
-from file_keyword_searcher import FileKeywordSearcher
+from searcher.base.base_searcher import BaseSearcher
 
 class SearchWorker(QObject):
     """検索スレッドを構成するクラス
@@ -18,8 +17,10 @@ class SearchWorker(QObject):
     stopped = pyqtSignal()
     error = pyqtSignal(str)
 
-    def __init__(self, paths):
+    def __init__(self, searcher: BaseSearcher, paths: list[str]):
         super().__init__()
+
+        self.searcher = searcher
         self.paths = paths
         self.cancel_event = threading.Event()
 
@@ -37,8 +38,8 @@ class SearchWorker(QObject):
                     break
 
                 self.progress.emit(f"検索中: {p}", 0, 1)
-                searcher = FileKeywordSearcher([str(p)])
-                searcher.execute(cancel_event=self.cancel_event, 
+                self.searcher.execute([str(p)],
+                                 cancel_event=self.cancel_event, 
                                  progress_callback=lambda message, 
                                  current, 
                                  total: self.progress.emit(message, current, total))
@@ -55,13 +56,14 @@ class SearchWorker(QObject):
 
 
 class DropWidget(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, searcher: BaseSearcher, parent=None):
         super().__init__(parent)
 
+        self.searcher = searcher
         self.thread = None
         self.worker = None
 
-        self.label = QLabel("Please drop your folder here.")
+        self.label = QLabel("Please drop file here.")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet(
             "QLabel { border: 2px dashed #888; font-size: 16px; padding: 20px; }"
@@ -134,7 +136,7 @@ class DropWidget(QWidget):
             self.cancel_btn.show()
 
             self.thread = QThread()
-            self.worker = SearchWorker(paths)
+            self.worker = SearchWorker(self.searcher, paths)
             self.worker.moveToThread(self.thread)
 
             self.thread.started.connect(self.worker.run)
@@ -167,21 +169,15 @@ class DropWidget(QWidget):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, searcher: BaseSearcher):
         super().__init__()
         self.setWindowTitle("dnd grep files")
         self.resize(400, 250)
 
         layout = QVBoxLayout()
-        layout.addWidget(DropWidget())
+        layout.addWidget(DropWidget(searcher))
 
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())

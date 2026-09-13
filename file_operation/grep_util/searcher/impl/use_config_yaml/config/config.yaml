@@ -1,0 +1,18 @@
+search_conditions:
+    output_file: output_a.txt
+    conditions:
+      - target: 
+        name: condition A
+        search_word:
+          literal:
+            - "Permission"
+          regex:
+            - ""
+        
+      - target: 
+        name: condition B
+        search_word:
+          literal:
+            - "permission"
+          regex:
+            - ""

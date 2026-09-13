@@ -3,13 +3,15 @@ import re
 import sys
 import yaml
 from pathlib import Path
-from base_keyword_searcher import BaseSearcher
+from searcher.base.base_searcher import BaseSearcher
 
 class FileKeywordSearcher(BaseSearcher):
     """検索条件文字列(config.yaml)を元に指定ファイルを検索する
     """
 
-    def __init__(self, paths: list):
+    def execute(self, paths: list, cancel_event=None, progress_callback=None):
+        """ 検索を行う
+        """
         # 検索対象のパスを絶対パスに正規化する
         self.paths = [Path(p).resolve() for p in paths]
 
@@ -23,9 +25,6 @@ class FileKeywordSearcher(BaseSearcher):
             self.data = yaml.safe_load(yaml_file)
 
 
-    def execute(self, cancel_event=None, progress_callback=None):
-        """ 検索を行う
-        """
         # Drag and Drop で取得したファイルを順に処理する
         for path in self.paths:
             if cancel_event is not None and cancel_event.is_set():
@@ -45,7 +44,6 @@ class FileKeywordSearcher(BaseSearcher):
         """
 
         # grep結果出力先ディレクトリを作成する
-        print(target_path.parent)
         output_folder = target_path.parent / 'output'
         os.makedirs(output_folder, exist_ok=True)
 
