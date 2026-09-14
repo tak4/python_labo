@@ -51,8 +51,8 @@ class DltMerger(BaseExecutor):
             f for f in files_list
         )
 
-        output_file_dlt = input_files[0].parent / "merged.dlt"
-        output_file_txt = input_files[0].parent / "merged.txt"
+        output_file_dlt = input_files[0].parent / merged_dlt
+        output_file_txt = input_files[0].parent / merged_txt
         print(output_file_dlt)
         print()
         for i in input_files:
