@@ -172,7 +172,8 @@ class MainWindow(QMainWindow):
     def __init__(self, searcher: BaseExecutor):
         super().__init__()
         self.setWindowTitle("dnd grep files")
-        self.resize(400, 250)
+        # self.resize(400, 250)
+        self.setFixedSize(400, 250)
 
         layout = QVBoxLayout()
         layout.addWidget(DropWidget(searcher))
