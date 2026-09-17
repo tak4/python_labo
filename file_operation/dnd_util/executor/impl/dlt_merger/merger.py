@@ -33,15 +33,16 @@ class DltMerger(BaseExecutor):
                 raise FileNotFoundError(f"検索対象が存在しません: {path}")
 
             if path.is_file():
-                if merged_dlt == path or merged_txt == path:
+                if path.name == merged_dlt:
                     continue
                 files_list.append(path)
             elif path.is_dir():
                 for p in path.glob("*.dlt"):
-                    # シンボリックリンクは対象外
+                    # シンボリックリンクは除外
                     if not p.is_file() or p.is_symlink():
                         continue
-                    if merged_dlt == path:
+                    # マージ済みファイルは除外
+                    if p.name == merged_dlt:
                         continue
                     files_list.append(p)
             else:
@@ -53,10 +54,10 @@ class DltMerger(BaseExecutor):
 
         output_file_dlt = input_files[0].parent / merged_dlt
         output_file_txt = input_files[0].parent / merged_txt
-        print(output_file_dlt)
-        print()
-        for i in input_files:
-            print(i)
+        # print(output_file_dlt)
+        # print()
+        # for i in input_files:
+        #     print(i)
 
         with open(output_file_txt, "w") as text_writer:
             with DltFileWriter(str(output_file_dlt)) as writer:
