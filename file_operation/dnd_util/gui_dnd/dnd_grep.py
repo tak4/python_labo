@@ -33,16 +33,11 @@ class SearchWorker(QObject):
         """検索スレッドによる検索処理
         """
         try:
-            for p in self.paths:
-                if self.cancel_event.is_set():
-                    break
-
-                self.progress.emit(f"処理中: {p}", 0, 1)
-                self.searcher.execute([str(p)],
-                                 cancel_event=self.cancel_event, 
-                                 progress_callback=lambda message, 
-                                 current, 
-                                 total: self.progress.emit(message, current, total))
+            self.searcher.execute(self.paths,
+                                cancel_event=self.cancel_event, 
+                                progress_callback=lambda message, 
+                                current, 
+                                total: self.progress.emit(message, current, total))
 
         except Exception as error:
             print(traceback.format_exc())
