@@ -3,7 +3,7 @@ import threading
 import traceback
 
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QPushButton, QProgressBar
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
 from PyQt6.QtCore import QObject, pyqtSignal, QThread
 
@@ -58,6 +58,10 @@ class DropWidget(QWidget):
         self.thread = None
         self.worker = None
 
+        self.reset_timer = QTimer(self)
+        self.reset_timer.setSingleShot(True)
+        self.reset_timer.timeout.connect(self.reset_to_initial_state)
+
         self.label = QLabel("Please drop file here.")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet(
@@ -93,12 +97,20 @@ class DropWidget(QWidget):
         self.progress_bar.hide()
         self.cancel_btn.hide()
 
+    def reset_to_initial_state(self):
+        self.label.setText("Please drop file here.")
+        self.progress_bar.hide()
+        self.cancel_btn.hide()
+
     def on_finished(self, cancelled):
         """検索処理が正常終了したことを画面へ通知
         """
         self.label.setText("Cancelled" if cancelled else "Complete!")
         self.cancel_btn.hide()
         self.progress_bar.hide()
+
+        self.reset_timer.stop()
+        self.reset_timer.start(3000)
 
     def on_thread_finished(self):
         """QThread自体が終了した後の後始末
