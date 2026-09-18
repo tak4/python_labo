@@ -61,8 +61,19 @@ class DltMerger(BaseExecutor):
 
         with open(output_file_txt, "w") as text_writer:
             with DltFileWriter(str(output_file_dlt)) as writer:
-                for input_file in input_files:
+                total_fileno = len(input_files)
+                for fileno, input_file in enumerate(input_files, start=1):
                     print(f"marging: {input_file.name}")
+
+                    if cancel_event is not None and cancel_event.is_set():
+                        break
+
+                    if progress_callback is not None:
+                        progress_callback(
+                            f"marging: {input_file.name}",
+                            fileno,
+                            total_fileno,
+                        )
 
                     reader = DltFileReader(str(input_file))
 
