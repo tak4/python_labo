@@ -32,6 +32,7 @@ class DltMerger(BaseExecutor):
             if not path.exists():
                 raise FileNotFoundError(f"検索対象が存在しません: {path}")
 
+            # マージ対象のdltファイルのリストを作成する
             if path.is_file():
                 if path.name == merged_dlt:
                     continue
@@ -48,16 +49,12 @@ class DltMerger(BaseExecutor):
             else:
                 pass
 
-        input_files = sorted(
-            f for f in files_list
-        )
+        # ファイル名でソートする
+        input_files = sorted(files_list)
 
+        # dltファイル、及び、txtファイルに結合する
         output_file_dlt = input_files[0].parent / merged_dlt
         output_file_txt = input_files[0].parent / merged_txt
-        # print(output_file_dlt)
-        # print()
-        # for i in input_files:
-        #     print(i)
 
         with open(output_file_txt, "w") as text_writer:
             with DltFileWriter(str(output_file_dlt)) as writer:
@@ -81,4 +78,3 @@ class DltMerger(BaseExecutor):
                         writer.write_messages([message])
                         text_writer.write(str(message) + "\n")
 
-        print("complete")
