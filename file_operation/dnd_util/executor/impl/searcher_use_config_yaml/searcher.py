@@ -56,7 +56,7 @@ class FileKeywordSearcher(BaseExecutor):
         output_file = output_folder / search_conditions["output_file"]
 
         # 検索条件の作成
-        condition_list = []
+        compiled = []
         conditions = search_conditions["conditions"]
         for condition in conditions:
             name = condition["name"]
@@ -83,25 +83,23 @@ class FileKeywordSearcher(BaseExecutor):
             pattern = "|".join(parts)
             pattern = r"(" + pattern + r")"
             try:
-                regex = re.compile(pattern, re.MULTILINE)
+                compiled.append((name, re.compile(f"({pattern})")))
             except re.error as error:
                 raise ValueError(
                     f"正規表現が不正です: {name}: {pattern}"
                 ) from error
 
-            condition_list.append({'name': name, 'pattern': regex})
-
         try:
             with open(input_file, mode="r", encoding="utf-8", errors="ignore") as target_fp:
+                # 進捗表示の為、行数を数える
+                target_fp.seek(0)
+                total_lines = sum(1 for _ in target_fp)
+                target_fp.seek(0)
+
                 with open(output_file, mode="w", encoding="utf-8") as output_fp:
 
-                    # 検索結果辞書 name: pattern の形式で保持する
+                    # 検索結果辞書 name(key): pattern(value) の形式で保持する
                     search_results = {}
-
-                    # 進捗表示の為、行数を数える
-                    target_fp.seek(0)
-                    total_lines = sum(1 for _ in target_fp)
-                    target_fp.seek(0)
 
                     for line_number, line in enumerate(target_fp, start=1):
                         if cancel_event is not None and cancel_event.is_set():
@@ -115,12 +113,10 @@ class FileKeywordSearcher(BaseExecutor):
                             )
 
                         # 検索
-                        for c in condition_list:
-                            if c['name'] not in search_results:
-                                search_results[c['name']] = []
-                            matches = c['pattern'].findall(line)
-                            if matches:
-                                search_results[c['name']].append((line_number, line.rstrip("\r\n")))
+                        for name, regex in compiled:
+                            if regex.search(line):
+                                search_results.setdefault(name, [])
+                                search_results[name].append((line_number, line.rstrip("\r\n")))
 
                     # 検索結果ファイル出力
                     for ptn, match_list in search_results.items():
