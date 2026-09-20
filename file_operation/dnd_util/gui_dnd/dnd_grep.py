@@ -62,7 +62,7 @@ class DropWidget(QWidget):
         self.reset_timer.setSingleShot(True)
         self.reset_timer.timeout.connect(self.reset_to_initial_state)
 
-        self.label = QLabel("Please drop file here.")
+        self.label = QLabel("drop here.")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet(
             "QLabel { border: 2px dashed #888; font-size: 16px; padding: 20px; }"
@@ -177,7 +177,7 @@ class DropWidget(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self, searcher: BaseExecutor):
         super().__init__()
-        self.setWindowTitle("dnd grep files")
+        self.setWindowTitle("dnd files")
         # self.resize(400, 250)
         self.setFixedSize(400, 250)
 
