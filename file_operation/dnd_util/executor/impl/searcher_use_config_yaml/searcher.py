@@ -8,6 +8,7 @@ from executor.base.base_executor import BaseExecutor
 class FileKeywordSearcher(BaseExecutor):
     """検索条件文字列(config.yaml)を元に指定ファイルを検索する
     """
+    CHUNK_SIZE = 1024 * 1024
 
     def execute(self, paths: list, cancel_event=None, progress_callback=None):
         """ 検索を行う
@@ -90,39 +91,66 @@ class FileKeywordSearcher(BaseExecutor):
                 ) from error
 
         try:
-            with open(input_file, mode="r", encoding="utf-8", errors="ignore") as target_fp:
+            with open(input_file, "rb", buffering=FileKeywordSearcher.CHUNK_SIZE) as source_fp:
                 total_size = input_file.stat().st_size
                 processed_size = 0
 
-                with open(output_file, mode="w", encoding="utf-8") as output_fp:
-
-                    # 検索結果辞書 name(key): pattern(value) の形式で保持する
+                with open(output_file, "w", encoding="utf-8") as output_fp:
                     search_results = {}
 
-                    for line_number, line in enumerate(target_fp, start=1):
+                    buffer = b""
+                    line_number = 0
+
+                    while True:
                         if cancel_event is not None and cancel_event.is_set():
                             break
 
-                        processed_size += len(line.encode("utf-8", errors="ignore"))
+                        chunk = source_fp.read(FileKeywordSearcher.CHUNK_SIZE)
+                        if not chunk:
+                            break
 
-                        if progress_callback is not None and line_number % 500 == 0:
+                        processed_size += len(chunk)
+                        if progress_callback is not None and processed_size % (FileKeywordSearcher.CHUNK_SIZE * 10) == 0:
                             progress_callback(
                                 f"検索中: {input_file.name}",
                                 processed_size,
                                 total_size,
                             )
 
-                        # 検索
+                        buffer += chunk
+                        lines = buffer.splitlines(keepends=True)
+
+                        # 最後の行の末尾が改行ではない場合、1行が完結していない可能性があるので、
+                        # linesからbufferに戻しておく
+                        # 末尾改行であれば、1行完結しているので、bufferは空にしておく
+                        if lines and not lines[-1].endswith(b"\n"):
+                            buffer = lines.pop()
+                        else:
+                            buffer = b""
+
+                        for raw_line in lines:
+                            line_number += 1
+                            line = raw_line.decode("utf-8", errors="ignore").rstrip("\r\n")
+
+                            for name, regex in compiled:
+                                if regex.search(line):
+                                    search_results.setdefault(name, [])
+                                    search_results[name].append((line_number, line))
+
+                    # 端数の行が残っている場合
+                    if buffer:
+                        line_number += 1
+                        line = buffer.decode("utf-8", errors="ignore").rstrip("\r\n")
                         for name, regex in compiled:
                             if regex.search(line):
                                 search_results.setdefault(name, [])
-                                search_results[name].append((line_number, line.rstrip("\r\n")))
+                                search_results[name].append((line_number, line))
 
-                    # 検索結果ファイル出力
                     for ptn, match_list in search_results.items():
-                        output_fp.writelines(ptn + '\n')
+                        output_fp.write(ptn + "\n")
                         for m in match_list:
                             output_fp.write(f"{m[0]}: {m[1]}\n")
+
 
         except OSError as e:
             print(f"{e}")
