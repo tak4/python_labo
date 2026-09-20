@@ -91,10 +91,8 @@ class FileKeywordSearcher(BaseExecutor):
 
         try:
             with open(input_file, mode="r", encoding="utf-8", errors="ignore") as target_fp:
-                # 進捗表示の為、行数を数える
-                target_fp.seek(0)
-                total_lines = sum(1 for _ in target_fp)
-                target_fp.seek(0)
+                total_size = input_file.stat().st_size
+                processed_size = 0
 
                 with open(output_file, mode="w", encoding="utf-8") as output_fp:
 
@@ -105,11 +103,13 @@ class FileKeywordSearcher(BaseExecutor):
                         if cancel_event is not None and cancel_event.is_set():
                             break
 
-                        if progress_callback is not None:
+                        processed_size += len(line.encode("utf-8", errors="ignore"))
+
+                        if progress_callback is not None and line_number % 500 == 0:
                             progress_callback(
                                 f"検索中: {input_file.name}",
-                                line_number,
-                                total_lines,
+                                processed_size,
+                                total_size,
                             )
 
                         # 検索

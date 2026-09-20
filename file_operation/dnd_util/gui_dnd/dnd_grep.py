@@ -139,7 +139,6 @@ class DropWidget(QWidget):
         if mime.hasUrls():
             paths = [url.toLocalFile() for url in mime.urls()]
 
-            self.label.setText("検索中...")
             self.cancel_btn.show()
 
             self.thread = QThread()
