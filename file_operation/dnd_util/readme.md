@@ -6,6 +6,7 @@ https://pypi.org/project/pyinstaller/
 
 ## 実行
 python -m executor.impl.dlt_merger.main
+python -m executor.impl.searcher_use_config_yaml.main
 
 ## EXE作成
 pyinstaller --onefile --noconsole main.py
