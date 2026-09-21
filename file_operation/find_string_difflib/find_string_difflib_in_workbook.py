@@ -1,5 +1,7 @@
+import argparse
 from difflib import SequenceMatcher
 import openpyxl
+from pathlib import Path
 
 
 def check_similarity_threshold(a: str, b: str, ratio_threshold: float = 0.5) -> tuple[bool, float]:
@@ -9,41 +11,92 @@ def check_similarity_threshold(a: str, b: str, ratio_threshold: float = 0.5) -> 
         over_threshold = True
     return (over_threshold, ratio_result)
 
+def check_by_difflib(
+        criteria_wb_name: str, 
+        criteria_ws_name: str, 
+        criteria_index_col: int, 
+        criteria_data_col: int,
+        target_wb_name: str, 
+        target_ws_name: str, 
+        target_index_col: int, 
+        target_data_col: int
+        ):
 
-wb = openpyxl.load_workbook("check_target.xlsx") # Excelファイルの読み込み
+    path_criteria_wb = Path(criteria_wb_name).resolve()
+    target_wb = Path(target_wb_name).resolve()
 
-sheet_names = wb.sheetnames # シート名一覧取得
+    criteria_wb = openpyxl.load_workbook(path_criteria_wb)
+    target_wb = openpyxl.load_workbook(target_wb)
 
-ws_target = wb['target'] # シートの取得
-ws_list = wb['list'] # シートの取得
+    criteria_ws = criteria_wb[criteria_ws_name]
+    target_ws = target_wb[target_ws_name]
 
-results = {}
+    results = []
 
-row_target = 1
-while True:
-    value_target = ws_target.cell(row=row_target, column=1).value
-    if value_target == None:
-        break
+    criteria_ws_max_row = criteria_ws.max_row
+    target_ws_max_row = target_ws.max_row
+    for row in criteria_ws.iter_rows(min_row=1, max_row=criteria_ws_max_row, values_only=True):
+        if row[criteria_data_col-1] is None:
+            continue
+        criteria_index_no = row[criteria_index_col-1]
+        criteria_line = row[criteria_data_col-1]
 
-    max_threshold = 0
+        max_threshold = 0
+        for row in target_ws.iter_rows(min_row=1, max_row=target_ws_max_row, values_only=True):
+            if row[target_data_col-1] is None:
+                continue
+            target_index_no = row[target_index_col-1]
+            target_line = row[target_data_col-1]
 
-    row_list = 1
-    while True:
-        value_list = ws_list.cell(row=row_list, column=1).value
-        if value_list == None:
-            break
+            criteria_line = criteria_line.strip()
+            target_line = target_line.strip()
 
-        value_target = value_target.rstrip()
-        value_list = value_list.rstrip()
+            over_threshold, threshold = check_similarity_threshold(criteria_line, target_line)
+            if max_threshold < threshold:
+                max_threshold = threshold
+                results.append(
+                    [criteria_index_no, criteria_line, target_index_no, target_line, threshold, over_threshold]
+                )
 
-        over_threshold, threshold = check_similarity_threshold(value_target, value_list)
-        if max_threshold < threshold:
-            max_threshold = threshold
-            results[value_target] = (value_list, threshold)
+    output_wb = openpyxl.Workbook()
+    output_ws = output_wb.active
+    output_ws.title = 'result'
 
-        row_list += 1
+    output_ws.append(['criteria_index_no', 'criteria_line', 'target_index_no', 'target_line', 'threshold', 'over_threshold'])
+    for r in results:
+        print(r)
+        output_ws.append(r)
 
-    row_target += 1
+    # Excel ワークブック保存
+    output_path = path_criteria_wb.with_name(f"result_{path_criteria_wb.name}")
+    output_wb.save(output_path)
 
-for k, v in results.items():
-    print(k, v)
+
+def main():
+    parser = argparse.ArgumentParser(description="")
+    parser.add_argument("criteria_wb", type=str, nargs="?", default="split_org_wb.xlsx", help="基準リストのワークブック名")
+    parser.add_argument("criteria_ws", type=str, nargs="?", default="split", help="基準リストのシート名")
+    parser.add_argument("criteria_index_col", type=int, nargs="?", default=1, help="基準リストの項番の列番号")
+    parser.add_argument("criteria_data_col", type=int, nargs="?", default=2, help="基準リストのデータの列番号")
+
+    parser.add_argument("target_wb", type=str, nargs="?", default="target_wb.xlsx", help="比較対象リストのワークブック名")
+    parser.add_argument("target_ws", type=str, nargs="?", default="target", help="比較対象リストのシート名")
+    parser.add_argument("target_index_col", type=int, nargs="?", default=1, help="比較対象リストの項番の列番号")
+    parser.add_argument("target_data_col", type=int, nargs="?", default=2, help="比較対象リストのデータの列番号")
+
+    args = parser.parse_args()
+
+    check_by_difflib(
+        args.criteria_wb, 
+        args.criteria_ws, 
+        args.criteria_index_col, 
+        args.criteria_data_col,
+        args.target_wb, 
+        args.target_ws, 
+        args.target_index_col, 
+        args.target_data_col
+    )
+
+
+if __name__ == "__main__":
+    main()
