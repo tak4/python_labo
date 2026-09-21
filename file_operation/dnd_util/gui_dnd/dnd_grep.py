@@ -177,7 +177,8 @@ class DropWidget(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self, searcher: BaseExecutor):
         super().__init__()
-        self.setWindowTitle("dnd files")
+        title = getattr(searcher, "window_title", searcher.__class__.__name__)
+        self.setWindowTitle(title)
         # self.resize(400, 250)
         self.setFixedSize(400, 250)
 

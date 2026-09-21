@@ -8,6 +8,7 @@ from executor.base.base_executor import BaseExecutor
 class FileKeywordSearcher(BaseExecutor):
     """検索条件文字列(config.yaml)を元に指定ファイルを検索する
     """
+    window_title = "Searcher"
     CHUNK_SIZE = 1024 * 1024
 
     def execute(self, paths: list, cancel_event=None, progress_callback=None):
