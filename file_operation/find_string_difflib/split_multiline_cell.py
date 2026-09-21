@@ -7,7 +7,7 @@ def split_cell(input_wb_name: str, input_ws_name: str, input_index_col: int, inp
 
     input_wb_path = Path(input_wb_name).resolve()
 
-    org_wb = openpyxl.load_workbook(input_wb_path) # Excelファイルの読み込み
+    org_wb = openpyxl.load_workbook(input_wb_path, data_only=True) # Excelファイルの読み込み
     org_ws = org_wb[input_ws_name] # シートの取得
 
     split_cell_wb = openpyxl.Workbook()
@@ -15,19 +15,20 @@ def split_cell(input_wb_name: str, input_ws_name: str, input_index_col: int, inp
     split_cell_ws.title = 'split'
 
     max_row = org_ws.max_row
-    for row in org_ws.iter_rows(min_row=1, max_row=max_row, values_only=True):
+    for row in org_ws.iter_rows(min_row=2, max_row=max_row, values_only=True):
         if row[input_data_col-1] is None:
             continue
         row_no = row[input_index_col-1]
         lines = row[input_data_col-1].splitlines()
         for l in lines:
             line = l.strip()
+            if line.startswith('='):
+                line = "'" + line
             if len(line) > 0:
                 split_cell_ws.append([row_no, line])
 
     # Excel ワークブック保存
     output_path = input_wb_path.with_name(f"split_{input_wb_path.name}")
-    print(output_path)
     split_cell_wb.save(output_path)
 
 
