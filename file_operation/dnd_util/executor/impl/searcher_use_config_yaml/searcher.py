@@ -9,6 +9,7 @@ class FileKeywordSearcher(BaseExecutor):
     """検索条件文字列(config.yaml)を元に指定ファイルを検索する
     """
     window_title = "Searcher"
+    show_cancel_button = True
     CHUNK_SIZE = 1024 * 1024
 
     def execute(self, paths: list, cancel_event=None, progress_callback=None):

@@ -17,10 +17,10 @@ class SearchWorker(QObject):
     stopped = pyqtSignal()
     error = pyqtSignal(str)
 
-    def __init__(self, searcher: BaseExecutor, paths: list[str]):
+    def __init__(self, executor: BaseExecutor, paths: list[str]):
         super().__init__()
 
-        self.searcher = searcher
+        self.searcher = executor
         self.paths = paths
         self.cancel_event = threading.Event()
 
@@ -51,10 +51,10 @@ class SearchWorker(QObject):
 
 
 class DropWidget(QWidget):
-    def __init__(self, searcher: BaseExecutor, parent=None):
+    def __init__(self, executor: BaseExecutor, parent=None):
         super().__init__(parent)
 
-        self.searcher = searcher
+        self.executor = executor
         self.thread = None
         self.worker = None
 
@@ -139,10 +139,13 @@ class DropWidget(QWidget):
         if mime.hasUrls():
             paths = [url.toLocalFile() for url in mime.urls()]
 
-            self.cancel_btn.show()
+            if getattr(self.executor, "show_cancel_button", True):
+                self.cancel_btn.show()
+            else:
+                self.cancel_btn.hide()
 
             self.thread = QThread()
-            self.worker = SearchWorker(self.searcher, paths)
+            self.worker = SearchWorker(self.executor, paths)
             self.worker.moveToThread(self.thread)
 
             self.thread.started.connect(self.worker.run)
@@ -175,15 +178,15 @@ class DropWidget(QWidget):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, searcher: BaseExecutor):
+    def __init__(self, executor: BaseExecutor):
         super().__init__()
-        title = getattr(searcher, "window_title", searcher.__class__.__name__)
+        title = getattr(executor, "window_title", executor.__class__.__name__)
         self.setWindowTitle(title)
         # self.resize(400, 250)
         self.setFixedSize(400, 250)
 
         layout = QVBoxLayout()
-        layout.addWidget(DropWidget(searcher))
+        layout.addWidget(DropWidget(executor))
 
         container = QWidget()
         container.setLayout(layout)

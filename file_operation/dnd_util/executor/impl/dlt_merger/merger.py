@@ -6,6 +6,9 @@ from pydlt import DltFileReader, DltFileWriter
 from executor.base.base_executor import BaseExecutor
 
 class DltMerger(BaseExecutor):
+    window_title = "dlt merger"
+    show_cancel_button = False
+
     def execute(self, paths: list, cancel_event=None, progress_callback=None):
 
         # 検索対象のパスを絶対パスに正規化する
