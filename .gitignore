@@ -3,3 +3,5 @@
 **/venv
 **/pyqt6/build
 **/pyqt6/dist
+**/dnd_util/build
+**/dnd_util/dist
