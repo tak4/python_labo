@@ -34,9 +34,14 @@ with open(args.output_csv, 'w', newline='') as csvfile:
                     target_line = target_f_line.rstrip()
                     sim_score = similarity(input_f_line, target_f_line)
                     
-                    # CSV に書き込み
-                    result_writer.writerow([check_line, target_line, sim_score])
-                    
+                    try:
+                        # CSV に書き込み
+                        result_writer.writerow([check_line, target_line, sim_score])
+                    except UnicodeDecodeError as e:
+                        print(check_line)
+                        print(target_line)
+                        print(e)
+
                     # Excel に書き込み
                     ws.append([check_line, target_line, sim_score])
             if not input_f_line:          # ファイルの終端に達したら終了
