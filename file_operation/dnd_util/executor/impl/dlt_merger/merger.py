@@ -1,3 +1,4 @@
+import re
 import sys
 import yaml
 from pathlib import Path
@@ -8,6 +9,12 @@ from executor.base.base_executor import BaseExecutor
 class DltMerger(BaseExecutor):
     window_title = "dlt merger"
     show_cancel_button = False
+
+    def _sort_key(self, path: Path):
+        name = path.name
+        match = re.search(r"(\d+)", name)
+        number = int(match.group(1)) if match else 0
+        return (number, name)
 
     def execute(self, paths: list, cancel_event=None, progress_callback=None):
 
@@ -53,7 +60,7 @@ class DltMerger(BaseExecutor):
                 pass
 
         # ファイル名でソートする
-        input_files = sorted(files_list)
+        input_files = sorted(files_list, key=self._sort_key)
 
         # dltファイル、及び、txtファイルに結合する
         output_file_dlt = input_files[0].parent / merged_dlt
