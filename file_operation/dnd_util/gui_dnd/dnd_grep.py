@@ -9,8 +9,8 @@ from PyQt6.QtCore import QObject, pyqtSignal, QThread
 
 from executor.base.base_executor import BaseExecutor
 
-class SearchWorker(QObject):
-    """検索スレッドを構成するクラス
+class ExecuteWorker(QObject):
+    """処理スレッドを構成するクラス
     """
     progress = pyqtSignal(str, int, int)
     finished = pyqtSignal(bool)
@@ -30,7 +30,7 @@ class SearchWorker(QObject):
         self.cancel_event.set()
 
     def run(self):
-        """検索スレッドによる検索処理
+        """処理スレッドによる検索処理
         """
         try:
             self.searcher.execute(self.paths,
@@ -145,7 +145,7 @@ class DropWidget(QWidget):
                 self.cancel_btn.hide()
 
             self.thread = QThread()
-            self.worker = SearchWorker(self.executor, paths)
+            self.worker = ExecuteWorker(self.executor, paths)
             self.worker.moveToThread(self.thread)
 
             self.thread.started.connect(self.worker.run)
