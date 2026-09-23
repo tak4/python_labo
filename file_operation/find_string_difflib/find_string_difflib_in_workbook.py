@@ -35,28 +35,31 @@ def check_by_difflib(
 
     criteria_ws_max_row = criteria_ws.max_row
     target_ws_max_row = target_ws.max_row
-    for row in criteria_ws.iter_rows(min_row=1, max_row=criteria_ws_max_row, values_only=True):
-        if row[criteria_data_col-1] is None:
+    for criteria_row in criteria_ws.iter_rows(min_row=1, max_row=criteria_ws_max_row, values_only=True):
+        if criteria_row[criteria_data_col-1] is None:
             continue
-        criteria_index_no = row[criteria_index_col-1]
-        criteria_line = row[criteria_data_col-1]
+        criteria_index_no = criteria_row[criteria_index_col-1]
+        criteria_line = str(criteria_row[criteria_data_col-1]).strip()
+        if not criteria_line:
+            continue
+
+        best_result = (criteria_index_no, criteria_line, None, None, 0.0, False)
 
         max_threshold = 0
-        for row in target_ws.iter_rows(min_row=1, max_row=target_ws_max_row, values_only=True):
-            if row[target_data_col-1] is None:
+        for target_row in target_ws.iter_rows(min_row=1, max_row=target_ws_max_row, values_only=True):
+            if target_row[target_data_col-1] is None:
                 continue
-            target_index_no = row[target_index_col-1]
-            target_line = row[target_data_col-1]
-
-            criteria_line = criteria_line.strip()
-            target_line = target_line.strip()
+            target_index_no = target_row[target_index_col-1]
+            target_line = str(target_row[target_data_col-1]).strip()
+            if not target_line:
+                continue
 
             over_threshold, threshold = check_similarity_threshold(criteria_line, target_line)
             if max_threshold < threshold:
                 max_threshold = threshold
-                results.append(
-                    [criteria_index_no, criteria_line, target_index_no, target_line, threshold, over_threshold]
-                )
+                best_result = (criteria_index_no, criteria_line, target_index_no, target_line, threshold, over_threshold)
+
+        results.append(best_result)
 
     output_wb = openpyxl.Workbook()
     output_ws = output_wb.active
