@@ -20,7 +20,7 @@ class ExecuteWorker(QObject):
     def __init__(self, executor: BaseExecutor, paths: list[str]):
         super().__init__()
 
-        self.searcher = executor
+        self.executor = executor
         self.paths = paths
         self.cancel_event = threading.Event()
 
@@ -33,7 +33,7 @@ class ExecuteWorker(QObject):
         """処理スレッドによる検索処理
         """
         try:
-            self.searcher.execute(self.paths,
+            self.executor.execute(self.paths,
                                 cancel_event=self.cancel_event, 
                                 progress_callback=lambda message, 
                                 current, 
@@ -76,7 +76,7 @@ class DropWidget(QWidget):
 
         self.cancel_btn = QPushButton("キャンセル")
         self.cancel_btn.hide()
-        self.cancel_btn.clicked.connect(self.cancel_search)
+        self.cancel_btn.clicked.connect(self.cancel_work)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.label)
@@ -171,7 +171,7 @@ class DropWidget(QWidget):
         """
         return self.thread is not None and self.thread.isRunning()
 
-    def cancel_search(self):
+    def cancel_work(self):
         """キャンセル処理"""
         if self.worker is not None:
             self.worker.cancel()
