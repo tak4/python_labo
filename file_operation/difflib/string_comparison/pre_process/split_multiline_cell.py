@@ -34,7 +34,7 @@ def split_cell(input_wb_name: str, input_ws_name: str, input_index_col: int, inp
 
 def main():
     parser = argparse.ArgumentParser(description="")
-    parser.add_argument("input_wb", type=str, nargs="?", default="./sample_data/org_wb.xlsx", help="入力ワークブック名")
+    parser.add_argument("input_wb", type=str, nargs="?", default="./input_data/org_wb.xlsx", help="入力ワークブック名")
     parser.add_argument("input_ws", type=str, nargs="?", default="target", help="入力ワークブックのシート名")
     parser.add_argument("input_index_col", type=int, nargs="?", default=1, help="項番の列番号")
     parser.add_argument("input_data_col", type=int, nargs="?", default=2, help="データの列番号")
