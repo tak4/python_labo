@@ -49,7 +49,7 @@ def check_by_difflib(
 
         best_result = (criteria_index_no, criteria_line, None, None, 0.0, False)
 
-        max_threshold = 0
+        max_result_ratio = 0
         for target_row in target_ws.iter_rows(min_row=1, max_row=target_ws_max_row, values_only=True):
             if target_row[target_data_col-1] is None:
                 continue
@@ -58,10 +58,10 @@ def check_by_difflib(
             if not target_line:
                 continue
 
-            over_threshold, threshold = check_similarity_threshold(criteria_line, target_line)
-            if max_threshold < threshold:
-                max_threshold = threshold
-                best_result = (criteria_index_no, criteria_line, target_index_no, target_line, threshold, over_threshold)
+            over_threshold, result_ratio = check_similarity_threshold(criteria_line, target_line)
+            if max_result_ratio < result_ratio:
+                max_result_ratio = result_ratio
+                best_result = (criteria_index_no, criteria_line, target_index_no, target_line, result_ratio, over_threshold)
 
         results.append(best_result)
 
