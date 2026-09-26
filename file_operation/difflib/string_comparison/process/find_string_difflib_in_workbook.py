@@ -80,17 +80,17 @@ def check_by_difflib(
 
 def main():
     parser = argparse.ArgumentParser(description="")
-    parser.add_argument("criteria_wb", type=str, nargs="?", default="./pre_process/output/split_org_wb.xlsx", help="基準リストのワークブック名")
-    parser.add_argument("criteria_ws", type=str, nargs="?", default="split", help="基準リストのシート名")
-    parser.add_argument("criteria_index_col", type=int, nargs="?", default=1, help="基準リストの項番の列番号")
-    parser.add_argument("criteria_data_col", type=int, nargs="?", default=2, help="基準リストのデータの列番号")
+    parser.add_argument("--criteria_wb", type=str, default="./pre_process/output/split_org_wb.xlsx", help="基準リストのワークブック名")
+    parser.add_argument("--criteria_ws", type=str, default="split", help="基準リストのシート名")
+    parser.add_argument("--criteria_index_col", type=int, default=1, help="基準リストの項番の列番号")
+    parser.add_argument("--criteria_data_col", type=int, default=2, help="基準リストのデータの列番号")
 
-    parser.add_argument("target_wb", type=str, nargs="?", default="./pre_process/output/split_org_target_wb.xlsx", help="比較対象リストのワークブック名")
-    parser.add_argument("target_ws", type=str, nargs="?", default="split", help="比較対象リストのシート名")
-    parser.add_argument("target_index_col", type=int, nargs="?", default=1, help="比較対象リストの項番の列番号")
-    parser.add_argument("target_data_col", type=int, nargs="?", default=2, help="比較対象リストのデータの列番号")
+    parser.add_argument("--target_wb", type=str, default="./pre_process/output/split_org_target_wb.xlsx", help="比較対象リストのワークブック名")
+    parser.add_argument("--target_ws", type=str, default="split", help="比較対象リストのシート名")
+    parser.add_argument("--target_index_col", type=int, default=1, help="比較対象リストの項番の列番号")
+    parser.add_argument("--target_data_col", type=int, default=2, help="比較対象リストのデータの列番号")
 
-    parser.add_argument("output_dir", type=str, nargs="?", default="./process/output", help="出力先ディレクトリ")
+    parser.add_argument("--output_dir", type=str, default="./process/output", help="出力先ディレクトリ")
 
     args = parser.parse_args()
 
