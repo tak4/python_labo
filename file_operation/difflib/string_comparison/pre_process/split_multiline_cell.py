@@ -42,12 +42,12 @@ def split_cell(input_wb_name: str,
 
 def main():
     parser = argparse.ArgumentParser(description="")
-    parser.add_argument("input_wb", type=str, nargs="?", default="./input_data/org_wb.xlsx", help="入力ワークブック名")
-    parser.add_argument("input_ws", type=str, nargs="?", default="target", help="入力ワークブックのシート名")
-    parser.add_argument("input_data_start_row", type=int, nargs="?", default=1, help="データの開始行")
-    parser.add_argument("input_index_col", type=int, nargs="?", default=1, help="項番の列番号")
-    parser.add_argument("input_data_col", type=int, nargs="?", default=2, help="データの列番号")
-    parser.add_argument("output_dir", type=str, nargs="?", default="./pre_process/output", help="出力先ディレクトリ")
+    parser.add_argument("--input_wb", type=str, default="./input_data/org_wb.xlsx", help="入力ワークブック名")
+    parser.add_argument("--input_ws", type=str, default="target", help="入力ワークブックのシート名")
+    parser.add_argument("--input_data_start_row", type=int, default=1, help="データの開始行")
+    parser.add_argument("--input_index_col", type=int, default=1, help="項番の列番号")
+    parser.add_argument("--input_data_col", type=int, default=2, help="データの列番号")
+    parser.add_argument("--output_dir", type=str, default="./pre_process/output", help="出力先ディレクトリ")
 
     args = parser.parse_args()
 
