@@ -24,13 +24,13 @@ def check_by_difflib(
         ):
 
     path_criteria_wb = Path(criteria_wb_name).resolve()
-    target_wb = Path(target_wb_name).resolve()
+    path_target_wb = Path(target_wb_name).resolve()
     output_dir_path = Path(output_dir).resolve()
     output_dir_path.mkdir(exist_ok=True)
-    output_path = output_dir_path / f"result_{path_criteria_wb.name}"
+    output_path = output_dir_path / f"result_{path_target_wb.name}"
 
     criteria_wb = openpyxl.load_workbook(path_criteria_wb)
-    target_wb = openpyxl.load_workbook(target_wb)
+    target_wb = openpyxl.load_workbook(path_target_wb)
 
     criteria_ws = criteria_wb[criteria_ws_name]
     target_ws = target_wb[target_ws_name]
