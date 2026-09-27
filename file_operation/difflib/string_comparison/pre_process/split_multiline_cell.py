@@ -12,7 +12,7 @@ def split_cell(input_wb_name: str,
     input_wb_path = Path(input_wb_name).resolve()
     output_dir_path = Path(output_dir).resolve()
     output_dir_path.mkdir(exist_ok=True)
-    output_path = output_dir_path / f"split_{input_wb_path.name}"
+    output_path = output_dir_path / f"split_{input_ws_name}_{input_wb_path.name}"
 
     org_wb = openpyxl.load_workbook(input_wb_path, data_only=True) # Excelファイルの読み込み
     org_ws = org_wb[input_ws_name] # シートの取得
@@ -42,8 +42,8 @@ def split_cell(input_wb_name: str,
 
 def main():
     parser = argparse.ArgumentParser(description="")
-    parser.add_argument("--input_wb", type=str, default="./input_data/org_wb.xlsx", help="入力ワークブック名")
-    parser.add_argument("--input_ws", type=str, default="target", help="入力ワークブックのシート名")
+    parser.add_argument("--input_wb", type=str, default="./input_data/criteria_wb.xlsx", help="入力ワークブック名")
+    parser.add_argument("--input_ws", type=str, default="list", help="入力ワークブックのシート名")
     parser.add_argument("--input_data_start_row", type=int, default=1, help="データの開始行")
     parser.add_argument("--input_index_col", type=int, default=1, help="項番の列番号")
     parser.add_argument("--input_data_col", type=int, default=2, help="データの列番号")
