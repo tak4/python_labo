@@ -3,6 +3,7 @@ from difflib import SequenceMatcher
 from html import escape
 from string import Template
 import openpyxl
+from pathlib import Path
 
 page_template = Template("""
 <!DOCTYPE html>
@@ -128,7 +129,7 @@ def main():
     parser.add_argument("--result_target_data_col", type=int, default=4, help="比較対象リストのデータの列番号")
     parser.add_argument("--result_ratio_col", type=int, default=5, help="比較対象リストのデータの列番号")
 
-    parser.add_argument("--output_dir", type=str, default="./process/output", help="出力先ディレクトリ")
+    parser.add_argument("--output_dir", type=str, default="./post_process/output", help="出力先ディレクトリ")
 
     args = parser.parse_args()
 
@@ -145,7 +146,12 @@ def main():
 
     html = create_diff_page(comparison_list)
 
-    with open("diff.html", "w", encoding="utf-8") as f:
+    result_wb_stem = Path(args.result_wb).stem
+    output_dir_path = Path(args.output_dir).resolve()
+    output_dir_path.mkdir(exist_ok=True)
+    output_html = output_dir_path / f"{result_wb_stem}.html"
+
+    with open(output_html, "w", encoding="utf-8") as f:
         f.write(html)
 
 if __name__ == "__main__":
