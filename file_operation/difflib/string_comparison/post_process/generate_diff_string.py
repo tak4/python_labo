@@ -56,7 +56,7 @@ def create_pair_html(result_list: list, idx: int) -> str:
             # text_a_html.append(f'<span class="changed">{old_part}</span>')
             # text_b_html.append(f'<span class="changed">{new_part}</span>')
             text_a_html.append(text_a_part)
-            text_a_html.append(text_b_part)
+            text_b_html.append(text_b_part)
 
         elif tag == "delete":
             text = escape(text_a[i1:i2])
