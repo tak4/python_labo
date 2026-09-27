@@ -16,17 +16,51 @@ body { font-family: sans-serif; }
 .changed { background-color: #fff3a3; }
 .deleted { background-color: #ffb3b3; text-decoration: line-through; }
 .added { background-color: #b3ffb3; }
-th {
-    border-width: 1px;
+.comparison th {
+    border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
 }
-td {
-    border-width: 1px;
+.comparison td {
+    border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
+}
+.comparison th:nth-child(1),
+.comparison td:nth-child(1) {
+    width: 20px;
+}
+.comparison th:nth-child(2),
+.comparison td:nth-child(2) {
+    width: 40px;
+}
+.comparison th:nth-child(3),
+.comparison td:nth-child(3) {
+    width: 20px;
+}
+.comparison th:nth-child(4),
+.comparison td:nth-child(4) {
+    width: 600px;
+}
+.comparison th:nth-child(5),
+.comparison td:nth-child(5) {
+    width: 20px;
+}
+.comparison th:nth-child(6),
+.comparison td:nth-child(6) {
+    width: 600px;
 }
 </style>
 </head>
 <body>
     <table>
-    $comparisons
+        <tr class="comparison">
+            <td>#</td>
+            <td>ratio</td>
+            <td>idx</td>
+            <td>criteria</td>
+            <td>idx</td>
+            <td>target</td>
+        </tr>
+        $comparisons
     </table>
 </body>
 </html>
@@ -45,13 +79,13 @@ def create_pair_html(result_list: list, idx: int) -> str:
 
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
         if tag == "equal":
-            text = escape(text_a[i1:i2])
+            text = escape(text_a[i1:i2] or "")
             text_a_html.append(text)
             text_b_html.append(f'<span class="equal">{text}</span>')
 
         elif tag == "replace":
-            text_a_part = escape(text_a[i1:i2])
-            text_b_part = escape(text_b[j1:j2])
+            text_a_part = escape(text_a[i1:i2] or "")
+            text_b_part = escape(text_b[j1:j2] or "")
 
             # text_a_html.append(f'<span class="changed">{old_part}</span>')
             # text_b_html.append(f'<span class="changed">{new_part}</span>')
@@ -59,26 +93,24 @@ def create_pair_html(result_list: list, idx: int) -> str:
             text_b_html.append(text_b_part)
 
         elif tag == "delete":
-            text = escape(text_a[i1:i2])
+            text = escape(text_a[i1:i2] or "")
             # text_a_html.append(f'<span class="deleted">{text}</span>')
             text_a_html.append(text)
 
         elif tag == "insert":
-            text = escape(text_b[j1:j2])
+            text = escape(text_b[j1:j2] or "")
             # text_b_html.append(f'<span class="added">{text}</span>')
             text_b_html.append(text)
 
     return f"""
-    <div class="comparison">
-        <tr>
+        <tr class="comparison">
             <td>{idx}</td>
+            <td>{round(float(ratio),2)}</td>
             <td>{index_a}</td>
             <td>{''.join(text_a_html)}</td>
             <td>{index_b}</td>
             <td>{''.join(text_b_html)}</td>
-            <td>{ratio}</td>
         </tr>
-    </div>
     """
 
 def create_diff_page(comparison_list: list):
@@ -106,10 +138,10 @@ def create_comparison_list(
     for criteria_row in result_ws_name.iter_rows(min_row=input_data_start_row, max_row=result_ws_max_row, values_only=True):
         if criteria_row[result_criteria_data_col-1] is None:
             continue
-        criteria_index_no = criteria_row[result_criteria_index_col-1]
-        criteria_line = str(criteria_row[result_criteria_data_col-1]).strip()
-        target_index_no = criteria_row[result_target_index_col-1]
-        target_line = str(criteria_row[result_target_data_col-1]).strip()
+        criteria_index_no = criteria_row[result_criteria_index_col-1] or ""
+        criteria_line = str(criteria_row[result_criteria_data_col-1] or "").strip()
+        target_index_no = criteria_row[result_target_index_col-1] or ""
+        target_line = str(criteria_row[result_target_data_col-1] or "").strip()
         result_ratio = str(criteria_row[result_ratio_col-1]).strip()
         if not criteria_line:
             continue
