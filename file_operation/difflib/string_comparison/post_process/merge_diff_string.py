@@ -148,7 +148,7 @@ def create_pair_html(result_list: list, idx: int) -> str:
             text_c_html.append(f'<span class="equal">{text}</span>')
 
         elif tag == "replace" or tag == "insert":
-            text_c_part = escape(text_b[j1:j2] or "")
+            text_c_part = escape(text_c[j1:j2] or "")
             text_c_html.append(text_c_part)
 
         elif tag == "delete":
@@ -171,7 +171,7 @@ def create_pair_html(result_list: list, idx: int) -> str:
         <tr class="comparison">
             <td>{idx}</td>
             <td>{index_a}</td>
-            <td>{''.join(text_critical_html)}</td>
+            <td>{text_critical_html}</td>
             <td>{index_b}</td>
             <td>{''.join(text_b_html)}</td>
             <td>{round(float(ratio_b), 2)}</td>
@@ -223,7 +223,7 @@ def main():
     merge_a_ws_max_row = merge_a_ws.max_row
 
     merged_list = []
-    for idx in range(2, merge_a_ws_max_row):
+    for idx in range(2, merge_a_ws_max_row+1):
         merged_list.append(
             [cell.value for cell in merge_a_ws[idx][:]] +
             [cell.value for cell in merge_b_ws[idx][2:6]] +
