@@ -122,93 +122,56 @@ def create_pair_html(result_list: list, idx: int) -> str:
     matcher_c = SequenceMatcher(None, text_a, text_c)
     matcher_d = SequenceMatcher(None, text_a, text_d)
 
-    text_a_b_html = []
     text_b_html = []
-    text_a_c_html = []
     text_c_html = []
-    text_a_d_html = []
     text_d_html = []
+
+    text_critical_html = escape(text_a or "")
 
     # A vs B
     for tag, i1, i2, j1, j2 in matcher_b.get_opcodes():
         if tag == "equal":
-            text = escape(text_a[i1:i2] or "")
-            text_a_b_html.append(text)
+            text = escape(text_b[j1:j2] or "")
             text_b_html.append(f'<span class="equal">{text}</span>')
 
-        elif tag == "replace":
-            text_a_part = escape(text_a[i1:i2] or "")
+        elif tag == "replace" or tag == "insert":
             text_b_part = escape(text_b[j1:j2] or "")
-            # text_a_b_html.append(f'<span class="changed">{text_a_part}</span>')
-            # text_b_html.append(f'<span class="changed">{text_b_part}</span>')
-            text_a_b_html.append(text_a_part)
             text_b_html.append(text_b_part)
 
         elif tag == "delete":
-            text = escape(text_a[i1:i2] or "")
-            # text_a_b_html.append(f'<span class="deleted">{text}</span>')
-            text_a_b_html.append(text)
-
-        elif tag == "insert":
-            text = escape(text_b[j1:j2] or "")
-            # text_b_html.append(f'<span class="added">{text}</span>')
-            text_b_html.append(text)
+            pass
 
     # A vs C
     for tag, i1, i2, j1, j2 in matcher_c.get_opcodes():
         if tag == "equal":
-            text = escape(text_a[i1:i2] or "")
-            text_a_c_html.append(text)
+            text = escape(text_c[j1:j2] or "")
             text_c_html.append(f'<span class="equal">{text}</span>')
 
-        elif tag == "replace":
-            text_a_part = escape(text_a[i1:i2] or "")
-            text_c_part = escape(text_c[j1:j2] or "")
-            # text_a_c_html.append(f'<span class="changed">{text_a_part}</span>')
-            # text_c_html.append(f'<span class="changed">{text_c_part}</span>')
-            text_a_c_html.append(text_a_part)
+        elif tag == "replace" or tag == "insert":
+            text_c_part = escape(text_b[j1:j2] or "")
             text_c_html.append(text_c_part)
 
         elif tag == "delete":
-            text = escape(text_a[i1:i2] or "")
-            # text_a_c_html.append(f'<span class="deleted">{text}</span>')
-            text_a_c_html.append(text)
-
-        elif tag == "insert":
-            text = escape(text_c[j1:j2] or "")
-            # text_c_html.append(f'<span class="added">{text}</span>')
-            text_c_html.append(text)
+            pass
 
     # A vs D
     for tag, i1, i2, j1, j2 in matcher_d.get_opcodes():
         if tag == "equal":
-            text = escape(text_a[i1:i2] or "")
-            text_a_d_html.append(text)
+            text = escape(text_d[j1:j2] or "")
             text_d_html.append(f'<span class="equal">{text}</span>')
 
-        elif tag == "replace":
-            text_a_part = escape(text_a[i1:i2] or "")
+        elif tag == "replace" or tag == "insert":
             text_d_part = escape(text_d[j1:j2] or "")
-            # text_a_d_html.append(f'<span class="changed">{text_a_part}</span>')
-            # text_d_html.append(f'<span class="changed">{text_d_part}</span>')
-            text_a_d_html.append(text_a_part)
             text_d_html.append(text_d_part)
 
         elif tag == "delete":
-            text = escape(text_a[i1:i2] or "")
-            # text_a_d_html.append(f'<span class="deleted">{text}</span>')
-            text_a_d_html.append(text)
-
-        elif tag == "insert":
-            text = escape(text_d[j1:j2] or "")
-            # text_d_html.append(f'<span class="added">{text}</span>')
-            text_d_html.append(text)
+            pass
 
     return f"""
         <tr class="comparison">
             <td>{idx}</td>
             <td>{index_a}</td>
-            <td>{''.join(text_a_b_html)}</td>
+            <td>{''.join(text_critical_html)}</td>
             <td>{index_b}</td>
             <td>{''.join(text_b_html)}</td>
             <td>{round(float(ratio_b), 2)}</td>
