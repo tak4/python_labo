@@ -1,5 +1,5 @@
 search_conditions:
-    output_file: output_a.txt
+    output_file_prefix: result
     conditions:
       - target: 
         name: condition A

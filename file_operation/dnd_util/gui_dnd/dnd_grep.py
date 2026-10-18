@@ -146,6 +146,7 @@ class DropWidget(QWidget):
 
             self.thread = QThread()
             self.worker = ExecuteWorker(self.executor, paths)
+            # ExecuteWorkerの所属をQThreadに変更する
             self.worker.moveToThread(self.thread)
 
             self.thread.started.connect(self.worker.run)

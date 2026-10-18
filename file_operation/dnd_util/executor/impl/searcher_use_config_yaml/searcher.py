@@ -56,7 +56,9 @@ class FileKeywordSearcher(BaseExecutor):
         # 検索対象ファイル
         input_file = Path(target_path)
         # grep結果出力先ファイル名を取得
-        output_file = output_folder / search_conditions["output_file"]
+        inputfile_basename = input_file.name
+        output_prefix = search_conditions["output_file_prefix"]
+        output_file = output_folder / f"{output_prefix}_{inputfile_basename}"
 
         # 検索条件の作成
         compiled = []
@@ -120,7 +122,7 @@ class FileKeywordSearcher(BaseExecutor):
                             )
 
                         buffer += chunk
-                        lines = buffer.splitlines(keepends=True)
+                        lines = buffer.splitlines(keepends=True)    # keepends=True 改行残す
 
                         # 最後の行の末尾が改行ではない場合、1行が完結していない可能性があるので、
                         # linesからbufferに戻しておく
