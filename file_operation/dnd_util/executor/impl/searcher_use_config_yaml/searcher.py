@@ -56,9 +56,9 @@ class FileKeywordSearcher(BaseExecutor):
         # 検索対象ファイル
         input_file = Path(target_path)
         # grep結果出力先ファイル名を取得
-        inputfile_basename = input_file.name
+        input_file_basename = input_file.stem
         output_prefix = search_conditions["output_file_prefix"]
-        output_file = output_folder / f"{output_prefix}_{inputfile_basename}"
+        output_file = output_folder / f"{output_prefix}_{input_file_basename}.txt"
 
         # 検索条件の作成
         compiled = []
